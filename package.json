@@ -69,5 +69,5 @@
     "dev": "npm run build -- --watch",
     "build": "rm -rf dist && babel src --out-dir dist"
   },
-  "version": "4.0.0"
+  "version": "4.0.1"
 }
