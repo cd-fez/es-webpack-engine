@@ -1,3 +1,7 @@
+# es-webpack-engine 3.1.1 (2017.6.14)
+
+* 由于webpack2导致相同js文件只能被执行一次，故用回webpack1
+
 # es-webpack-engine 4.0.0 (2017.5.31)
 
 * 升级webpack版本为2.0

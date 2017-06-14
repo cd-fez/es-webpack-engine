@@ -1,4 +1,4 @@
-import ExtractTextPlugin from 'extract-text-webpack-plugin';
+import ExtractTextPlugin from 'es-extract-text-webpack-plugin';
 
 export const imageLoader = (path, imgName, limit) => {
   return {
@@ -36,7 +36,7 @@ export const jsLoader = (id, exclude) => {
   return {
     test: /\.js[x]?$/,
     loader: 'happypack/loader',
-    options: {
+    query: {
       id,
       cacheDirectory: true
     },
@@ -47,32 +47,14 @@ export const jsLoader = (id, exclude) => {
 export const cssLoader = () => {
   return {
     test: /\.css$/,
-    use: ExtractTextPlugin.extract({
-      fallback: 'style-loader',
-      use: [{
-        loader: 'css-loader',
-        options: {
-          minimize: process.env.NODE_ENV === 'production'
-        }
-      }]
-    })
+    loader: ExtractTextPlugin.extract('style', 'css')
   }
 };
 
 export const lessLoader = () => {
   return {
     test: /\.less$/,
-    use: ExtractTextPlugin.extract({
-      fallback: 'style-loader',
-      use: [{
-        loader: 'css-loader',
-        options: {
-          minimize: process.env.NODE_ENV === 'production'
-        }
-      }, {
-        loader: 'less-loader',
-      }]
-    })
+    loader: ExtractTextPlugin.extract('style', 'css!less'),
   }
 };
 
@@ -82,3 +64,10 @@ export const importsLoader = (regExp) => {
     loader: 'imports-loader?define=>false&module=>false&exports=>false&this=>window',
   }
 };
+
+export const jsonLoader = () => {
+  return {
+    test: /\.json$/,
+    loader: 'json-loader'
+  }
+}

@@ -44,7 +44,7 @@ module.exports = {
 ```json
 {
     "devDependencies": {
-        "es-webpack-engine": "~4.0.0",
+        "es-webpack-engine": "~3.1.1",
     },
     "scripts": {
         "start": "npm run dev",

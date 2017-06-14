@@ -3,8 +3,8 @@ import webpack from 'webpack';
 import HappyPack from 'happypack';
 import merge from 'webpack-merge';
 
-import ExtractTextPlugin from 'extract-text-webpack-plugin';
-import ChunkManifestPlugin from 'chunk-manifest-webpack2-plugin';
+import ExtractTextPlugin from 'es-extract-text-webpack-plugin';
+import ChunkManifestPlugin from 'chunk-manifest-webpack-plugin';
 import OptimizeModuleIdAndChunkIdPlugin from 'optimize-moduleid-and-chunkid-plugin';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
 import es3ifyPlugin from 'es3ify-webpack-plugin';
@@ -32,18 +32,19 @@ const config = {
     alias: Object.assign(entry.configAlias, {
       'nodeModulesDir': options.nodeModulesDir,
     }),
-    extensions: ['.js', '.jsx'],
+    extensions: ['', '.js', '.jsx'],
   },
   module: {
     noParse: [],
-    rules: [
+    loaders: [
       loaders.jsLoader('babelJs', [
         options.nodeModulesDir
       ]),
       loaders.cssLoader(), 
       loaders.lessLoader(),
+      loaders.jsonLoader(),
       loaders.importsLoader(options.noParseDeps)
-    ],
+    ]
   },
   plugins: [
     new HappyPack({
@@ -53,10 +54,7 @@ const config = {
       loaders: ['babel-loader'],
       tempDir: options.happypackTempDir,
     }),
-    new ExtractTextPlugin({
-      filename:  (getPath) => {
-        return getPath('[name].css').replace('js', 'css');
-      },
+    new ExtractTextPlugin('[name].css', {
       allChunks: true
     }),
     new es3ifyPlugin(),
@@ -66,7 +64,8 @@ const config = {
       __DEBUG__: options.__DEBUG__,
       __DEV__: options.__DEV__,
     }),
-    new OptimizeModuleIdAndChunkIdPlugin()
+    new OptimizeModuleIdAndChunkIdPlugin(),
+    new webpack.optimize.OccurrenceOrderPlugin()
   ]
 };
 
@@ -103,7 +102,7 @@ if (options.isOpenLibModule) {
   let newConfig = {};
 
   let module = {
-    rules: [
+    loaders: [
       loaders.imageLoader('libs', options.imgName, options.imglimit),
       loaders.fontLoader('libs', options.fontName, options.fontlimit),
       loaders.swfLoader('libs', options.swfName)
@@ -147,7 +146,7 @@ if (options.isOpenAppModule && !isEmptyObject(entry.appEntry['app'])) {
     name: 'app',
     entry: entry.appEntry['app'],
     module: {
-      rules: [
+      loaders: [
         loaders.imageLoader('app', options.imgName, options.imglimit),
         loaders.fontLoader('app', options.fontName, options.imglimit),
         loaders.swfLoader('app', options.swfName)
@@ -196,7 +195,7 @@ if (options.isOpenPluginModule) {
       name: `${key}`,
       entry: entry.pluginEntry[key],
       module: {
-        rules: [
+        loaders: [
           loaders.imageLoader(key, options.imgName, options.imglimit),
           loaders.fontLoader(key, options.fontName, options.fontlimit),
           loaders.swfLoader(key, options.swfName)
@@ -252,7 +251,7 @@ if (options.isOpenBundleModule) {
       name: `${key}`,
       entry: entry.bundleEntry[key],
       module: {
-        rules: [
+        loaders: [
           loaders.imageLoader(key, options.imgName, options.imglimit),
           loaders.fontLoader(key, options.fontName, options.fontlimit),
           loaders.swfLoader(key, options.swfName)
@@ -307,7 +306,7 @@ if (options.isOpenThemeModule) {
       name: `${key}`,
       entry: entry.themeEntry[key],
       module: {
-        rules: [
+        loaders: [
           loaders.imageLoader(key, options.imgName, options.imglimit),
           loaders.fontLoader(key, options.fontName, options.fontlimit),
           loaders.swfLoader(key, options.swfName)
