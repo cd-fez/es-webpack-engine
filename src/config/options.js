@@ -32,6 +32,7 @@ const options = Object.assign({
   commonsChunkFileName: 'common',
   entryMainName: 'main',
   entryFileName: 'index',
+  extryCssName: 'main',
 
   globalDir: 'app/Resources/static-src',
   nodeModulesDir: 'node_modules',

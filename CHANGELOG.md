@@ -1,3 +1,7 @@
+# es-webpack-engine 3.2.0 (2017.6.19)
+
+* 支持主题配色方案
+
 # es-webpack-engine 3.1.1 (2017.6.14)
 
 * 由于webpack2导致相同js文件只能被执行一次，故用回webpack1

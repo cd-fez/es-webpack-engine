@@ -49,11 +49,26 @@ if (options.isOpenPluginModule) {
 
     pluginEntry[pluginName] = {};
 
-    if(fsExistsSync(`${pluginDir}/js/${options.entryMainName}.js`)) {
-      pluginEntry[pluginName][`${pluginName}/js/${options.entryMainName}`] = `${pluginDir}/js/${options.entryMainName}.js`;
-    }
-    
-    Object.assign(pluginEntry[pluginName], searchEntries(options.entryFileName, `${pluginDir}/js`, `${pluginName}/js/`));
+    Object.assign(
+      pluginEntry[pluginName],
+      searchEntries({
+        fileName: options.extryCssName,
+        entryPath: `${pluginDir}/less`,
+        fileNamePrefix: `${pluginName}/css/`,
+        fileType: 'less',
+      }),
+      searchEntries({
+        fileName: options.entryMainName,
+        entryPath: `${pluginDir}/js`,
+        fileNamePrefix: `${pluginName}/js/`,
+      }),
+      searchEntries({
+        fileName: options.entryFileName,
+        entryPath: `${pluginDir}/js`,
+        fileNamePrefix: `${pluginName}/js/`,
+        isFuzzy: true,
+      })
+    );
 
     configAlias[pluginName] = pluginDir;
     pluginSrcEntry[pluginName] = pluginDir;
@@ -96,11 +111,26 @@ if (options.isOpenBundleModule) {
 
     bundleEntry[bundleName] = {};
 
-    if(fsExistsSync(`${bundleDir}/js/${options.entryMainName}.js`)) {
-      bundleEntry[bundleName][`${bundleName}/js/${options.entryMainName}`] = `${bundleDir}/js/${options.entryMainName}.js`;
-    }
-    
-    Object.assign(bundleEntry[bundleName], searchEntries(options.entryFileName, `${bundleDir}/js`, `${bundleName}/js/`));
+    Object.assign(
+      bundleEntry[bundleName],
+      searchEntries({
+        fileName: options.extryCssName,
+        entryPath: `${bundleDir}/less`,
+        fileNamePrefix: `${bundleName}/css/`,
+        fileType: 'less',
+      }),
+      searchEntries({
+        fileName: options.entryMainName,
+        entryPath: `${bundleDir}/js`,
+        fileNamePrefix: `${bundleName}/js/`,
+      }),
+      searchEntries({
+        fileName: options.entryFileName,
+        entryPath: `${bundleDir}/js`,
+        fileNamePrefix: `${bundleName}/js/`,
+        isFuzzy: true,
+      })
+    );
 
     configAlias[bundleName] = bundleDir;
     bundleSrcEntry[bundleName] = bundleDir;
@@ -139,11 +169,26 @@ if(options.isOpenThemeModule) {
 
     themeEntry[themeName] = {};
 
-    if(fsExistsSync(`${themeDir}/js/${options.entryMainName}.js`)) {
-      themeEntry[themeName][`${themeName}/js/${options.entryMainName}`] = `${themeDir}/js/${options.entryMainName}.js`;
-    }
-
-    Object.assign(themeEntry[themeName], searchEntries(options.entryFileName, `${themeDir}/js`, `${themeName}/js/`));
+    Object.assign(
+      themeEntry[themeName],
+      searchEntries({
+        fileName: options.extryCssName,
+        entryPath: `${themeDir}/less`,
+        fileNamePrefix: `${themeName}/css/`,
+        fileType: 'less',
+      }),
+      searchEntries({
+        fileName: options.entryMainName,
+        entryPath: `${themeDir}/js`,
+        fileNamePrefix: `${themeName}/js/`,
+      }),
+      searchEntries({
+        fileName: options.entryFileName,
+        entryPath: `${themeDir}/js`,
+        fileNamePrefix: `${themeName}/js/`,
+        isFuzzy: true,
+      })
+    );
 
     configAlias[themeName] = themeDir;
     themeSrcEntry[themeName] = themeDir;
@@ -168,11 +213,26 @@ if (options.isOpenAppModule) {
   const appDir = `${options.globalDir}/app`;
   appEntry['app'] = {};
 
-  if(fsExistsSync(`${appDir}/js/${options.entryMainName}.js`)) {
-    appEntry['app'][`app/js/${options.entryMainName}`] = `${appDir}/js/${options.entryMainName}.js`;
-  }
-
-  Object.assign(appEntry['app'],searchEntries(options.entryFileName, `${appDir}/js`, `app/js/`, ['admin']));
+  Object.assign(
+    appEntry['app'],
+    searchEntries({
+      fileName: options.extryCssName,
+      entryPath: `${appDir}/less`,
+      fileNamePrefix: `app/css/`,
+      fileType: 'less',
+    }),
+    searchEntries({
+      fileName: options.entryMainName,
+      entryPath: `${appDir}/js`,
+      fileNamePrefix: `app/js/`,
+    }),
+    searchEntries({
+      fileName: options.entryFileName,
+      entryPath: `${appDir}/js`,
+      fileNamePrefix: `app/js/`,
+      isFuzzy: true,
+    })
+  );
 }
 
 let onlyCopys = [];

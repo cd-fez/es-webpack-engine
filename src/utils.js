@@ -2,31 +2,29 @@ import glob from 'glob';
 import fs from 'fs';
 import path from 'path';
 
-const searchEntries = (entryFileName, entryPath, filenamePrefix = '', ignores) => {
+const searchEntries = (options) => {
 
   let files = {};
 
   // 如果目录以'/'结尾，则去掉
-  entryPath = entryPath.replace(/\/$/, '');
+  options.entryPath = options.entryPath.replace(/\/$/, '');
 
   /**
-   * 排除目录
-   * input: ['one','two','three']
-   * output: one|two|three
-   */
-  let ignore = '', i = 0, connector = '';
-  ignores && ignores.forEach((item) => {
-    i > 0 ? connector = '|' : connector = '';
-    ignore += connector + item;
-    i++;
-  })
-    
-  /**
-   * filenamePrefix 表示输出文件的前缀
+   * fileNamePrefix 表示输出文件的前缀
    * 如输出'app/js/default/index.js',则前缀为'app/js/default/'
    */
-  glob.sync(entryPath + `/!(${ignore})/**/${entryFileName}.{js,jsx}`).forEach((file) => {
-    const entryName = filenamePrefix + file.replace(entryPath + '/', '').replace(file.substring(file.lastIndexOf('.')), '');
+  let pattern = '';
+
+  if (options.fileType == 'less') {
+    pattern = `${options.entryPath}/${options.fileName}*.less`;
+  } else if (options.isFuzzy) {
+    pattern = `${options.entryPath}/**/${options.fileName}.{js,jsx}`
+  } else {
+    pattern = `${options.entryPath}/${options.fileName}.{js,jsx}`
+  }
+
+  glob.sync(pattern).forEach((file) => {
+    const entryName = options.fileNamePrefix + file.replace(options.entryPath + '/', '').replace(file.substring(file.lastIndexOf('.')), '');
     files[entryName] = file;
   });
 
