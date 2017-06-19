@@ -22,10 +22,10 @@ export const fontLoader = (path, fontName, limit) => {
   }
 };
 
-export const swfLoader = (path, name) => {
+export const mediaLoader = (path, name) => {
   return {
-    test: /\.swf(\?v=\d+\.\d+\.\d+)?$/,
-    loader: 'file-loader',
+    test: /\.(swf|wav|mp3|mpeg|mp4|webm|ogv)(\?v=\d+\.\d+\.\d+)?$/,
+    loader: 'url-loader',
     query: {
       name: `${path}/${name}/[name].[ext]`
     }

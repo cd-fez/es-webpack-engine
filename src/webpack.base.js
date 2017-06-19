@@ -105,7 +105,7 @@ if (options.isOpenLibModule) {
     loaders: [
       loaders.imageLoader('libs', options.imgName, options.imglimit),
       loaders.fontLoader('libs', options.fontName, options.fontlimit),
-      loaders.swfLoader('libs', options.swfName)
+      loaders.mediaLoader('libs', options.mediaName),
     ]
   }
 
@@ -149,7 +149,7 @@ if (options.isOpenAppModule && !isEmptyObject(entry.appEntry['app'])) {
       loaders: [
         loaders.imageLoader('app', options.imgName, options.imglimit),
         loaders.fontLoader('app', options.fontName, options.imglimit),
-        loaders.swfLoader('app', options.swfName)
+        loaders.mediaLoader('app', options.mediaName),
       ]
     },
     plugins: [
@@ -198,7 +198,7 @@ if (options.isOpenPluginModule) {
         loaders: [
           loaders.imageLoader(key, options.imgName, options.imglimit),
           loaders.fontLoader(key, options.fontName, options.fontlimit),
-          loaders.swfLoader(key, options.swfName)
+          loaders.mediaLoader(key, options.mediaName),
         ]
       },
       plugins: [
@@ -254,7 +254,7 @@ if (options.isOpenBundleModule) {
         loaders: [
           loaders.imageLoader(key, options.imgName, options.imglimit),
           loaders.fontLoader(key, options.fontName, options.fontlimit),
-          loaders.swfLoader(key, options.swfName)
+          loaders.mediaLoader(key, options.mediaName),
         ]
       },
       plugins: [
@@ -309,7 +309,7 @@ if (options.isOpenThemeModule) {
         loaders: [
           loaders.imageLoader(key, options.imgName, options.imglimit),
           loaders.fontLoader(key, options.fontName, options.fontlimit),
-          loaders.swfLoader(key, options.swfName)
+          loaders.mediaLoader(key, options.mediaName),
         ]
       },
       plugins: [

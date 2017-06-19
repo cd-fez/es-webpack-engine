@@ -1,3 +1,7 @@
+# es-webpack-engine 3.2.1 (2017.6.19)
+
+* 支持mp3等媒体格式
+
 # es-webpack-engine 3.2.0 (2017.6.19)
 
 * 支持主题配色方案

@@ -45,7 +45,7 @@ const options = Object.assign({
   imglimit: 1024,
   fontName: 'fonts',
   imgName: 'img',
-  swfName: 'swf',
+  mediaName: 'media',
   copyName: 'img',
 
   isNeedCommonChunk: '.is-need-common-chunk',
