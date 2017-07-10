@@ -25,7 +25,7 @@ export const fontLoader = (path, fontName, limit) => {
 export const mediaLoader = (path, name) => {
   return {
     test: /\.(swf|wav|mp3|mpeg|mp4|webm|ogv)(\?v=\d+\.\d+\.\d+)?$/,
-    loader: 'url-loader',
+    loader: 'file-loader',
     query: {
       name: `${path}/${name}/[name].[ext]`
     }

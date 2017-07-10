@@ -1,3 +1,7 @@
+# es-webpack-engine 3.2.2 (2017.7.10)
+
+* 修复对swf等文件的解析问题
+
 # es-webpack-engine 3.2.1 (2017.6.19)
 
 * 支持mp3等媒体格式
