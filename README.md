@@ -44,10 +44,9 @@ module.exports = {
 ```json
 {
     "devDependencies": {
-        "es-webpack-engine": "~3.1.1",
+        "es-webpack-engine": "~3.3.0",
     },
     "scripts": {
-        "start": "npm run dev",
         "dev": "cross-env NODE_ENV=development nodemon --max_old_space_size=4096 node_modules/es-webpack-engine/dist/webpack.dev.js --parameters webpack.config.js",
         "compile": "node --max_old_space_size=4096 node_modules/es-webpack-engine/dist/webpack.prod.js --parameters webpack.config.js",
         "compile:debug": "npm run compile -- --debugMode=true",
@@ -63,7 +62,7 @@ module.exports = {
 {
     "watch": [
         "webpack.config.js",
-        "nodemon.json"
+        ".webpack-watch.log"
     ]
 }
 ```

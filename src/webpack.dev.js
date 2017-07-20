@@ -13,8 +13,13 @@ import logger from './config/logger';
 import webpackDevMiddleware from './config/middleware';
 import options from './config/options';
 import * as entry from './config/entry';
+import { fsExistsSync } from './utils';
 
 import baseConfig from './webpack.base';
+
+if (!fsExistsSync('.webpack-watch.log')) {
+  logger.error('请在项目根目录下添加.webpack-watch.log文件, 否则无法监听新增入口JS文件');
+}
 
 const app = express();
 
@@ -63,14 +68,11 @@ const isEntryFile = (path) => {
 // 监听新增入口文件
 watcher.on('add', (path) => {
   if(isEntryFile(path)) {
-    logger.info(`File ${path} has been added`);
-
-    fs.readFile('nodemon.json', "utf8", (err, data) => {
-      if (err) {
-        logger.warn("请在根目录下添加nodemon.json文件");
-      } else if (data) {
-        fs.writeFile('nodemon.json', data);
-      }
-    })
+    if (fsExistsSync('.webpack-watch.log')) {
+      logger.info(`入口JS文件${path}被新增`);
+      fs.writeFileSync('.webpack-watch.log', `File ${path} has been added`, 'utf8');
+    } else {
+      logger.error("请在项目根目录下添加.webpack-watch.log文件, 否则无法监听新增入口JS文件");
+    }
   }
 });
