@@ -79,10 +79,10 @@ if (options.__DEV__) {
   config.plugins.push(new FriendlyErrorsPlugin());
 }
 
-if (options.__DEV__ || options.__DEBUG__) {
-  config.devtool = options.__DEVTOOL__;
-} else {
+if (!options.__DEV__ && !options.__DEBUG__) {
   config.plugins.push(new webpack.optimize.UglifyJsPlugin(uglifyJsConfig));
+} else {
+  config.devtool = options.__DEVTOOL__;
 }
 
 const minChunks = (module, count) => {

@@ -90,14 +90,14 @@ Object.assign(options, {
   },
 
   // 开发模式
-  __DEBUG__: !!specialArgv.debugMode,
+  __DEBUG__: specialArgv.sourcemap,
   __DEV__: process.env.NODE_ENV === 'development',
 
   // 高级模式
   __DEV_SERVER_PORT__: specialArgv.port || 3030,
-  __OPTIMIZE__: specialArgv.opt,
-  __DEVTOOL__: specialArgv.devtool || 'cheap-module-eval-source-map',
-  __FILE_INFO__: specialArgv.fileInfo,
+  __ANALYZER__: specialArgv.analyzer,
+  __DEVTOOL__: specialArgv.sourcemap ? 'source-map' : 'cheap-module-eval-source-map',
+  __VERBOSE__: specialArgv.verbose,
 
   rootDir,
   globalDir,

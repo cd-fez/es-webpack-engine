@@ -44,12 +44,12 @@ module.exports = {
 ```json
 {
     "devDependencies": {
-        "es-webpack-engine": "~3.3.0",
+        "es-webpack-engine": "~3.4.0",
     },
     "scripts": {
         "dev": "cross-env NODE_ENV=development nodemon --max_old_space_size=4096 node_modules/es-webpack-engine/dist/webpack.dev.js --parameters webpack.config.js",
         "compile": "node --max_old_space_size=4096 node_modules/es-webpack-engine/dist/webpack.prod.js --parameters webpack.config.js",
-        "compile:debug": "npm run compile -- --debugMode=true",
+        "compile:debug": "npm run compile sourcemap:true",
     }
 }
 
@@ -82,7 +82,7 @@ npm run compile:debug // 生产环境debug模式
 场景：有bug需要定位处理时
 
 ```
-npm run dev devtool:source-map
+npm run dev sourcemap:true
 ```
 
 **修改服务端口**
