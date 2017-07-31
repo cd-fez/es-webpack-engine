@@ -48,6 +48,7 @@ module.exports = {
     },
     "scripts": {
         "dev": "cross-env NODE_ENV=development nodemon --max_old_space_size=4096 node_modules/es-webpack-engine/dist/webpack.dev.js --parameters webpack.config.js",
+        "dev:debug": "npm run dev sourcemap:true",
         "compile": "node --max_old_space_size=4096 node_modules/es-webpack-engine/dist/webpack.prod.js --parameters webpack.config.js",
         "compile:debug": "npm run compile sourcemap:true",
     }
