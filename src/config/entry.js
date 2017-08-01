@@ -1,146 +1,38 @@
 import path from 'path';
 
-import { searchEntries, searchDirs, fsExistsSync, isArray } from '../utils';
+import { 
+  searchEntries, 
+  searchDirs, 
+  fsExistsSync, 
+  isArray, 
+  isPlugin, 
+  isBundle } from '../utils';
 import options  from './options';
 
-// 存放源文件路径
-const pluginAssetsDirs = [];
-const themeAssetsDirs = [];
-const bundleAssetsDirs = [];
 
 // 设置别名
 const configAlias = {
   libs: `${options.globalDir}/libs`,
+  components: `${options.globalDir}/components`,
   common: `${options.globalDir}/common`,
   app: `${options.globalDir}/app`,
+  nodeModulesDir: options.nodeModulesDir, // 即将废弃
+  nodeModule: options.nodeModulesDir
 };
 
 /*
   * 输出格式
-  * let pluginEntry = {
+  * let commonEntry = {
   *   'crmplugin': {
   *     'crmplugin/js/main': '/plugins/CrmPlugin/Resources/static-src/js/main.js',
   *     'crmplugin/js/default/index': '/plugins/CrmPlugin/Resources/static-src/js/default/index.js',
   *     ...
   *   },
-  *   'viplugin': {
-  *     'viplugin/js/main': '/plugins/VipPlugin/Resources/static-src/main.js',
-  *     'viplugin/js/default/index': '/plugins/VipPlugin/Resources/static-src/js/default/index.js',
+  *   'custombundle': {
+  *     'custombundle/js/main': '/src/CustomBundle/Resources/static-src/js/main.js',
+  *     'custombundle/js/default/index': '/src/CustomBundle/Resources/static-src/js/default/index.js',
   *     ...
   *   },
-  * };
-*/
-let pluginEntry = {};
-let pluginSrcEntry = {};
-if (options.isBuildAllModule || options.pluginModule.length) {
-
-  let pluginsName = [];
-
-  if(options.pluginModule.length) {
-    pluginsName = options.pluginModule;
-
-  } else {
-    pluginsName = searchDirs(options.pluginsDir, 'Resources/static-src');
-  }
-
-  pluginsName.forEach((plugin) => {
-    const pluginDir = `${plugin}/Resources/static-src`;
-    const pluginName = plugin.split(path.sep).pop().toLowerCase();
-
-    pluginEntry[pluginName] = {};
-
-    Object.assign(
-      pluginEntry[pluginName],
-      searchEntries({
-        fileName: options.extryCssName,
-        entryPath: `${pluginDir}/less`,
-        fileNamePrefix: `${pluginName}/css/`,
-        fileType: 'less',
-      }),
-      searchEntries({
-        fileName: options.entryMainName,
-        entryPath: `${pluginDir}/js`,
-        fileNamePrefix: `${pluginName}/js/`,
-      }),
-      searchEntries({
-        fileName: options.entryFileName,
-        entryPath: `${pluginDir}/js`,
-        fileNamePrefix: `${pluginName}/js/`,
-        isFuzzy: true,
-      })
-    );
-
-    configAlias[pluginName] = pluginDir;
-    pluginSrcEntry[pluginName] = pluginDir;
-    pluginAssetsDirs.push(pluginDir);
-  });
-}
-
-
-/*
-  * 输出格式
-  * let bundleEntry = {
-  *   'custom': {
-  *     'custom/js/main': '/src/Custom/Resources/static-src/js/main.js',
-  *     'custom/js/default/index': '/src/Custom/Resources/static-src/js/default/index.js',
-  *     ...
-  *   },
-  *   'appbundle': {
-  *     'appbundle/js/main': '/src/AppBundle/Resources/static-src/main.js',
-  *     'appbundle/js/default/index': '/src/AppBundle/Resources/static-src/js/default/index.js',
-  *     ...
-  *   },
-  * };
-*/
-let bundleEntry = {};
-let bundleSrcEntry = {};
-if (options.isBuildAllModule || options.bundleModule.length) {
-
-  let bundlesName = [];
-  
-  if(options.bundleModule.length) {
-    bundlesName = options.bundleModule;
-
-  } else {
-    bundlesName = searchDirs(options.bundlesDir, 'Resources/static-src');
-  }
-
-  bundlesName.forEach((bundle) => {
-    const bundleDir = `${bundle}/Resources/static-src`;
-    const bundleName = bundle.split(path.sep).pop().toLowerCase();
-
-    bundleEntry[bundleName] = {};
-
-    Object.assign(
-      bundleEntry[bundleName],
-      searchEntries({
-        fileName: options.extryCssName,
-        entryPath: `${bundleDir}/less`,
-        fileNamePrefix: `${bundleName}/css/`,
-        fileType: 'less',
-      }),
-      searchEntries({
-        fileName: options.entryMainName,
-        entryPath: `${bundleDir}/js`,
-        fileNamePrefix: `${bundleName}/js/`,
-      }),
-      searchEntries({
-        fileName: options.entryFileName,
-        entryPath: `${bundleDir}/js`,
-        fileNamePrefix: `${bundleName}/js/`,
-        isFuzzy: true,
-      })
-    );
-
-    configAlias[bundleName] = bundleDir;
-    bundleSrcEntry[bundleName] = bundleDir;
-    bundleAssetsDirs.push(bundleDir);
-  });
-}
-
-/*
-  * 输出格式
-  * let themeEntry = {
   *   'defaulttheme': {
   *     'defaulttheme/js/default/index': '/web/themes/default/static-src/js/default/index.js',
   *     ...
@@ -151,49 +43,58 @@ if (options.isBuildAllModule || options.bundleModule.length) {
   *   },
   * };
 */
+let commonEntry = {};
+let commonSrcEntry = {};
+let commonAssetsDirs = [];
+if (options.isBuildAllModule || options.buildModule.length) {
+  let commonNames = [];
 
-let themeEntry = {};
-let themeSrcEntry = {};
-if(options.isBuildAllModule || options.themeModule.length) {
-  let themesName = [];
-
-  if(options.themeModule.length) {
-    themesName = options.themeModule;
+  if (options.buildModule.length) {
+    commonNames = options.buildModule
   } else {
-    themesName = searchDirs(options.themesDir, 'static-src');
+    commonNames = commonNames.concat(
+      searchDirs(options.pluginsDir, 'Resources/static-src'),
+      searchDirs(options.bundlesDir, 'Resources/static-src'),
+      searchDirs(options.themesDir, 'static-src'),
+    );
   }
 
-  themesName.forEach((theme) => {
-    const themeDir = `${theme}/static-src`;
-    const themeName = theme.split(path.sep).pop().replace('-','').toLowerCase() + 'theme';
+  commonNames.forEach((item) => {
+    if (isPlugin(item) || isBundle(item)) {
+      const commonDir = `${item}/Resources/static-src`;
+      const commonName = item.split(path.sep).pop().toLowerCase();
 
-    themeEntry[themeName] = {};
+    } else {
+      const commonDir = `${item}/static-src`;
+      const commonName = item.split(path.sep).pop().replace('-','').toLowerCase() + 'theme';
+    }
 
+    commonEntry[commonName] = {};
+    
     Object.assign(
-      themeEntry[themeName],
+      commonEntry[commonName],
       searchEntries({
         fileName: options.extryCssName,
-        entryPath: `${themeDir}/less`,
-        fileNamePrefix: `${themeName}/css/`,
+        entryPath: `${commonDir}/less`,
+        fileNamePrefix: `${commonName}/css/`,
         fileType: 'less',
       }),
       searchEntries({
         fileName: options.entryMainName,
-        entryPath: `${themeDir}/js`,
-        fileNamePrefix: `${themeName}/js/`,
+        entryPath: `${commonDir}/js`,
+        fileNamePrefix: `${commonName}/js/`,
       }),
       searchEntries({
         fileName: options.entryFileName,
-        entryPath: `${themeDir}/js`,
-        fileNamePrefix: `${themeName}/js/`,
+        entryPath: `${commonDir}/js`,
+        fileNamePrefix: `${commonName}/js/`,
         isFuzzy: true,
       })
     );
 
-    configAlias[themeName] = themeDir;
-    themeSrcEntry[themeName] = themeDir;
-    themeAssetsDirs.push(themeDir);
-
+    configAlias[commonName] = commonDir;
+    commonSrcEntry[commonName] = commonDir;
+    commonAssetsDirs.push(commonDir);
   })
 }
 
@@ -236,7 +137,7 @@ if (options.isBuildAllModule) {
 }
 
 let onlyCopys = [];
-if (options.onlyCopys && options.onlyCopys.length) {
+if (options.onlyCopys.length) {
   let copyitem = {};
   options.onlyCopys.forEach((item) => {
     copyitem = {
@@ -251,20 +152,13 @@ if (options.onlyCopys && options.onlyCopys.length) {
 }
 
 export {
-  pluginEntry,
-  bundleEntry,
   libEntry,
   appEntry,
-  pluginSrcEntry,
-  bundleSrcEntry,
-  themeEntry,
-  themeSrcEntry,
+
+  commonEntry,
+  commonSrcEntry,
+  commonAssetsDirs,
 
   onlyCopys,
-
   configAlias,
-
-  bundleAssetsDirs,
-  themeAssetsDirs,
-  pluginAssetsDirs
 }

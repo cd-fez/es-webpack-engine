@@ -23,16 +23,14 @@ import {
   filterObject
 } from './utils';
 
-// 通用配置
+// 基础配置
 const config = {
   output: Object.assign(options.output, {
     filename: '[name].js',
   }),
   externals: options.externals,
   resolve: {
-    alias: Object.assign(entry.configAlias, {
-      'nodeModulesDir': options.nodeModulesDir,
-    }),
+    alias: entry.configAlias,
     extensions: ['', '.js', '.jsx'],
   },
   module: {
@@ -143,7 +141,7 @@ if (options.isBuildAllModule) {
 
 // app 配置
 let appConfig = {};
-if (options.isBuildAllModule && !isEmptyObject(entry.appEntry['app'])) {
+if (options.isBuildAllModule) {
   appConfig = merge(config, {
     name: 'app',
     entry: entry.appEntry['app'],
@@ -183,19 +181,25 @@ if (options.isBuildAllModule && !isEmptyObject(entry.appEntry['app'])) {
   }
 }
 
-// plugin 配置
-let pluginConfigs = [];
-if (options.isBuildAllModule || options.pluginModule.length) {
-  const pluginEntryKeys = Object.keys(entry.pluginEntry);
+// 通用配置 - 包括插件、bundle、主题
+let commonConfigs = [];
+if (options.isBuildAllModule || options.buildModule.length) {
+  const commonEntry = entry.commonEntry;
+  
+  const commonEntryKeys = Object.keys(commonEntry);
+
   let index = 0;
 
-  pluginEntryKeys.forEach((key) => {
-    let pluginConfig = {};
-    if (isEmptyObject(entry.pluginEntry[key])) return;
-    
-    pluginConfig = merge(config, {
+  commonEntryKeys.forEach((key) => {
+    let commonConfig = {};
+
+    if (isEmptyObject(commonEntry[key])) {
+      return;
+    };
+
+    commonConfig = merge(config, {
       name: `${key}`,
-      entry: entry.pluginEntry[key],
+      entry: commonEntry[key],
       module: {
         loaders: [
           loaders.imageLoader(key, options.imgName, options.imglimit),
@@ -211,133 +215,42 @@ if (options.isBuildAllModule || options.pluginModule.length) {
       ]
     })
 
+    let commonSrcEntry = entry.commonSrcEntry;
+
+    if (fsExistsSync(`${commonSrcEntry[key]}/${options.copyName}`)) {
+      commonConfig.plugins.push(new CopyWebpackPlugin([{
+        from: `${commonSrcEntry[key]}/${options.copyName}`,
+        to: `${key}/${options.copyName}`,
+        toType: 'dir'
+      }]))
+    }
+
+    if (fsExistsSync(`${commonSrcEntry[key]}/${options.isNeedCommonChunk}`)) {
+      commonConfig.plugins.push(new webpack.optimize.CommonsChunkPlugin({
+        name: key,
+        filename: `${key}/js/${options.commonsChunkFileName}.js`,
+        chunks: Object.keys(commonEntry[key]),
+        minChunks,
+      }))
+    }
+
+    
     if (options.__OPTIMIZE__) {
-      pluginConfig.plugins.push(new BundleAnalyzerPlugin({
+      commonConfig.plugins.push(new BundleAnalyzerPlugin({
         analyzerPort: `400${index}`
       }))
     };
 
-    if (fsExistsSync(`${entry.pluginSrcEntry[key]}/${options.isNeedCommonChunk}`)) {
-      pluginConfig.plugins.push(new webpack.optimize.CommonsChunkPlugin({
-        name: key,
-        filename: `${key}/js/${options.commonsChunkFileName}.js`,
-        chunks: Object.keys(entry.pluginEntry[key]),
-        minChunks,
-      }))
-    }
+    commonConfigs.push(commonConfig);
 
-    if (fsExistsSync(`${entry.pluginSrcEntry[key]}/${options.copyName}`)) {
-      pluginConfig.plugins.push(new CopyWebpackPlugin([{
-        from: `${entry.pluginSrcEntry[key]}/${options.copyName}`,
-        to: `${key}/${options.copyName}`,
-        toType: 'dir'
-      }]))
-    }
-
-    pluginConfigs.push(pluginConfig);
     index ++;
-  })
-}
-
-// bundle 配置
-let bundleConfigs = [];
-if (options.isBuildAllModule || options.bundleModule.length) {
-  const bundleEntryKeys = Object.keys(entry.bundleEntry);
-  let index = 0;
-
-  bundleEntryKeys.forEach((key) => {
-    let bundleConfig = {};
-    if (isEmptyObject(entry.bundleEntry[key])) return;
-
-    bundleConfig = merge(config, {
-      name: `${key}`,
-      entry: entry.bundleEntry[key],
-      module: {
-        loaders: [
-          loaders.imageLoader(key, options.imgName, options.imglimit),
-          loaders.fontLoader(key, options.fontName, options.fontlimit),
-          loaders.mediaLoader(key, options.mediaName),
-        ]
-      },
-      plugins: [
-        new ChunkManifestPlugin({
-          filename: `${key}/chunk-manifest.json`,
-          manifestVariable: "webpackManifest"
-        })
-      ]
-    })
-
-    if (options.__OPTIMIZE__) {
-      bundleConfig.plugins.push(new BundleAnalyzerPlugin({
-        analyzerPort: `410${index}`
-      }))
-    };
-
-    if (fsExistsSync(`${entry.bundleSrcEntry[key]}/${options.isNeedCommonChunk}`)) {
-      bundleConfig.plugins.push(new webpack.optimize.CommonsChunkPlugin({
-        name: key,
-        filename: `${key}/js/${options.commonsChunkFileName}.js`,
-        chunks: Object.keys(entry.bundleEntry[key]),
-        minChunks,
-      }))
-    }
-
-    if (fsExistsSync(`${entry.bundleSrcEntry[key]}/${options.copyName}`)) {
-      bundleConfig.plugins.push(new CopyWebpackPlugin([{
-        from: `${entry.bundleSrcEntry[key]}/${options.copyName}`,
-        to: `${key}/${options.copyName}`,
-        toType: 'dir'
-      }]))
-    }
-
-    bundleConfigs.push(bundleConfig);
-    index ++;
-  })
-}
-
-// theme 配置
-let themeConfigs = [];
-if (options.isBuildAllModule || options.themeModule.length) {
-  const themeEntryKeys = Object.keys(entry.themeEntry);
-
-  themeEntryKeys.forEach((key) => {
-    let themeConfig = {};
-    if (isEmptyObject(entry.themeEntry[key])) return;
-    
-    themeConfig = merge(config, {
-      name: `${key}`,
-      entry: entry.themeEntry[key],
-      module: {
-        loaders: [
-          loaders.imageLoader(key, options.imgName, options.imglimit),
-          loaders.fontLoader(key, options.fontName, options.fontlimit),
-          loaders.mediaLoader(key, options.mediaName),
-        ]
-      },
-      plugins: [
-        new ChunkManifestPlugin({
-          filename: `${key}/chunk-manifest.json`,
-          manifestVariable: "webpackManifest"
-        })
-      ]
-    })
-
-    if (fsExistsSync(`${entry.themeSrcEntry[key]}/${options.copyName}`)) {
-      themeConfig.plugins.push(new CopyWebpackPlugin([{
-        from: `${entry.themeSrcEntry[key]}/${options.copyName}`,
-        to: `${key}/${options.copyName}`,
-        toType: 'dir'
-      }]))
-    } 
-
-    themeConfigs.push(themeConfig);
   })
 }
 
 // 总配置
 let configs = [];
 
-[libConfigs, appConfig, pluginConfigs, bundleConfigs, themeConfigs].forEach((item) => {
+[libConfigs, appConfig, commonConfigs].forEach((item) => {
   if (item.constructor === Object && !isEmptyObject(item)) {
     configs.push(item);
 

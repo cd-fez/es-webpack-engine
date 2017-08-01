@@ -12,7 +12,7 @@ export default (compiler, publicPath) => {
       hash: false,
       chunks: false,
       chunkModules: false,
-      children: options.__VERBOSE__ || false,
+      children: options.__VERBOSE__,
       errorDetails: true
     },
     watchOptions: {

@@ -64,7 +64,7 @@ const searchDirs = (searchDir, isExistDir) => {
 }
 
 // 需要忽略的目录
-const ignoreDirs = (searchDir, watchDirs) => {
+const searchIgnoreDirs = (searchDir, watchDirs) => {
   let dirsArr = [];
 
   if (!fsExistsSync(searchDir)) {
@@ -86,7 +86,7 @@ const ignoreDirs = (searchDir, watchDirs) => {
 
 
 const isArray = (arr) => {
-  return Object.prototype.toString.call(arr) === '[object Array]'; 
+  return Object.prototype.toString.call(arr) === '[object Array]';
 }
 
 const isEmptyObject = (obj) => {
@@ -119,13 +119,23 @@ const filterObject = (obj, filterName) => {
   }
 }
 
+const isPlugin = (path) => {
+  return path.indexOf('Plugin') !== -1;
+};
+
+const isBundle = (path) => {
+  return path.indexOf('Bundle') !== -1;
+};
+
 export { 
-  searchEntries, 
+  searchEntries,
   searchDirs,
-  ignoreDirs, 
-  fsExistsSync, 
+  searchIgnoreDirs, 
+  fsExistsSync,
   isArray, 
   isEmptyObject, 
   firstUpperCase,
-  filterObject
+  filterObject,
+  isPlugin,
+  isBundle
 };

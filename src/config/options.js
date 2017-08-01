@@ -1,6 +1,6 @@
 import { argv } from 'yargs';
 import path from 'path';
-import * as utils from '../utils';
+import { searchIgnoreDirs, isPlugin, isBundle } from '../utils';
 
 const parameters = argv.parameters ? require(path.resolve(argv.parameters)) : {};
 
@@ -65,19 +65,16 @@ const bundlesDir = path.resolve(rootDir, defaultOptions.bundlesDir);
 
 // 是否编译相应模块
 const isBuildAllModule =  !!specialArgv.module ? false : true;
-const buildModule = specialArgv.module ? specialArgv.module.split(',') : [];
+const argvModule = specialArgv.module ? specialArgv.module.split(',') : [];
+const buildModule = [];
 
-const pluginModule = [];
-const bundleModule = [];
-const themeModule = [];
-
-buildModule.forEach((item) => {
-  if (item.indexOf('Plugin') !== -1) {
-    pluginModule.push(path.resolve(pluginsDir, item));
-  } else if (item.indexOf('Bundle') !== -1) {
-    bundleModule.push(path.resolve(bundlesDir, item));
+argvModule.forEach((item) => {
+  if (isPlugin(item)) {
+    buildModule.push(path.resolve(pluginsDir, item));
+  } else if (isBundle(item)) {
+    buildModule.push(path.resolve(bundlesDir, item));
   } else {
-    themeModule.push(path.resolve(themesDir, item));
+    buildModule.push(path.resolve(themesDir, item));
   }
 });
 
@@ -90,9 +87,9 @@ const watchPluginDirs = [];
 const watchBundleDirs = [];
 const watchThemeDirs = [];
 watchModule.forEach((item) => {
-  if (item.indexOf('Plugin') !== -1) {
+  if (isPlugin(item)) {
     watchPluginDirs.push(item);
-  } else if (item.indexOf('Bundle') !== -1) {
+  } else if (isBundle(item)) {
     watchBundleDirs.push(item);
   } else {
     watchThemeDirs.push(item);
@@ -100,9 +97,9 @@ watchModule.forEach((item) => {
 });
 
 ignoredDirs = ignoredDirs.concat(
-  utils.ignoreDirs(pluginsDir, watchPluginDirs),
-  utils.ignoreDirs(bundlesDir, watchBundleDirs),
-  utils.ignoreDirs(themesDir, watchThemeDirs)
+  searchIgnoreDirs(pluginsDir, watchPluginDirs),
+  searchIgnoreDirs(bundlesDir, watchBundleDirs),
+  searchIgnoreDirs(themesDir, watchThemeDirs)
 );
 
 const options = Object.assign({}, defaultOptions, {
@@ -119,7 +116,7 @@ const options = Object.assign({}, defaultOptions, {
   __DEV_SERVER_PORT__: specialArgv.port || 3030,
   __ANALYZER__: specialArgv.analyzer,
   __DEVTOOL__: specialArgv.sourcemap ? 'source-map' : 'cheap-module-eval-source-map',
-  __VERBOSE__: specialArgv.verbose,
+  __VERBOSE__: specialArgv.verbose || false,
 
   rootDir,
   globalDir,
@@ -130,13 +127,10 @@ const options = Object.assign({}, defaultOptions, {
   webDir,
 
   isBuildAllModule,
-  pluginModule,
-  bundleModule,
-  themeModule,
+  buildModule,
 
   isWatchAllModule,
   ignoredDirs
-  
 });
 
 export default options;

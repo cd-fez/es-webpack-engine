@@ -41,12 +41,7 @@ app.listen(options.__DEV_SERVER_PORT__, '0.0.0.0',(err) => {
   }
 });
 
-let watchDir = [`${options.globalDir}/app`];
-watchDir = watchDir.concat(
-  entry.pluginAssetsDirs, 
-  entry.bundleAssetsDirs, 
-  entry.themeAssetsDirs
-);
+let watchDir = [`${options.globalDir}/app`].concat(entry.commonAssetsDirs);
 
 let watcher = chokidar.watch(watchDir, {
   ignored: /[\/\\]\./,
