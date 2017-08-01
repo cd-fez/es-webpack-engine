@@ -40,7 +40,6 @@ const defaultOptions = Object.assign({
   pluginsDir: 'plugins',
   bundlesDir: 'src',
   themesDir: 'web/themes',
-  webDir: 'web',
 
   fontlimit: 1024,
   imglimit: 1024,
@@ -60,7 +59,6 @@ const globalDir = path.resolve(rootDir, defaultOptions.globalDir);
 const nodeModulesDir = path.resolve(rootDir, defaultOptions.nodeModulesDir);
 const pluginsDir = path.resolve(rootDir, defaultOptions.pluginsDir);
 const themesDir = path.resolve(rootDir,defaultOptions.themesDir);
-const webDir =  path.resolve(rootDir,defaultOptions.webDir);
 const bundlesDir = path.resolve(rootDir, defaultOptions.bundlesDir);
 
 // 是否编译相应模块
@@ -83,23 +81,11 @@ const isWatchAllModule = !!specialArgv.watch ? false : true;
 const watchModule = specialArgv.watch ? specialArgv.watch.split(',') : [];
 
 let ignoredDirs = [];
-const watchPluginDirs = [];
-const watchBundleDirs = [];
-const watchThemeDirs = [];
-watchModule.forEach((item) => {
-  if (isPlugin(item)) {
-    watchPluginDirs.push(item);
-  } else if (isBundle(item)) {
-    watchBundleDirs.push(item);
-  } else {
-    watchThemeDirs.push(item);
-  }
-});
 
 ignoredDirs = ignoredDirs.concat(
-  searchIgnoreDirs(pluginsDir, watchPluginDirs),
-  searchIgnoreDirs(bundlesDir, watchBundleDirs),
-  searchIgnoreDirs(themesDir, watchThemeDirs)
+  searchIgnoreDirs(pluginsDir, watchModule),
+  searchIgnoreDirs(bundlesDir, watchModule),
+  searchIgnoreDirs(themesDir, watchModule)
 );
 
 const options = Object.assign({}, defaultOptions, {
@@ -124,7 +110,6 @@ const options = Object.assign({}, defaultOptions, {
   pluginsDir,
   themesDir,
   bundlesDir,
-  webDir,
 
   isBuildAllModule,
   buildModule,
