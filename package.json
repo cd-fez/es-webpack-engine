@@ -18,10 +18,11 @@
     "cors": "^2.8.1",
     "cross-env": "^3.1.4",
     "css-loader": "0.23.1",
+    "es-extract-text-webpack-plugin": "latest",
+    "es-webpack-notifier": "^1.6.0",
     "es3ify-loader": "0.2.0",
     "es3ify-webpack-plugin": "0.0.1",
     "express": "^4.14.0",
-    "es-extract-text-webpack-plugin": "latest",
     "file-loader": "^0.11.1",
     "friendly-errors-webpack-plugin": "^1.6.1",
     "glob": "^7.0.5",
@@ -38,11 +39,11 @@
     "serve-index": "^1.8.0",
     "style-loader": "0.13.1",
     "url-loader": "0.5.7",
+    "watch-ignore-webpack-plugin": "^1.0.0",
     "webpack": "^1.14.0",
     "webpack-bundle-analyzer": "^2.3.1",
     "webpack-dev-middleware": "^1.10.2",
     "webpack-merge": "^4.1.0",
-    "es-webpack-notifier": "^1.6.0",
     "winston": "^2.2.0",
     "yargs": "^4.8.1"
   },
@@ -69,5 +70,5 @@
     "dev": "npm run build -- --watch",
     "build": "rm -rf dist && babel src --out-dir dist"
   },
-  "version": "3.4.0"
+  "version": "3.4.0-beta4"
 }

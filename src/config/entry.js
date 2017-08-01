@@ -32,19 +32,19 @@ const configAlias = {
 */
 let pluginEntry = {};
 let pluginSrcEntry = {};
-if (options.isOpenPluginModule) {
+if (options.isBuildAllModule || options.pluginModule.length) {
 
   let pluginsName = [];
 
-  if(options.openPluginsModule.length) {
-    pluginsName = options.openPluginsModule;
+  if(options.pluginModule.length) {
+    pluginsName = options.pluginModule;
 
   } else {
     pluginsName = searchDirs(options.pluginsDir, 'Resources/static-src');
   }
 
   pluginsName.forEach((plugin) => {
-    const pluginDir = `${options.rootDir}/${plugin}/Resources/static-src`;
+    const pluginDir = `${plugin}/Resources/static-src`;
     const pluginName = plugin.split(path.sep).pop().toLowerCase();
 
     pluginEntry[pluginName] = {};
@@ -94,19 +94,19 @@ if (options.isOpenPluginModule) {
 */
 let bundleEntry = {};
 let bundleSrcEntry = {};
-if (options.isOpenBundleModule) {
+if (options.isBuildAllModule || options.bundleModule.length) {
 
   let bundlesName = [];
   
-  if(options.openBundlesModule.length) {
-    bundlesName = options.openBundlesModule;
+  if(options.bundleModule.length) {
+    bundlesName = options.bundleModule;
 
   } else {
     bundlesName = searchDirs(options.bundlesDir, 'Resources/static-src');
   }
 
   bundlesName.forEach((bundle) => {
-    const bundleDir = `${options.rootDir}/${bundle}/Resources/static-src`;
+    const bundleDir = `${bundle}/Resources/static-src`;
     const bundleName = bundle.split(path.sep).pop().toLowerCase();
 
     bundleEntry[bundleName] = {};
@@ -154,17 +154,17 @@ if (options.isOpenBundleModule) {
 
 let themeEntry = {};
 let themeSrcEntry = {};
-if(options.isOpenThemeModule) {
+if(options.isBuildAllModule || options.themeModule.length) {
   let themesName = [];
 
-  if(options.openThemesModule.length) {
-    themesName = options.openThemesModule;
+  if(options.themeModule.length) {
+    themesName = options.themeModule;
   } else {
     themesName = searchDirs(options.themesDir, 'static-src');
   }
 
   themesName.forEach((theme) => {
-    const themeDir = `${options.webDir}/${theme}/static-src`;
+    const themeDir = `${theme}/static-src`;
     const themeName = theme.split(path.sep).pop().replace('-','').toLowerCase() + 'theme';
 
     themeEntry[themeName] = {};
@@ -198,7 +198,7 @@ if(options.isOpenThemeModule) {
 }
 
 let libEntry = {};
-if (options.isOpenLibModule) {
+if (options.isBuildAllModule) {
   for (let key in options.libs) {
     libEntry[`libs/${key}`] = [];
     
@@ -209,7 +209,7 @@ if (options.isOpenLibModule) {
 }
 
 let appEntry = {};
-if (options.isOpenAppModule) {
+if (options.isBuildAllModule) {
   const appDir = `${options.globalDir}/app`;
   appEntry['app'] = {};
 

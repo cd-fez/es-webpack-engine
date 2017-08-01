@@ -10,6 +10,7 @@ import CopyWebpackPlugin from 'copy-webpack-plugin';
 import es3ifyPlugin from 'es3ify-webpack-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import FriendlyErrorsPlugin from 'friendly-errors-webpack-plugin';
+import WatchIgnorePlugin from 'watch-ignore-webpack-plugin';
 
 import options  from './config/options';
 import * as entry  from './config/entry';
@@ -19,7 +20,7 @@ import uglifyJsConfig from './config/uglify';
 import { 
   fsExistsSync, 
   isEmptyObject, 
-  filterObject 
+  filterObject
 } from './utils';
 
 // 通用配置
@@ -65,7 +66,8 @@ const config = {
       __DEV__: options.__DEV__,
     }),
     new OptimizeModuleIdAndChunkIdPlugin(),
-    new webpack.optimize.OccurrenceOrderPlugin()
+    new webpack.optimize.OccurrenceOrderPlugin(),
+    new WatchIgnorePlugin(options.ignoredDirs)
   ]
 };
 
@@ -93,7 +95,7 @@ const minChunks = (module, count) => {
 
 // lib 配置
 let libConfigs = [];
-if (options.isOpenLibModule) {
+if (options.isBuildAllModule) {
   let libEntry = filterObject(entry.libEntry, 'vendor');
   let vendorEntry = libEntry.filterObj;
   let newLibEntry = libEntry.newObj;
@@ -141,7 +143,7 @@ if (options.isOpenLibModule) {
 
 // app 配置
 let appConfig = {};
-if (options.isOpenAppModule && !isEmptyObject(entry.appEntry['app'])) {
+if (options.isBuildAllModule && !isEmptyObject(entry.appEntry['app'])) {
   appConfig = merge(config, {
     name: 'app',
     entry: entry.appEntry['app'],
@@ -183,7 +185,7 @@ if (options.isOpenAppModule && !isEmptyObject(entry.appEntry['app'])) {
 
 // plugin 配置
 let pluginConfigs = [];
-if (options.isOpenPluginModule) {
+if (options.isBuildAllModule || options.pluginModule.length) {
   const pluginEntryKeys = Object.keys(entry.pluginEntry);
   let index = 0;
 
@@ -239,7 +241,7 @@ if (options.isOpenPluginModule) {
 
 // bundle 配置
 let bundleConfigs = [];
-if (options.isOpenBundleModule) {
+if (options.isBuildAllModule || options.bundleModule.length) {
   const bundleEntryKeys = Object.keys(entry.bundleEntry);
   let index = 0;
 
@@ -295,7 +297,7 @@ if (options.isOpenBundleModule) {
 
 // theme 配置
 let themeConfigs = [];
-if (options.isOpenThemeModule) {
+if (options.isBuildAllModule || options.themeModule.length) {
   const themeEntryKeys = Object.keys(entry.themeEntry);
 
   themeEntryKeys.forEach((key) => {

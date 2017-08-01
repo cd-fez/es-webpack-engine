@@ -41,20 +41,12 @@ app.listen(options.__DEV_SERVER_PORT__, '0.0.0.0',(err) => {
   }
 });
 
-let watchDir = [];
-
-if(options.isOpenAppModule) {
-  watchDir.push(`${options.globalDir}/app`);
-}
-if(options.isOpenPluginModule) {
-  watchDir = watchDir.concat(entry.pluginAssetsDirs);
-}
-if(options.isOpenBundleModule) {
-  watchDir = watchDir.concat(entry.bundleAssetsDirs);
-}
-if(options.isOpenThemeModule) {
-  watchDir = watchDir.concat(entry.themeAssetsDirs);
-}
+let watchDir = [`${options.globalDir}/app`];
+watchDir = watchDir.concat(
+  entry.pluginAssetsDirs, 
+  entry.bundleAssetsDirs, 
+  entry.themeAssetsDirs
+);
 
 let watcher = chokidar.watch(watchDir, {
   ignored: /[\/\\]\./,

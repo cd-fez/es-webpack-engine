@@ -4170,6 +4170,10 @@ vm-browserify@0.0.4:
   dependencies:
     indexof "0.0.1"
 
+watch-ignore-webpack-plugin@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.npmjs.org/watch-ignore-webpack-plugin/-/watch-ignore-webpack-plugin-1.0.0.tgz#bf3470f9833aced75f5de05bccc4882b8f5ad93c"
+
 watchpack@^0.2.1:
   version "0.2.9"
   resolved "https://registry.npmjs.org/watchpack/-/watchpack-0.2.9.tgz#62eaa4ab5e5ba35fdfc018275626e3c0f5e3fb0b"

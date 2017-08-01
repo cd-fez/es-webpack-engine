@@ -34,7 +34,7 @@ const searchEntries = (options) => {
 // 判断文件或文件夹是否存在
 const fsExistsSync = (path) => {
   try {
-    fs.accessSync(path,fs.F_OK);
+    fs.accessSync(path, fs.F_OK);
 
   } catch(e) {
     return false;
@@ -51,18 +51,38 @@ const searchDirs = (searchDir, isExistDir) => {
   }
 
   let dirs = fs.readdirSync(searchDir);
-  let rootdir = searchDir.substring(searchDir.lastIndexOf('/') + 1);
 
   dirs = dirs.filter((dir) => {
     return dir !== '.DS_Store' && dir !== '.gitkeep' && fsExistsSync(`${searchDir}/${dir}/${isExistDir}`);
   })
 
   dirsArr = dirs.map((dir) => {
-    return `${rootdir}/${dir}`;
+    return `${searchDir}/${dir}`;
   })
   
   return dirsArr;
 }
+
+// 需要忽略的目录
+const ignoreDirs = (searchDir, watchDirs) => {
+  let dirsArr = [];
+
+  if (!fsExistsSync(searchDir)) {
+    return [];
+  };
+
+  let dirs = fs.readdirSync(searchDir);
+
+  dirs = dirs.filter((dir) => {
+    return dir !== '.DS_Store' && dir !== '.gitkeep' && watchDirs.indexOf(dir) === -1;
+  })
+
+  dirsArr = dirs.map((dir) => {
+    return `${searchDir}/${dir}`;
+  })
+
+  return dirsArr;
+};
 
 
 const isArray = (arr) => {
@@ -70,7 +90,9 @@ const isArray = (arr) => {
 }
 
 const isEmptyObject = (obj) => {
-  for(let item in obj) return false;
+  for (let item in obj) {
+    return false;
+  }
 
   return true;
 }
@@ -99,7 +121,8 @@ const filterObject = (obj, filterName) => {
 
 export { 
   searchEntries, 
-  searchDirs, 
+  searchDirs,
+  ignoreDirs, 
   fsExistsSync, 
   isArray, 
   isEmptyObject, 

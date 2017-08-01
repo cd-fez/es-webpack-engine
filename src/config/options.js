@@ -1,5 +1,6 @@
 import { argv } from 'yargs';
 import path from 'path';
+import * as utils from '../utils';
 
 const parameters = argv.parameters ? require(path.resolve(argv.parameters)) : {};
 
@@ -12,8 +13,8 @@ argv._.forEach((arg) => {
   }
 });
 
-// 配置项
-const options = Object.assign({
+// 默认配置项
+const defaultOptions = Object.assign({
   output: {
     path: 'web/static-dist/',
     publicPath: '/static-dist/',
@@ -51,42 +52,63 @@ const options = Object.assign({
   isNeedCommonChunk: '.is-need-common-chunk',
   happypackTempDir: 'app/cache/dev/.happypack/',
   
-  openModule: ['lib', 'app', 'plugin', 'theme', 'bundle'],
-  pluginModule: [],
-  bundleModule: [],
-  themeModule: []
-
 }, parameters);
 
 // 绝对路径
 const rootDir = path.resolve('./');
-const globalDir = path.resolve(rootDir, options.globalDir);
-const nodeModulesDir = path.resolve(rootDir, options.nodeModulesDir);
-const pluginsDir = path.resolve(rootDir, options.pluginsDir);
-const themesDir = path.resolve(rootDir,options.themesDir);
-const webDir =  path.resolve(rootDir,options.webDir);
-const bundlesDir = path.resolve(rootDir, options.bundlesDir);
+const globalDir = path.resolve(rootDir, defaultOptions.globalDir);
+const nodeModulesDir = path.resolve(rootDir, defaultOptions.nodeModulesDir);
+const pluginsDir = path.resolve(rootDir, defaultOptions.pluginsDir);
+const themesDir = path.resolve(rootDir,defaultOptions.themesDir);
+const webDir =  path.resolve(rootDir,defaultOptions.webDir);
+const bundlesDir = path.resolve(rootDir, defaultOptions.bundlesDir);
 
-// 是否开启相应模块
-options.openModule = specialArgv.openModule ? specialArgv.openModule.split(',') : options.openModule;
-options.openPluginsModule = specialArgv.pluginModule ? specialArgv.pluginModule.split(',') : options.pluginModule;
-options.openBundlesModule = specialArgv.bundleModule ? specialArgv.bundleModule.split(',') : options.bundleModule;
-options.openThemesModule = specialArgv.themeModule ? specialArgv.themeModule.split(',') : options.themeModule;
+// 是否编译相应模块
+const isBuildAllModule =  !!specialArgv.module ? false : true;
+const buildModule = specialArgv.module ? specialArgv.module.split(',') : [];
 
-const isOpenModule = (module) => {
-  return options.openModule.indexOf(module) !== -1;
-}
+const pluginModule = [];
+const bundleModule = [];
+const themeModule = [];
 
-const isOpenLibModule = isOpenModule('lib');
-const isOpenAppModule = isOpenModule('app');
-const isOpenPluginModule = isOpenModule('plugin');
-const isOpenThemeModule = isOpenModule('theme');
-const isOpenBundleModule = isOpenModule('bundle');
+buildModule.forEach((item) => {
+  if (item.indexOf('Plugin') !== -1) {
+    pluginModule.push(path.resolve(pluginsDir, item));
+  } else if (item.indexOf('Bundle') !== -1) {
+    bundleModule.push(path.resolve(bundlesDir, item));
+  } else {
+    themeModule.push(path.resolve(themesDir, item));
+  }
+});
 
-Object.assign(options, {
+// 是否watch相应模块
+const isWatchAllModule = !!specialArgv.watch ? false : true;
+const watchModule = specialArgv.watch ? specialArgv.watch.split(',') : [];
+
+let ignoredDirs = [];
+const watchPluginDirs = [];
+const watchBundleDirs = [];
+const watchThemeDirs = [];
+watchModule.forEach((item) => {
+  if (item.indexOf('Plugin') !== -1) {
+    watchPluginDirs.push(item);
+  } else if (item.indexOf('Bundle') !== -1) {
+    watchBundleDirs.push(item);
+  } else {
+    watchThemeDirs.push(item);
+  }
+});
+
+ignoredDirs = ignoredDirs.concat(
+  utils.ignoreDirs(pluginsDir, watchPluginDirs),
+  utils.ignoreDirs(bundlesDir, watchBundleDirs),
+  utils.ignoreDirs(themesDir, watchThemeDirs)
+);
+
+const options = Object.assign({}, defaultOptions, {
   output: {
-    path: path.resolve(rootDir, options.output.path),
-    publicPath: options.output.publicPath
+    path: path.resolve(rootDir, defaultOptions.output.path),
+    publicPath: defaultOptions.output.publicPath
   },
 
   // 开发模式
@@ -107,11 +129,14 @@ Object.assign(options, {
   bundlesDir,
   webDir,
 
-  isOpenLibModule,
-  isOpenAppModule,
-  isOpenPluginModule,
-  isOpenBundleModule,
-  isOpenThemeModule,
+  isBuildAllModule,
+  pluginModule,
+  bundleModule,
+  themeModule,
+
+  isWatchAllModule,
+  ignoredDirs
+  
 });
 
 export default options;
