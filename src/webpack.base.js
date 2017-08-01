@@ -96,7 +96,7 @@ const minChunks = (module, count) => {
 // lib 配置
 let libConfigs = [];
 if (options.isBuildAllModule) {
-  let libEntry = filterObject(entry.libEntry, 'vendor');
+  let libEntry = filterObject(entry.libEntry, 'base');
   let vendorEntry = libEntry.filterObj;
   let newLibEntry = libEntry.newObj;
 
