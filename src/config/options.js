@@ -82,11 +82,14 @@ const watchModule = specialArgv.watch ? specialArgv.watch.split(',') : [];
 
 let ignoredDirs = [];
 
-ignoredDirs = ignoredDirs.concat(
-  searchIgnoreDirs(pluginsDir, watchModule),
-  searchIgnoreDirs(bundlesDir, watchModule),
-  searchIgnoreDirs(themesDir, watchModule)
-);
+if (!isWatchAllModule) {
+  ignoredDirs = ignoredDirs.concat(
+    [globalDir],
+    searchIgnoreDirs(pluginsDir, watchModule),
+    searchIgnoreDirs(bundlesDir, watchModule),
+    searchIgnoreDirs(themesDir, watchModule)
+  );
+}
 
 const options = Object.assign({}, defaultOptions, {
   output: {

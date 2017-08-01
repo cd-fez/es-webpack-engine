@@ -60,13 +60,16 @@ if (options.isBuildAllModule || options.buildModule.length) {
   }
 
   commonNames.forEach((item) => {
+    let commonDir;
+    let commonName;
+
     if (isPlugin(item) || isBundle(item)) {
-      const commonDir = `${item}/Resources/static-src`;
-      const commonName = item.split(path.sep).pop().toLowerCase();
+      commonDir = `${item}/Resources/static-src`;
+      commonName = item.split(path.sep).pop().toLowerCase();
 
     } else {
-      const commonDir = `${item}/static-src`;
-      const commonName = item.split(path.sep).pop().replace('-','').toLowerCase() + 'theme';
+      commonDir = `${item}/static-src`;
+      commonName = item.split(path.sep).pop().replace('-','').toLowerCase() + 'theme';
     }
 
     commonEntry[commonName] = {};

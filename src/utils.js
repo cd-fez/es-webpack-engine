@@ -74,7 +74,7 @@ const searchIgnoreDirs = (searchDir, watchDirs) => {
   let dirs = fs.readdirSync(searchDir);
 
   dirs = dirs.filter((dir) => {
-    return dir !== '.DS_Store' && dir !== '.gitkeep' && !watchDirs.includes(dir);
+    return dir !== '.DS_Store' && dir !== '.gitkeep' && watchDirs.indexOf(dir) === -1;
   })
 
   dirsArr = dirs.map((dir) => {
