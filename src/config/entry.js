@@ -13,11 +13,11 @@ import options  from './options';
 // 设置别名
 const configAlias = {
   libs: `${options.globalDir}/libs`,
-  components: `${options.globalDir}/components`,
+  component: `${options.globalDir}/component`,
   common: `${options.globalDir}/common`,
   app: `${options.globalDir}/app`,
   nodeModulesDir: options.nodeModulesDir, // 即将废弃
-  nodeModule: options.nodeModulesDir
+  nodemodules: options.nodeModulesDir
 };
 
 /*

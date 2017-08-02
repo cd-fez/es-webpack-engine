@@ -104,9 +104,12 @@ const firstUpperCase = (str) => {
 const filterObject = (obj, filterName) => {
   let newObj = {};
   let filterObj = {};
+
+  let filterArr = filterName.split(',');
   
   for (let item in obj) {
-    if (item.indexOf(filterName) === -1) {
+    
+    if (filterArr.indexOf(item) === -1) {
       newObj[item] = obj[item];
     } else {
       filterObj[item] = obj[item];

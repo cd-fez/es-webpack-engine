@@ -1,4 +1,4 @@
-# es-webpack-engine 3.4.1 (2017.8.1)
+# es-webpack-engine 3.4.3 (2017.8.1)
 
 * 优化对外提供的命令
 

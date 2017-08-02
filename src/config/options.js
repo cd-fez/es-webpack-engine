@@ -34,6 +34,7 @@ const defaultOptions = Object.assign({
   entryMainName: 'main',
   entryFileName: 'index',
   extryCssName: 'main',
+  vendorName: 'vendor,base',
 
   globalDir: 'app/Resources/static-src',
   nodeModulesDir: 'node_modules',
