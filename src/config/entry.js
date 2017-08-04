@@ -24,12 +24,12 @@ const configAlias = {
   * 输出格式
   * let commonEntry = {
   *   'crmplugin': {
-  *     'crmplugin/js/main': '/plugins/CrmPlugin/Resources/static-src/js/main.js',
+  *     'crmplugin/js/index': '/plugins/CrmPlugin/Resources/static-src/js/index.js',
   *     'crmplugin/js/default/index': '/plugins/CrmPlugin/Resources/static-src/js/default/index.js',
   *     ...
   *   },
   *   'custombundle': {
-  *     'custombundle/js/main': '/src/CustomBundle/Resources/static-src/js/main.js',
+  *     'custombundle/js/index': '/src/CustomBundle/Resources/static-src/js/index.js',
   *     'custombundle/js/default/index': '/src/CustomBundle/Resources/static-src/js/default/index.js',
   *     ...
   *   },
@@ -45,7 +45,6 @@ const configAlias = {
 */
 let commonEntry = {};
 let commonSrcEntry = {};
-let commonAssetsDirs = [];
 if (options.isBuildAllModule || options.buildModule.length) {
   let commonNames = [];
 
@@ -97,7 +96,6 @@ if (options.isBuildAllModule || options.buildModule.length) {
 
     configAlias[commonName] = commonDir;
     commonSrcEntry[commonName] = commonDir;
-    commonAssetsDirs.push(commonDir);
   })
 }
 
@@ -160,7 +158,6 @@ export {
 
   commonEntry,
   commonSrcEntry,
-  commonAssetsDirs,
 
   onlyCopys,
   configAlias,

@@ -41,15 +41,20 @@ app.listen(options.__DEV_SERVER_PORT__, '0.0.0.0',(err) => {
   }
 });
 
-let watchDir = [`${options.globalDir}/app`].concat(entry.commonAssetsDirs);
+let watchDir = [
+  `${options.globalDir}/app`,
+  options.pluginsDir,
+  options.themesDir,
+  options.bundlesDir
+]
 
 let watcher = chokidar.watch(watchDir, {
   ignored: /[\/\\]\./,
   ignoreInitial: true
 });
 
-const isEntryFile = (path) => { 
-  return path.indexOf('index.js') !== -1;
+const isEntryFile = (path) => {
+  return path.indexOf(`${options.entryFileName}.js`) !== -1 && path.indexOf('static-src') !== -1;
 };
 
 // 监听新增入口文件
