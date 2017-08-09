@@ -15,6 +15,7 @@ const configAlias = {
   libs: `${options.globalDir}/libs`,
   component: `${options.globalDir}/component`,
   common: `${options.globalDir}/common`,
+  codeages: `${options.globalDir}/codeages-design`,
   app: `${options.globalDir}/app`,
   nodeModulesDir: options.nodeModulesDir, // 即将废弃
   nodemodules: options.nodeModulesDir

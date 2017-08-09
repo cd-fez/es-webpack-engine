@@ -10,7 +10,6 @@ import CopyWebpackPlugin from 'copy-webpack-plugin';
 import es3ifyPlugin from 'es3ify-webpack-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import FriendlyErrorsPlugin from 'friendly-errors-webpack-plugin';
-import WatchIgnorePlugin from 'watch-ignore-webpack-plugin';
 
 import options  from './config/options';
 import * as entry  from './config/entry';
@@ -65,7 +64,7 @@ const config = {
     }),
     new OptimizeModuleIdAndChunkIdPlugin(),
     new webpack.optimize.OccurrenceOrderPlugin(),
-    new WatchIgnorePlugin(options.ignoredDirs)
+    new webpack.WatchIgnorePlugin(options.ignoredDirs)
   ]
 };
 

@@ -1,3 +1,7 @@
+# es-webpack-engine 3.4.5 (2017.8.9)
+
+* 修复watch ignore插件引起的编译速度慢的问题
+
 # es-webpack-engine 3.4.4 (2017.8.4)
 
 * 添加对新增插件或主题的监听
