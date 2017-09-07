@@ -1,7 +1,6 @@
 import express from 'express';
 import webpack from 'webpack';
 import path from 'path';
-import serveIndex from 'serve-index';
 import cors from 'cors';
 import fs from 'fs';
 import chokidar from 'chokidar';
@@ -29,7 +28,7 @@ compiler.apply(new ProgressBarPlugin());
 
 app.use(webpackDevMiddleware(compiler, options.output.publicPath));
 
-app.use(cors());
+// app.use(cors());
 
 app.listen(options.__DEV_SERVER_PORT__, '0.0.0.0',(err) => {
   logger.info(`Express server listening on ${options.__DEV_SERVER_PORT__} in ${app.settings.env} node`);
