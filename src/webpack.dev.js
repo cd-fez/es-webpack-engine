@@ -2,7 +2,6 @@ import express from 'express';
 import webpack from 'webpack';
 import path from 'path';
 import serveIndex from 'serve-index';
-import { argv } from 'yargs';
 import cors from 'cors';
 import fs from 'fs';
 import chokidar from 'chokidar';
@@ -29,7 +28,6 @@ compiler.apply(new WebpackNotifierPlugin());
 compiler.apply(new ProgressBarPlugin());
 
 app.use(webpackDevMiddleware(compiler, options.output.publicPath));
-app.use(options.output.publicPath, serveIndex(options.output.path, {'icons': true}));
 
 app.use(cors());
 

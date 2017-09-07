@@ -209,7 +209,7 @@ if (options.isBuildAllModule || options.buildModule.length) {
       plugins: [
         new ChunkManifestPlugin({
           filename: `${key}/chunk-manifest.json`,
-          manifestVariable: "webpackManifest"
+          manifestVariable: 'webpackManifest'
         })
       ]
     })
@@ -248,7 +248,6 @@ if (options.isBuildAllModule || options.buildModule.length) {
 
 // 总配置
 let configs = [];
-
 [libConfigs, appConfig, commonConfigs].forEach((item) => {
   if (item.constructor === Object && !isEmptyObject(item)) {
     configs.push(item);
