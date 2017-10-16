@@ -3,11 +3,10 @@ import webpack from 'webpack';
 import HappyPack from 'happypack';
 import merge from 'webpack-merge';
 
-import ExtractTextPlugin from 'es-extract-text-webpack-plugin';
+import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import ChunkManifestPlugin from 'chunk-manifest-webpack-plugin';
 import OptimizeModuleIdAndChunkIdPlugin from 'optimize-moduleid-and-chunkid-plugin';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
-import es3ifyPlugin from 'es3ify-webpack-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import FriendlyErrorsPlugin from 'friendly-errors-webpack-plugin';
 
@@ -55,7 +54,6 @@ const config = {
     new ExtractTextPlugin('[name].css', {
       allChunks: true
     }),
-    new es3ifyPlugin(),
     new webpack.ProvidePlugin(options.global),
     new webpack.optimize.AggressiveMergingPlugin(),
     new webpack.DefinePlugin({
