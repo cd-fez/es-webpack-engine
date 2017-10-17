@@ -2,6 +2,7 @@ import path from 'path';
 import webpack from 'webpack';
 import HappyPack from 'happypack';
 import merge from 'webpack-merge';
+import os from 'os';
 
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import ChunkManifestPlugin from 'chunk-manifest-webpack-plugin';
@@ -46,7 +47,7 @@ const config = {
   plugins: [
     new HappyPack({
       id: 'babelJs',
-      threadPool: HappyPack.ThreadPool({ size: 6 }),
+      threadPool: HappyPack.ThreadPool({ size: os.cpus().length }),
       verbose: false,
       loaders: ['babel-loader']
     }),

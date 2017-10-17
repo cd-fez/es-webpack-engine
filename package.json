@@ -15,9 +15,9 @@
     "cors": "2.8.1",
     "cross-env": "5.0.5",
     "css-loader": "0.28.7",
-    "extract-text-webpack-plugin": "3.0.1",
     "es-webpack-notifier": "1.6.0",
     "express": "4.16.2",
+    "extract-text-webpack-plugin": "3.0.1",
     "file-loader": "1.1.5",
     "friendly-errors-webpack-plugin": "1.6.1",
     "glob": "7.1.2",
@@ -28,6 +28,7 @@
     "less-loader": "4.0.5",
     "nodemon": "1.12.1",
     "optimize-moduleid-and-chunkid-plugin": "1.1.0",
+    "os": "0.1.1",
     "path": "0.12.7",
     "progress-bar-webpack-plugin": "1.10.0",
     "style-loader": "0.19.0",
@@ -62,5 +63,5 @@
     "dev": "npm run build -- --watch",
     "build": "rm -rf dist && babel src --out-dir dist"
   },
-  "version": "3.5.0-bata2"
+  "version": "3.5.0-bata3"
 }
