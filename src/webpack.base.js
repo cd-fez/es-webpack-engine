@@ -75,11 +75,11 @@ options.noParseDeps.forEach(dep => {
 });
 
 if (options.__DEV__) {
-  config.plugins.push(new FriendlyErrorsPlugin());
+  config.plugins = config.plugins.concat(new FriendlyErrorsPlugin());
 }
 
 if (!options.__DEV__ && !options.__DEBUG__) {
-  config.plugins.push(new webpack.optimize.UglifyJsPlugin(uglifyJsConfig));
+  config.plugins = config.plugins.concat(new webpack.optimize.UglifyJsPlugin(uglifyJsConfig));
 } else {
   config.devtool = options.__DEVTOOL__;
 }
@@ -116,7 +116,7 @@ if (options.isBuildAllModule) {
   });
   vendorConfig.externals = {};
   if (options.__OPTIMIZE__) {
-    vendorConfig.plugins.push(new BundleAnalyzerPlugin({
+    vendorConfig.plugins = vendorConfig.plugins.concat(new BundleAnalyzerPlugin({
       analyzerPort: 3997
     }));
   };
@@ -131,7 +131,7 @@ if (options.isBuildAllModule) {
     ]
   });
   if (options.__OPTIMIZE__) {
-    newConfig.plugins.push(new BundleAnalyzerPlugin({
+    newConfig.plugins = newConfig.plugins.concat(new BundleAnalyzerPlugin({
       analyzerPort: 3998
     }));
   };
@@ -166,13 +166,13 @@ if (options.isBuildAllModule) {
   });
 
   if (options.__OPTIMIZE__) {
-    appConfig.plugins.push(new BundleAnalyzerPlugin({
+    appConfig.plugins = appConfig.plugins.concat(new BundleAnalyzerPlugin({
       analyzerPort: 3999
     }))
   };
 
   if (fsExistsSync(`${options.globalDir}/app/${options.copyName}`)) {
-    appConfig.plugins.push(new CopyWebpackPlugin([{
+    appConfig.plugins = appConfig.plugins.concat(new CopyWebpackPlugin([{
       from: `${options.globalDir}/app/${options.copyName}`,
       to: `app/${options.copyName}`,
       toType: 'dir'
@@ -205,13 +205,14 @@ if (options.isBuildAllModule || options.buildModule.length) {
           loaders.fontLoader(key, options.fontName, options.fontlimit),
           loaders.mediaLoader(key, options.mediaName),
         ]
-      }
+      },
+      plugins: []
     })
 
     let commonSrcEntry = entry.commonSrcEntry;
 
     if (fsExistsSync(`${commonSrcEntry[key]}/${options.copyName}`)) {
-      commonConfig.plugins.push(new CopyWebpackPlugin([{
+      commonConfig.plugins = commonConfig.plugins.concat(new CopyWebpackPlugin([{
         from: `${commonSrcEntry[key]}/${options.copyName}`,
         to: `${key}/${options.copyName}`,
         toType: 'dir'
@@ -219,24 +220,21 @@ if (options.isBuildAllModule || options.buildModule.length) {
     }
 
     if (fsExistsSync(`${commonSrcEntry[key]}/${options.isNeedCommonChunk}`)) {
-      commonConfig.plugins.push(new webpack.optimize.CommonsChunkPlugin({
+      commonConfig.plugins = commonConfig.plugins.concat(new webpack.optimize.CommonsChunkPlugin({
         name: key,
         filename: `${key}/js/${options.commonsChunkFileName}.js`,
         chunks: Object.keys(commonEntry[key]),
         minChunks,
-      }))
-
-      commonConfig.plugins.push(new ChunkManifestPlugin({
+      }), new ChunkManifestPlugin({
         filename: `${key}/chunk-manifest.json`,
         manifestVariable: 'webpackManifest'
-      }))
+      }));
     }
-
     
     if (options.__OPTIMIZE__) {
-      commonConfig.plugins.push(new BundleAnalyzerPlugin({
+      commonConfig.plugins = commonConfig.plugins.concat(new BundleAnalyzerPlugin({
         analyzerPort: `400${index}`
-      }))
+      }));
     };
 
     commonConfigs.push(commonConfig);
