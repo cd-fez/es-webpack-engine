@@ -29,11 +29,11 @@ const config = {
   externals: options.externals,
   resolve: {
     alias: entry.configAlias,
-    extensions: ['', '.js', '.jsx'],
+    extensions: ['*', '.js', '.jsx'],
   },
   module: {
     noParse: [],
-    loaders: [
+    rules: [
       loaders.jsLoader('babelJs', [
         options.nodeModulesDir
       ]),
@@ -48,20 +48,21 @@ const config = {
       id: 'babelJs',
       threadPool: HappyPack.ThreadPool({ size: 6 }),
       verbose: false,
-      loaders: ['babel-loader'],
-      tempDir: options.happypackTempDir,
+      loaders: ['babel-loader']
     }),
-    new ExtractTextPlugin('[name].css', {
+    new ExtractTextPlugin({
+      filename:  (getPath) => {
+        return getPath('[name].css').replace('js', 'css');
+      },
       allChunks: true
     }),
     new webpack.ProvidePlugin(options.global),
-    new webpack.optimize.AggressiveMergingPlugin(),
+    // new webpack.optimize.AggressiveMergingPlugin(),
     new webpack.DefinePlugin({
       __DEBUG__: options.__DEBUG__,
       __DEV__: options.__DEV__,
     }),
     new OptimizeModuleIdAndChunkIdPlugin(),
-    new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.WatchIgnorePlugin(options.ignoredDirs)
   ]
 };
@@ -99,7 +100,7 @@ if (options.isBuildAllModule) {
   let newConfig = {};
 
   let module = {
-    loaders: [
+    rules: [
       loaders.imageLoader('libs', options.imgName, options.imglimit),
       loaders.fontLoader('libs', options.fontName, options.fontlimit),
       loaders.mediaLoader('libs', options.mediaName),
@@ -143,7 +144,7 @@ if (options.isBuildAllModule) {
     name: 'app',
     entry: entry.appEntry['app'],
     module: {
-      loaders: [
+      rules: [
         loaders.imageLoader('app', options.imgName, options.imglimit),
         loaders.fontLoader('app', options.fontName, options.imglimit),
         loaders.mediaLoader('app', options.mediaName),
@@ -198,18 +199,12 @@ if (options.isBuildAllModule || options.buildModule.length) {
       name: `${key}`,
       entry: commonEntry[key],
       module: {
-        loaders: [
+        rules: [
           loaders.imageLoader(key, options.imgName, options.imglimit),
           loaders.fontLoader(key, options.fontName, options.fontlimit),
           loaders.mediaLoader(key, options.mediaName),
         ]
-      },
-      plugins: [
-        new ChunkManifestPlugin({
-          filename: `${key}/chunk-manifest.json`,
-          manifestVariable: 'webpackManifest'
-        })
-      ]
+      }
     })
 
     let commonSrcEntry = entry.commonSrcEntry;
@@ -228,6 +223,11 @@ if (options.isBuildAllModule || options.buildModule.length) {
         filename: `${key}/js/${options.commonsChunkFileName}.js`,
         chunks: Object.keys(commonEntry[key]),
         minChunks,
+      }))
+
+      commonConfig.plugins.push(new ChunkManifestPlugin({
+        filename: `${key}/chunk-manifest.json`,
+        manifestVariable: 'webpackManifest'
       }))
     }
 

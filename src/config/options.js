@@ -49,8 +49,7 @@ const defaultOptions = Object.assign({
   mediaName: 'media',
   copyName: 'img',
 
-  isNeedCommonChunk: '.is-need-common-chunk',
-  happypackTempDir: 'app/cache/dev/.happypack/',
+  isNeedCommonChunk: '.is-need-common-chunk'
   
 }, parameters);
 
