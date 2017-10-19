@@ -85,6 +85,9 @@ if (!options.__DEV__ && !options.__DEBUG__) {
 }
 
 const minChunks = (module, count) => {
+  if(module.resource && (/^.*\.(css|less)$/).test(module.resource)) {
+    return false;
+  }
   // let pattern = new RegExp(options.regExp);
   // return module.resource && !pattern.test(module.resource) && count >= options.minChunks;
   return count >= options.minChunks;
