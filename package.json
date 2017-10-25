@@ -33,7 +33,7 @@
     "progress-bar-webpack-plugin": "1.10.0",
     "style-loader": "0.19.0",
     "url-loader": "0.6.2",
-    "webpack": "3.7.1-patch1",
+    "es-webpack": "3.7.1-patch2",
     "webpack-bundle-analyzer": "2.9.0",
     "webpack-dev-middleware": "1.12.0",
     "webpack-merge": "4.1.0",
@@ -63,5 +63,5 @@
     "dev": "npm run build -- --watch",
     "build": "rm -rf dist && babel src --out-dir dist"
   },
-  "version": "3.5.0-bata4"
+  "version": "3.5.0-bata5"
 }
