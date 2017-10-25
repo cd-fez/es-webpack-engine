@@ -1767,6 +1767,33 @@ es-webpack-notifier@1.6.0:
     node-notifier "^4.1.0"
     object-assign "^4.1.0"
 
+es-webpack@3.7.1-patch3:
+  version "3.7.1-patch3"
+  resolved "https://registry.npmjs.org/es-webpack/-/es-webpack-3.7.1-patch3.tgz#640b3e9c07b718e00c9d604305eca16acd7b197f"
+  dependencies:
+    acorn "^5.0.0"
+    acorn-dynamic-import "^2.0.0"
+    ajv "^5.1.5"
+    ajv-keywords "^2.0.0"
+    async "^2.1.2"
+    enhanced-resolve "^3.4.0"
+    escope "^3.6.0"
+    interpret "^1.0.0"
+    json-loader "^0.5.4"
+    json5 "^0.5.1"
+    loader-runner "^2.3.0"
+    loader-utils "^1.1.0"
+    memory-fs "~0.4.1"
+    mkdirp "~0.5.0"
+    node-libs-browser "^2.0.0"
+    source-map "^0.5.3"
+    supports-color "^4.2.1"
+    tapable "^0.2.7"
+    uglifyjs-webpack-plugin "^0.4.6"
+    watchpack "^1.4.0"
+    webpack-sources "^1.0.1"
+    yargs "^8.0.2"
+
 es5-ext@^0.10.14, es5-ext@^0.10.9, es5-ext@~0.10.14:
   version "0.10.35"
   resolved "https://registry.npmjs.org/es5-ext/-/es5-ext-0.10.35.tgz#18ee858ce6a3c45c7d79e91c15fcca9ec568494f"
@@ -3342,7 +3369,7 @@ os-tmpdir@^1.0.0, os-tmpdir@^1.0.1:
   version "1.0.2"
   resolved "https://registry.npmjs.org/os-tmpdir/-/os-tmpdir-1.0.2.tgz#bbe67406c79aa85c5cfec766fe5734555dfa1274"
 
-os@^0.1.1:
+os@0.1.1:
   version "0.1.1"
   resolved "https://registry.npmjs.org/os/-/os-0.1.1.tgz#208845e89e193ad4d971474b93947736a56d13f3"
 
