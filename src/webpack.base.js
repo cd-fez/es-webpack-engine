@@ -41,7 +41,6 @@ const config = {
       loaders.cssLoader(), 
       loaders.lessLoader(),
       loaders.jsonLoader(),
-      loaders.importsLoader(options.noParseDeps)
     ]
   },
   plugins: [
@@ -68,11 +67,12 @@ const config = {
   ]
 };
 
-options.noParseDeps.forEach(dep => {
-  const depPath = path.resolve(options.nodeModulesDir, dep);
-  config.resolve.alias[dep.split(path.sep)[0].replace('.', '-')] = depPath;
+for (let key in options.noParseDeps) {
+  const depPath = path.resolve(options.nodeModulesDir, options.noParseDeps[key]);
+  config.resolve.alias[key] = depPath;
   config.module.noParse.push(depPath);
-});
+  config.module.rules.push(loaders.importsLoader(config.module.noParse))
+}
 
 if (options.__DEV__) {
   config.plugins = config.plugins.concat(new FriendlyErrorsPlugin());
