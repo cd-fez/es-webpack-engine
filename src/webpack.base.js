@@ -96,11 +96,11 @@ const minChunks = (module, count) => {
 // lib 配置
 let libConfigs = [];
 if (options.isBuildAllModule) {
-  let libEntry = filterObject(entry.libEntry, options.vendorName);
-  let vendorEntry = libEntry.filterObj;
+  let libEntry = filterObject(entry.libEntry, options.baseName);
+  let baseEntry = libEntry.filterObj;
   let newLibEntry = libEntry.newObj;
 
-  let vendorConfig = {};
+  let baseConfig = {};
   let newConfig = {};
 
   let module = {
@@ -111,19 +111,19 @@ if (options.isBuildAllModule) {
     ]
   }
 
-  vendorConfig = merge(config, {
-    name: 'vendor',
-    entry: vendorEntry,
+  baseConfig = merge(config, {
+    name: 'base',
+    entry: baseEntry,
     module,
     plugins: []
   });
-  vendorConfig.externals = {};
-  if (options.__OPTIMIZE__) {
-    vendorConfig.plugins = vendorConfig.plugins.concat(new BundleAnalyzerPlugin({
+  baseConfig.externals = {};
+  if (options.__ANALYZER__) {
+    baseConfig.plugins = baseConfig.plugins.concat(new BundleAnalyzerPlugin({
       analyzerPort: 3997
     }));
   };
-  libConfigs.push(vendorConfig);
+  libConfigs.push(baseConfig);
 
   newConfig = merge(config, {
     name: 'libs',
@@ -133,7 +133,7 @@ if (options.isBuildAllModule) {
       new CopyWebpackPlugin(entry.onlyCopys)
     ]
   });
-  if (options.__OPTIMIZE__) {
+  if (options.__ANALYZER__) {
     newConfig.plugins = newConfig.plugins.concat(new BundleAnalyzerPlugin({
       analyzerPort: 3998
     }));
@@ -168,7 +168,7 @@ if (options.isBuildAllModule) {
     ]
   });
 
-  if (options.__OPTIMIZE__) {
+  if (options.__ANALYZER__) {
     appConfig.plugins = appConfig.plugins.concat(new BundleAnalyzerPlugin({
       analyzerPort: 3999
     }))
@@ -234,7 +234,7 @@ if (options.isBuildAllModule || options.buildModule.length) {
       }));
     }
     
-    if (options.__OPTIMIZE__) {
+    if (options.__ANALYZER__) {
       commonConfig.plugins = commonConfig.plugins.concat(new BundleAnalyzerPlugin({
         analyzerPort: `400${index}`
       }));

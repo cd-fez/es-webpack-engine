@@ -9,16 +9,13 @@ import {
   isBundle } from '../utils';
 import options  from './options';
 
-
 // 设置别名
 const configAlias = {
   libs: `${options.globalDir}/libs`,
-  component: `${options.globalDir}/component`,
   common: `${options.globalDir}/common`,
-  codeages: `${options.globalDir}/codeages-design`,
   app: `${options.globalDir}/app`,
   nodeModulesDir: options.nodeModulesDir, // 即将废弃
-  nodemodules: options.nodeModulesDir
+  node_modules: options.nodeModulesDir
 };
 
 /*

@@ -19,7 +19,6 @@ const defaultOptions = Object.assign({
     path: 'web/static-dist/',
     publicPath: '/static-dist/',
   },
-
   libs: {},
   noParseDeps: [],
   onlyCopys: [],
@@ -34,7 +33,7 @@ const defaultOptions = Object.assign({
   entryMainName: 'main',
   entryFileName: 'index',
   extryCssName: 'main',
-  vendorName: 'vendor,base',
+  baseName: 'libs/base',
 
   globalDir: 'app/Resources/static-src',
   nodeModulesDir: 'node_modules',
