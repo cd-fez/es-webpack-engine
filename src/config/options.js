@@ -26,7 +26,7 @@ const defaultOptions = Object.assign({
   externals: {
     jquery: 'jQuery',
   },
-  regExp: '', // 'react|webuploader'
+  regExp: 'react|webuploader|postal|lodash',
   minChunks: 5,
 
   commonsChunkFileName: 'common',

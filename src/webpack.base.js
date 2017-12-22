@@ -35,7 +35,9 @@ const config = {
   module: {
     noParse: [],
     rules: [
-      loaders.jsLoader('babelJs', [
+      loaders.jsLoader({
+        id: 'babelJs',
+      }, [
         options.nodeModulesDir
       ]),
       loaders.cssLoader(), 
@@ -56,12 +58,16 @@ const config = {
       },
       allChunks: true
     }),
-    new webpack.ProvidePlugin(options.global),
-    // new webpack.optimize.AggressiveMergingPlugin(),
     new webpack.DefinePlugin({
-      __DEBUG__: options.__DEBUG__,
-      __DEV__: options.__DEV__,
+      'process.env': {
+        'NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
+      }
     }),
+    new webpack.ProvidePlugin(options.global),
+    new webpack.ContextReplacementPlugin(
+      /moment[\\\/]locale$/,
+      /^\.\/(zh-cn|en-gb)+\.js$/
+    ),
     new OptimizeModuleIdAndChunkIdPlugin(),
     new webpack.WatchIgnorePlugin(options.ignoredDirs)
   ]
@@ -88,9 +94,8 @@ const minChunks = (module, count) => {
   if(module.resource && (/^.*\.(css|less)$/).test(module.resource)) {
     return false;
   }
-  // let pattern = new RegExp(options.regExp);
-  // return module.resource && !pattern.test(module.resource) && count >= options.minChunks;
-  return count >= options.minChunks;
+  let pattern = new RegExp(options.regExp);
+  return module.resource && !pattern.test(module.resource) && count >= options.minChunks;
 }
 
 // lib 配置

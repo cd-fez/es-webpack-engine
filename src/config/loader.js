@@ -45,13 +45,11 @@ export const mediaLoader = (path, name) => {
   }
 };
 
-export const jsLoader = (id, exclude) => {
+export const jsLoader = (options, exclude) => {
   return {
     test: /\.js[x]?$/,
     loader: 'happypack/loader',
-    options: {
-      id
-    },
+    options,
     exclude,
   }
 };
