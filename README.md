@@ -1,8 +1,6 @@
 # es-webpack-engine
 
-基于webpack的多入口构建方案
-
-因业务的特殊性，目前只支持与[biz-symfony-starter](https://github.com/codeages/biz-symfony-starter)一同使用
+基于webpack的多入口构建方案-内部使用
 
 ## 配置
 
@@ -11,20 +9,27 @@
 ```javascript
 module.exports = {
     output: {
-        path: 'web/static-dist/',       // 用于生产环境下的输出目录
-        publicPath: '/static-dist/',    // 用于开发环境下的输出目录
+        // 用于生产环境下的输出目录
+        path: 'web/static-dist/', 
+        // 用于开发环境下的输出目录      
+        publicPath: '/static-dist/', 
     },
-    libs: { // 共用的依赖
-        'base': ['libs/base.js'], //可以是一个js文件,
+    // 共用的依赖
+    libs: { 
+        //可以是一个js文件
+        'base': ['libs/base.js'], ,
         'html5shiv': ['html5shiv'],
-        'fix-ie': ['console-polyfill', 'respond-js'], //也可以是一个npm依赖包
+        //也可以是一个npm依赖包
+        'fix-ie': ['console-polyfill', 'respond-js'], 
         'jquery-insertAtCaret': ['libs/js/jquery-insertAtCaret.js'],
     },
-    noParseDeps: [ //不需要解析的依赖，加快编译速度
-        'jquery/dist/jquery.js',
-        'bootstrap/dist/js/bootstrap.js',
-    },
-    onlyCopys: [ //纯拷贝文件到输出的libs目录下
+    // 不需要解析的依赖，加快编译速度
+    noParseDeps: {
+        'jquery': 'jquery/dist/jquery.js',
+        'bootstrap': 'bootstrap/dist/js/bootstrap.js',
+    }
+    // 纯拷贝文件到输出的libs目录下
+    onlyCopys: [ 
     {
       name: 'es-ckeditor',
       ignore: [
@@ -44,7 +49,7 @@ module.exports = {
 ```json
 {
     "devDependencies": {
-        "es-webpack-engine": "~3.4.0",
+        "es-webpack-engine": "3.5.0",
     },
     "scripts": {
         "dev": "cross-env NODE_ENV=development nodemon --max_old_space_size=4096 node_modules/es-webpack-engine/dist/webpack.dev.js --parameters webpack.config.js",

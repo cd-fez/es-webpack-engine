@@ -40,8 +40,12 @@ const config = {
       }, [
         options.nodeModulesDir
       ]),
-      loaders.cssLoader(), 
-      loaders.lessLoader(),
+      loaders.cssLoader({
+        minimize: options.__DEV__ || options.__DEBUG__ ? false : true
+      }), 
+      loaders.lessLoader({
+        minimize: options.__DEV__ || options.__DEBUG__ ? false : true
+      }),
       loaders.jsonLoader(),
     ]
   },

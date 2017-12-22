@@ -54,31 +54,27 @@ export const jsLoader = (options, exclude) => {
   }
 };
 
-export const cssLoader = () => {
+export const cssLoader = (options) => {
   return {
     test: /\.css$/,
     use: ExtractTextPlugin.extract({
       fallback: 'style-loader',
       use: [{
         loader: 'css-loader',
-        options: {
-          minimize: true
-        }
+        options
       }]
     })
   }
 };
 
-export const lessLoader = () => {
+export const lessLoader = (options) => {
   return {
     test: /\.less$/,
     use: ExtractTextPlugin.extract({
       fallback: 'style-loader',
       use: [{
         loader: 'css-loader',
-        options: {
-          minimize: true
-        }
+        options
       }, {
         loader: 'less-loader'
       }]
