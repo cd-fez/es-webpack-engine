@@ -48,7 +48,7 @@ const defaultOptions = Object.assign({
   mediaName: 'media',
   copyName: 'img',
 
-  isEslint: true,
+  isESlint: true,
 
   isNeedCommonChunk: '.is-need-common-chunk'
   

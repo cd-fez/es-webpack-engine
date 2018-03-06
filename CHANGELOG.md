@@ -1,3 +1,7 @@
+# es-webpack-engine 3.5.1(2018.03.06)
+
+* 添加ESlint
+
 # es-webpack-engine 3.5.0(2017.12.22)
 
 * 修复生产环境下样式文件没有压缩的问题
