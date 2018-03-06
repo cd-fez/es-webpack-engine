@@ -86,6 +86,7 @@ for (let key in options.noParseDeps) {
 
 if (options.__DEV__) {
   config.plugins = config.plugins.concat(new FriendlyErrorsPlugin());
+  config.module.rules.push(loaders.eslintLoader())
 }
 
 if (!options.__DEV__ && !options.__DEBUG__) {

@@ -94,4 +94,15 @@ export const jsonLoader = () => {
     test: /\.json$/,
     loader: 'json-loader'
   }
-}
+};
+
+export const eslintLoader = () => {
+  return {
+    enforce: 'pre',
+    test:/\.(js|html)$/,
+    loader: 'eslint-loader',
+    options: {
+      fix: true,
+    }
+  };
+};
