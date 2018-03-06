@@ -1,4 +1,4 @@
-# es-webpack-engine 3.5.1(2018.03.06)
+# es-webpack-engine 3.5.2(2018.03.06)
 
 * 添加ESlint
 

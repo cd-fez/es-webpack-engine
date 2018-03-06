@@ -20,6 +20,7 @@
     "eslint": "4.18.2",
     "eslint-loader": "2.0.0",
     "eslint-plugin-html": "4.0.2",
+    "eslint-plugin-react": "^7.7.0",
     "express": "4.16.2",
     "extract-text-webpack-plugin": "3.0.1",
     "file-loader": "1.1.5",
@@ -67,5 +68,5 @@
     "dev": "npm run build -- --watch",
     "build": "rm -rf dist && babel src --out-dir dist"
   },
-  "version": "3.5.1"
+  "version": "3.5.2"
 }
