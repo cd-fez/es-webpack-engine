@@ -6,7 +6,9 @@ import {
   fsExistsSync, 
   isArray, 
   isPlugin, 
-  isBundle } from '../utils';
+  isBundle,
+  isTheme,
+  isActivity } from '../utils';
 import options  from './options';
 
 // 设置别名
@@ -53,8 +55,10 @@ if (options.isBuildAllModule || options.buildModule.length) {
       searchDirs(options.pluginsDir, 'Resources/static-src'),
       searchDirs(options.bundlesDir, 'Resources/static-src'),
       searchDirs(options.themesDir, 'static-src'),
+      searchDirs(options.activitiesDir, 'static-src'),
     );
   }
+
 
   commonNames.forEach((item) => {
     let commonDir;
@@ -64,9 +68,12 @@ if (options.isBuildAllModule || options.buildModule.length) {
       commonDir = `${item}/Resources/static-src`;
       commonName = item.split(path.sep).pop().toLowerCase();
 
-    } else {
+    } else if (isTheme(item)) {
       commonDir = `${item}/static-src`;
       commonName = item.split(path.sep).pop().replace('-','').toLowerCase() + 'theme';
+    } else if (isActivity(item)) {
+      commonDir = `${item}/static-src`;
+      commonName = item.split(path.sep).pop().replace('-','').toLowerCase() + 'activity';
     }
 
     commonEntry[commonName] = {};

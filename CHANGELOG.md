@@ -1,3 +1,7 @@
+# es-webpack-engine 3.5.3-rc.1(2018.03.26)
+
+* 支持教学活动资源的编译
+
 # es-webpack-engine 3.5.2(2018.03.06)
 
 * 添加ESlint

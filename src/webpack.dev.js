@@ -42,7 +42,8 @@ let watchDir = [
   `${options.globalDir}/app`,
   options.pluginsDir,
   options.themesDir,
-  options.bundlesDir
+  options.bundlesDir,
+  options.activitiesDir
 ]
 
 let watcher = chokidar.watch(watchDir, {

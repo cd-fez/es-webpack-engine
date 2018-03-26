@@ -193,7 +193,7 @@ if (options.isBuildAllModule) {
   }
 }
 
-// 通用配置 - 包括插件、bundle、主题
+// 通用配置 - 包括插件、bundle、主题、教学活动
 let commonConfigs = [];
 if (options.isBuildAllModule || options.buildModule.length) {
   const commonEntry = entry.commonEntry;

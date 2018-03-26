@@ -39,6 +39,7 @@ const defaultOptions = Object.assign({
   nodeModulesDir: 'node_modules',
   pluginsDir: 'plugins',
   bundlesDir: 'src',
+  activitiesDir: 'activities',
   themesDir: 'web/themes',
 
   fontlimit: 1024,
@@ -61,6 +62,7 @@ const nodeModulesDir = path.resolve(rootDir, defaultOptions.nodeModulesDir);
 const pluginsDir = path.resolve(rootDir, defaultOptions.pluginsDir);
 const themesDir = path.resolve(rootDir,defaultOptions.themesDir);
 const bundlesDir = path.resolve(rootDir, defaultOptions.bundlesDir);
+const activitiesDir = path.resolve(rootDir, defaultOptions.activitiesDir);
 
 // 是否编译相应模块
 const isBuildAllModule =  !!specialArgv.module ? false : true;
@@ -114,6 +116,7 @@ const options = Object.assign({}, defaultOptions, {
   pluginsDir,
   themesDir,
   bundlesDir,
+  activitiesDir,
 
   isBuildAllModule,
   buildModule,
