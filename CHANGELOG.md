@@ -215,4 +215,3 @@
 # es-webpack-engine 2.0.0 (2016.12.02)
 
 * 针对 Biz-Symfony-Starter 的目录结构以及需求，进行了重构
-
