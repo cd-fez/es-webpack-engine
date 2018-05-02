@@ -17,7 +17,7 @@ export default (compiler, publicPath) => {
     },
     watchOptions: {
       aggregateTimeout: 300,
-      poll: true
+      poll: true,
     },
     lazy: false,
   };

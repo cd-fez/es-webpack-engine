@@ -1,5 +1,5 @@
 import path from 'path';
-import webpack from 'es-webpack';
+import webpack from 'webpack';
 import HappyPack from 'happypack';
 import merge from 'webpack-merge';
 import os from 'os';
@@ -22,6 +22,7 @@ import {
   filterObject
 } from './utils';
 
+console.log('修改了');
 // 基础配置
 const config = {
   output: Object.assign(options.output, {
