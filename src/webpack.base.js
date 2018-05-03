@@ -54,12 +54,12 @@ const config = {
     ]
   },
   plugins: [
-    // new HappyPack({
-    //   id: 'babelJs',
-    //   threadPool: HappyPack.ThreadPool({ size: os.cpus().length }),
-    //   verbose: false,
-    //   loaders: ['babel-loader?presets[]=env']
-    // }),
+    new HappyPack({
+      id: 'babelJs',
+      threadPool: HappyPack.ThreadPool({ size: os.cpus().length }),
+      verbose: false,
+      loaders: ['babel-loader?presets[]=env']
+    }),
     new ExtractTextPlugin({
       filename:  (getPath) => {
         return getPath('[name].css').replace('js', 'css');
@@ -174,26 +174,27 @@ if (options.isBuildAllModule) {
     optimization: {
       splitChunks: {
         cacheGroups: {
-          [options.commonsChunkFileName]: {
-            name: `app/js/${options.commonsChunkFileName}.js`,
+          commons: {
+            name: 'app-commons',
+            filename: `app/js/${options.commonsChunkFileName}.js`,
             chunks: 'all',
             minChunks: options.minChunks,
           }
         }
       }
     },
-    // plugins: [
-    //   // new webpack.optimize.CommonsChunkPlugin({
-    //   //   name: 'app',
-    //   //   filename: `app/js/${options.commonsChunkFileName}.js`,
-    //   //   chunks: Object.keys(entry.appEntry['app']),
-    //   //   minChunks,
-    //   // }),
-    //   new ChunkManifestPlugin({
-    //     filename: `app/chunk-manifest.json`,
-    //     manifestVariable: "webpackManifest"
-    //   }),
-    // ]
+    plugins: [
+      // new webpack.optimize.CommonsChunkPlugin({
+      //   name: 'app',
+      //   filename: `app/js/${options.commonsChunkFileName}.js`,
+      //   chunks: Object.keys(entry.appEntry['app']),
+      //   minChunks,
+      // }),
+      new ChunkManifestPlugin({
+        filename: `app/chunk-manifest.json`,
+        manifestVariable: "webpackManifest"
+      }),
+    ]
   });
 
   if (options.__ANALYZER__) {
@@ -254,8 +255,9 @@ if (options.isBuildAllModule || options.buildModule.length) {
       commonConfig.optimization = {
         splitChunks: {
           cacheGroups: {
-            [options.commonsChunkFileName]: {
-              name: `${key}/js/${options.commonsChunkFileName}.js`,
+            commons: {
+              name: `commons`,
+              filename: `${key}/js/${options.commonsChunkFileName}.js`,
               chunks: 'all',
               minChunks: options.minChunks,
             }
