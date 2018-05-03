@@ -3,6 +3,7 @@ import webpack from 'webpack';
 import HappyPack from 'happypack';
 import merge from 'webpack-merge';
 import os from 'os';
+import fs from 'fs'; // 测试config配置
 
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import ChunkManifestPlugin from 'chunk-manifest-webpack-plugin';
@@ -19,12 +20,14 @@ import uglifyJsConfig from './config/uglify';
 import { 
   fsExistsSync, 
   isEmptyObject, 
-  filterObject
+  filterObject,
+  isArray,
 } from './utils';
 
-console.log('修改了');
+console.log('修改了', options.ignoredDirs);
 // 基础配置
 const config = {
+  mode: options.__DEV__ ? 'development' : 'production',
   output: Object.assign(options.output, {
     filename: '[name].js',
   }),
@@ -51,12 +54,12 @@ const config = {
     ]
   },
   plugins: [
-    new HappyPack({
-      id: 'babelJs',
-      threadPool: HappyPack.ThreadPool({ size: os.cpus().length }),
-      verbose: false,
-      loaders: ['babel-loader']
-    }),
+    // new HappyPack({
+    //   id: 'babelJs',
+    //   threadPool: HappyPack.ThreadPool({ size: os.cpus().length }),
+    //   verbose: false,
+    //   loaders: ['babel-loader?presets[]=env']
+    // }),
     new ExtractTextPlugin({
       filename:  (getPath) => {
         return getPath('[name].css').replace('js', 'css');
@@ -73,11 +76,14 @@ const config = {
       /moment[\\\/]locale$/,
       /^\.\/(zh-cn|en-gb)+\.js$/
     ),
-    new OptimizeModuleIdAndChunkIdPlugin(),
-    new webpack.WatchIgnorePlugin(options.ignoredDirs)
+    // new OptimizeModuleIdAndChunkIdPlugin(),
   ]
 };
-
+// 兼容webpack 4 对于options.ignoredDirs做的类型校验
+if(isArray(options.ignoredDirs) && options.ignoredDirs.length > 0) {
+  config.plugins.push(new webpack.WatchIgnorePlugin(options.ignoredDirs));
+}
+console.log('基础配置完成');
 for (let key in options.noParseDeps) {
   const depPath = path.resolve(options.nodeModulesDir, options.noParseDeps[key]);
   config.resolve.alias[key] = depPath;
@@ -87,7 +93,7 @@ for (let key in options.noParseDeps) {
 
 if (options.__DEV__) {
   config.plugins = config.plugins.concat(new FriendlyErrorsPlugin());
-  options.isESlint ? config.module.rules.push(loaders.eslintLoader()) : '';
+  // options.isESlint ? config.module.rules.push(loaders.eslintLoader()) : '';
 }
 
 if (!options.__DEV__ && !options.__DEBUG__) {
@@ -103,7 +109,7 @@ const minChunks = (module, count) => {
   let pattern = new RegExp(options.regExp);
   return module.resource && !pattern.test(module.resource) && count >= options.minChunks;
 }
-
+console.log('不解析模块配置完成', process.env.NODE_ENV);
 // lib 配置
 let libConfigs = [];
 if (options.isBuildAllModule) {
@@ -151,7 +157,7 @@ if (options.isBuildAllModule) {
   };
   libConfigs.push(newConfig);
 }
-
+console.log('lib配置完成');
 // app 配置
 let appConfig = {};
 if (options.isBuildAllModule) {
@@ -165,18 +171,29 @@ if (options.isBuildAllModule) {
         loaders.mediaLoader('app', options.mediaName),
       ]
     },
-    plugins: [
-      new webpack.optimize.CommonsChunkPlugin({
-        name: 'app',
-        filename: `app/js/${options.commonsChunkFileName}.js`,
-        chunks: Object.keys(entry.appEntry['app']),
-        minChunks,
-      }),
-      new ChunkManifestPlugin({
-        filename: `app/chunk-manifest.json`,
-        manifestVariable: "webpackManifest"
-      }),
-    ]
+    optimization: {
+      splitChunks: {
+        cacheGroups: {
+          [options.commonsChunkFileName]: {
+            name: `app/js/${options.commonsChunkFileName}.js`,
+            chunks: 'all',
+            minChunks: options.minChunks,
+          }
+        }
+      }
+    },
+    // plugins: [
+    //   // new webpack.optimize.CommonsChunkPlugin({
+    //   //   name: 'app',
+    //   //   filename: `app/js/${options.commonsChunkFileName}.js`,
+    //   //   chunks: Object.keys(entry.appEntry['app']),
+    //   //   minChunks,
+    //   // }),
+    //   new ChunkManifestPlugin({
+    //     filename: `app/chunk-manifest.json`,
+    //     manifestVariable: "webpackManifest"
+    //   }),
+    // ]
   });
 
   if (options.__ANALYZER__) {
@@ -193,7 +210,7 @@ if (options.isBuildAllModule) {
     }]))
   }
 }
-
+console.log('app配置完成');
 // 通用配置 - 包括插件、bundle、主题
 let commonConfigs = [];
 if (options.isBuildAllModule || options.buildModule.length) {
@@ -234,12 +251,25 @@ if (options.isBuildAllModule || options.buildModule.length) {
     }
 
     if (fsExistsSync(`${commonSrcEntry[key]}/${options.isNeedCommonChunk}`)) {
-      commonConfig.plugins = commonConfig.plugins.concat(new webpack.optimize.CommonsChunkPlugin({
-        name: key,
-        filename: `${key}/js/${options.commonsChunkFileName}.js`,
-        chunks: Object.keys(commonEntry[key]),
-        minChunks,
-      }), new ChunkManifestPlugin({
+      commonConfig.optimization = {
+        splitChunks: {
+          cacheGroups: {
+            [options.commonsChunkFileName]: {
+              name: `${key}/js/${options.commonsChunkFileName}.js`,
+              chunks: 'all',
+              minChunks: options.minChunks,
+            }
+          }
+        }
+      };
+      commonConfig.plugins = commonConfig.plugins.concat(
+        // new webpack.optimize.CommonsChunkPlugin({
+        //   name: key,
+        //   filename: `${key}/js/${options.commonsChunkFileName}.js`,
+        //   chunks: Object.keys(commonEntry[key]),
+        //   minChunks,
+        // }), 
+        new ChunkManifestPlugin({
         filename: `${key}/chunk-manifest.json`,
         manifestVariable: 'webpackManifest'
       }));
@@ -256,7 +286,7 @@ if (options.isBuildAllModule || options.buildModule.length) {
     index ++;
   })
 }
-
+console.log('通用配置完成');
 // 总配置
 let configs = [];
 [libConfigs, appConfig, commonConfigs].forEach((item) => {
@@ -267,5 +297,6 @@ let configs = [];
     configs = configs.concat(item);
   }
 });
+console.log('这里是base配置');
 
 export default configs;

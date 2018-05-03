@@ -1,12 +1,14 @@
 # es-webpack-engine 4.0.0 
 1. 其它插件升级：
     1. chunk-manifest-webpack-plugin 最高版本是1.1.2,但是它不支持webpack@^4.0.0
-    2. extract-text-webpack-plugin 最新版本v4.0.0正在测试webpack 4
-    3. less-loader 最新版本1.1.11已经支持
-    4. babel-loader 7.1.3开始就支持webpack 4了
-    5. less-loader 4.0.6支持webpack 4了，但是4.1.0要求less >= 3.0.0
-    6. progress-bar-webpack-plugin 1.11.0 支持webpack 4
-    7. webpack-dev-middleware 3.0.0开始支持webpack 4, 但是我们系统还是用的是1.12.0,这个要着重处理
+    2. extract-text-webpack-plugin 最新版本v4.0.0正在测试webpack 4，升级到4.0.0-beta
+    3. babel-loader 7.1.3开始就支持webpack 4了
+    4. less-loader 4.0.6支持webpack 4了，但是4.1.0要求less >= 3.0.0
+    5. progress-bar-webpack-plugin 1.11.0 支持webpack 4
+    6. webpack-dev-middleware 3.0.0开始支持webpack 4, 但是我们系统还是用的是1.12.0,这个要着重处理
+    7. copy-webpack-plugin 升级到最新版本
+    8. css-loader 0.28.7 -> 0.28.11; 升级到最新版本
+2. babel-preset-es2015被弃用，改用babel-preset-env
 
 # es-webpack-engine 3.5.2(2018.03.06)
 
