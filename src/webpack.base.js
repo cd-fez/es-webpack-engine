@@ -7,7 +7,7 @@ import fs from 'fs'; // 测试config配置
 
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import ChunkManifestPlugin from 'chunk-manifest-webpack-plugin';
-import OptimizeModuleIdAndChunkIdPlugin from 'optimize-moduleid-and-chunkid-plugin';
+// import OptimizeModuleIdAndChunkIdPlugin from 'optimize-moduleid-and-chunkid-plugin';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import FriendlyErrorsPlugin from 'friendly-errors-webpack-plugin';
@@ -17,7 +17,7 @@ import * as entry  from './config/entry';
 import * as loaders from './config/loader';
 import uglifyJsConfig from './config/uglify';
 
-import { 
+import {
   fsExistsSync, 
   isEmptyObject, 
   filterObject,
@@ -173,11 +173,14 @@ if (options.isBuildAllModule) {
     },
     optimization: {
       splitChunks: {
+        minChunks: options.minChunks,
         cacheGroups: {
           commons: {
             name: 'app-commons',
             filename: `app/js/${options.commonsChunkFileName}.js`,
             chunks: 'all',
+          },
+          default: {
             minChunks: options.minChunks,
           }
         }
@@ -243,7 +246,7 @@ if (options.isBuildAllModule || options.buildModule.length) {
 
     let commonSrcEntry = entry.commonSrcEntry;
 
-    if (fsExistsSync(`${commonSrcEntry[key]}/${options.copyName}`)) {
+    if (fsExistsSync(`${commonSrcEntry[key]}/${options.copyName}`)) { // 图片直接进行copy
       commonConfig.plugins = commonConfig.plugins.concat(new CopyWebpackPlugin([{
         from: `${commonSrcEntry[key]}/${options.copyName}`,
         to: `${key}/${options.copyName}`,
