@@ -18,7 +18,7 @@ import baseConfig from './webpack.base';
 if (!fsExistsSync('.webpack-watch.log')) {
   logger.error('请在项目根目录下添加.webpack-watch.log文件, 否则无法监听新增入口JS文件');
 }
-console.log('这里是dev', baseConfig[2].optimization);
+console.log('这里是dev');
 const app = express();
 
 const compiler = webpack(baseConfig);
