@@ -8,6 +8,7 @@
     6. webpack-dev-middleware 3.0.0开始支持webpack 4, 但是我们系统还是用的是1.12.0,这个要着重处理
     7. copy-webpack-plugin 升级到最新版本
     8. css-loader 0.28.7 -> 0.28.11; 升级到最新版本
+    9. file-loader -> "1.1.11",
 2. babel-preset-es2015被弃用，改用babel-preset-env
 
 # es-webpack-engine 3.5.2(2018.03.06)

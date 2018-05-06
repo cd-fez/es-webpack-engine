@@ -54,12 +54,12 @@ const config = {
     ]
   },
   plugins: [
-    // new HappyPack({
-    //   id: 'babelJs',
-    //   threadPool: HappyPack.ThreadPool({ size: os.cpus().length }),
-    //   verbose: false,
-    //   loaders: ['babel-loader?presets[]=env']
-    // }),
+    new HappyPack({
+      id: 'babelJs',
+      threadPool: HappyPack.ThreadPool({ size: os.cpus().length }),
+      verbose: false,
+      loaders: ['babel-loader?presets[]=env']
+    }),
     new ExtractTextPlugin({
       filename:  (getPath) => {
         return getPath('[name].css').replace('js', 'css');
