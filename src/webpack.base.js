@@ -97,7 +97,9 @@ if (options.__DEV__) {
 }
 
 if (!options.__DEV__ && !options.__DEBUG__) {
-  config.plugins = config.plugins.concat(new webpack.optimize.UglifyJsPlugin(uglifyJsConfig));
+  config.optimization.minimizer = config.optimization.minimizer || [];
+  config.plugins = config.optimization.minimizer.push(new webpack.optimize.UglifyJsPlugin(uglifyJsConfig));
+  // config.plugins = config.plugins.concat(new webpack.optimize.UglifyJsPlugin(uglifyJsConfig));
 } else {
   config.devtool = options.__DEVTOOL__;
 }
