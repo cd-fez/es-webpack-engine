@@ -7,7 +7,6 @@ import fs from 'fs'; // 测试config配置
 
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import ChunkManifestPlugin from 'chunk-manifest-webpack-plugin';
-// import OptimizeModuleIdAndChunkIdPlugin from 'optimize-moduleid-and-chunkid-plugin';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import FriendlyErrorsPlugin from 'friendly-errors-webpack-plugin';
@@ -66,17 +65,11 @@ const config = {
       },
       allChunks: true
     }),
-    new webpack.DefinePlugin({
-      'process.env': {
-        'NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
-      }
-    }),
     new webpack.ProvidePlugin(options.global),
     new webpack.ContextReplacementPlugin(
       /moment[\\\/]locale$/,
       /^\.\/(zh-cn|en-gb)+\.js$/
     ),
-    // new OptimizeModuleIdAndChunkIdPlugin(),
   ]
 };
 // 兼容webpack 4 对于options.ignoredDirs做的类型校验
