@@ -27,24 +27,20 @@ import {
   isBundle
 } from './utils';
 
-console.log('修改了', path.join(options.bundlesDir, '/CustomBundle/Resources/views/', '*.html.twig'));
-console.log('修改了', path.join(options.globalViewDir, '*.html.twig'));
-const root = path.resolve('./');
-console.log(path.join(root, '*.twig'));
-
-let commonDir;
-let commonName;
-let commonViews;
-entry.commonNames.forEach((item) => {
+const otherViewNames = entry.commonNames.map(function(item) {
   if (isPlugin(item) || isBundle(item)) {
-    commonDir = `${item}/Resources/views`;
+    return path.join(`${item}/Resources/views`, '/**/*.twig');
   } else {
-    commonDir = `${item}/views`;
+    return path.join(`${item}/views`, '/**/*.twig');
   }
-  commonViews = path.join(commonDir, '*.html.twig');
-});
+})
+let otherViews = [];
+otherViewNames.forEach((item) => {
+  otherViews = otherViews.concat(glob.sync(item));
+})
 
-
+const appViews = glob.sync(path.join(options.globalViewDir, '/**/*.twig'));
+const allViews = appViews.concat(otherViews);
 
 // 基础配置
 const config = {
@@ -87,10 +83,10 @@ const config = {
       },
       allChunks: true
     }),
-    new PurifyCSSPlugin({
-      // Give paths to parse for rules. These should be absolute!
-      paths: glob.sync(path.join(root, '/**/*.twig')),
 
+
+    new PurifyCSSPlugin({
+      paths: allViews,
     }),
     new webpack.ProvidePlugin(options.global),
     new webpack.ContextReplacementPlugin(
