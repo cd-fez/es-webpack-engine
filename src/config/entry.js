@@ -43,11 +43,12 @@ const configAlias = {
 */
 let commonEntry = {};
 let commonSrcEntry = {};
+let commonNames = [];
 if (options.isBuildAllModule || options.buildModule.length) {
-  let commonNames = [];
 
   if (options.buildModule.length) {
     commonNames = options.buildModule
+
   } else {
     commonNames = commonNames.concat(
       searchDirs(options.pluginsDir, 'Resources/static-src'),
@@ -55,6 +56,7 @@ if (options.isBuildAllModule || options.buildModule.length) {
       searchDirs(options.themesDir, 'static-src'),
     );
   }
+
 
   commonNames.forEach((item) => {
     let commonDir;
@@ -153,6 +155,7 @@ if (options.onlyCopys.length) {
 export {
   libEntry,
   appEntry,
+  commonNames,
 
   commonEntry,
   commonSrcEntry,

@@ -1,4 +1,5 @@
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
+import AutoprefixerPlugin from 'autoprefixer';
 
 export const imageLoader = (path, imgName, limit) => {
   return {
@@ -62,6 +63,14 @@ export const cssLoader = (options) => {
       use: [{
         loader: 'css-loader',
         options
+      },
+      {
+        loader: 'postcss-loader',
+        options: {
+          plugins: () => AutoprefixerPlugin({
+            browsers: ['last 5 versions', '> 1%', 'not ie <= 8']
+          })
+        }
       }]
     })
   }
@@ -75,7 +84,16 @@ export const lessLoader = (options) => {
       use: [{
         loader: 'css-loader',
         options
-      }, {
+      },
+      {
+        loader: 'postcss-loader',
+        options: {
+          plugins: () => AutoprefixerPlugin({
+            browsers: ['last 3 versions', '> 1%', 'not ie <= 8']
+          })
+        }
+      },
+      {
         loader: 'less-loader'
       }]
     })

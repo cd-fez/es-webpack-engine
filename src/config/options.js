@@ -36,6 +36,7 @@ const defaultOptions = Object.assign({
   baseName: 'libs/base',
 
   globalDir: 'app/Resources/static-src',
+  globalViewDir: 'app/Resources/views',
   nodeModulesDir: 'node_modules',
   pluginsDir: 'plugins',
   bundlesDir: 'src',
@@ -57,6 +58,7 @@ const defaultOptions = Object.assign({
 // 绝对路径
 const rootDir = path.resolve('./');
 const globalDir = path.resolve(rootDir, defaultOptions.globalDir);
+const globalViewDir = path.resolve(rootDir, defaultOptions.globalViewDir);
 const nodeModulesDir = path.resolve(rootDir, defaultOptions.nodeModulesDir);
 const pluginsDir = path.resolve(rootDir, defaultOptions.pluginsDir);
 const themesDir = path.resolve(rootDir,defaultOptions.themesDir);
@@ -110,6 +112,7 @@ const options = Object.assign({}, defaultOptions, {
 
   rootDir,
   globalDir,
+  globalViewDir,
   nodeModulesDir,
   pluginsDir,
   themesDir,

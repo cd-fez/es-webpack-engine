@@ -1,4 +1,5 @@
 import path from 'path';
+import glob from 'glob';
 import webpack from 'webpack';
 import HappyPack from 'happypack';
 import merge from 'webpack-merge';
@@ -6,6 +7,7 @@ import os from 'os';
 import fs from 'fs'; // 测试config配置
 
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
+import PurifyCSSPlugin from 'purifycss-webpack';
 import ChunkManifestPlugin from 'chunk-manifest-webpack-plugin';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
@@ -21,9 +23,29 @@ import {
   isEmptyObject, 
   filterObject,
   isArray,
+  isPlugin,
+  isBundle
 } from './utils';
 
-console.log('修改了', options.ignoredDirs);
+console.log('修改了', path.join(options.bundlesDir, '/CustomBundle/Resources/views/', '*.html.twig'));
+console.log('修改了', path.join(options.globalViewDir, '*.html.twig'));
+const root = path.resolve('./');
+console.log(path.join(root, '*.twig'));
+
+let commonDir;
+let commonName;
+let commonViews;
+entry.commonNames.forEach((item) => {
+  if (isPlugin(item) || isBundle(item)) {
+    commonDir = `${item}/Resources/views`;
+  } else {
+    commonDir = `${item}/views`;
+  }
+  commonViews = path.join(commonDir, '*.html.twig');
+});
+
+
+
 // 基础配置
 const config = {
   mode: options.__DEV__ ? 'development' : 'production',
@@ -65,6 +87,11 @@ const config = {
       },
       allChunks: true
     }),
+    new PurifyCSSPlugin({
+      // Give paths to parse for rules. These should be absolute!
+      paths: glob.sync(path.join(root, '/**/*.twig')),
+
+    }),
     new webpack.ProvidePlugin(options.global),
     new webpack.ContextReplacementPlugin(
       /moment[\\\/]locale$/,
@@ -72,6 +99,8 @@ const config = {
     ),
   ]
 };
+
+
 // 兼容webpack 4 对于options.ignoredDirs做的类型校验
 if(isArray(options.ignoredDirs) && options.ignoredDirs.length > 0) {
   config.plugins.push(new webpack.WatchIgnorePlugin(options.ignoredDirs));
