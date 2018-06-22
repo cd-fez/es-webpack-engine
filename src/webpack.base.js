@@ -16,7 +16,7 @@ import options  from './config/options';
 import * as entry  from './config/entry';
 import * as loaders from './config/loader';
 import uglifyJsConfig from './config/uglify';
-import RemoveWebpackPlugin from 'jay-remove-webpack-plugin';
+import RemoveWebpackJsPlugin from 'jay-remove-webpack-plugin';
 
 
 import { 
@@ -73,7 +73,7 @@ const config = {
       paths: allViews,
     }),
 
-    new RemoveWebpackPlugin({
+    new RemoveWebpackJsPlugin({
       filterPath: /^\/css\/.*\.js?$/ig
     }),
     new webpack.ProvidePlugin(options.global),
