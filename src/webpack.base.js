@@ -17,6 +17,9 @@ import options  from './config/options';
 import * as entry  from './config/entry';
 import * as loaders from './config/loader';
 import uglifyJsConfig from './config/uglify';
+import RemoveWebpackJsPlugin from 'jay-remove-webpack-plugin';
+import StyleLintPlugin from 'stylelint-webpack-plugin';
+
 
 import {
   fsExistsSync, 
@@ -84,9 +87,12 @@ const config = {
       allChunks: true
     }),
 
-
     new PurifyCSSPlugin({
       paths: allViews,
+    }),
+
+    new RemoveWebpackJsPlugin({
+      filterPath: /^\/css\/.*\.js?$/ig
     }),
     new webpack.ProvidePlugin(options.global),
     new webpack.ContextReplacementPlugin(
@@ -115,7 +121,9 @@ if (options.__DEV__) {
 }
 
 if (!options.__DEV__ && !options.__DEBUG__) {
-  config.plugins = config.plugins.concat(new webpack.optimize.UglifyJsPlugin(uglifyJsConfig));
+  config.optimization.minimizer = config.optimization.minimizer || [];
+  config.plugins = config.optimization.minimizer.push(new webpack.optimize.UglifyJsPlugin(uglifyJsConfig));
+  // config.plugins = config.plugins.concat(new webpack.optimize.UglifyJsPlugin(uglifyJsConfig));
 } else {
   config.devtool = options.__DEVTOOL__;
 }
@@ -309,6 +317,7 @@ if (options.isBuildAllModule || options.buildModule.length) {
     index ++;
   })
 }
+
 console.log('通用配置完成');
 // 总配置
 let configs = [];
