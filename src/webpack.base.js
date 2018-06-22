@@ -17,6 +17,7 @@ import * as entry  from './config/entry';
 import * as loaders from './config/loader';
 import uglifyJsConfig from './config/uglify';
 import RemoveWebpackJsPlugin from 'jay-remove-webpack-plugin';
+import StyleLintPlugin from 'stylelint-webpack-plugin';
 
 
 import {
