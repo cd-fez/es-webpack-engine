@@ -44,6 +44,7 @@ otherViewNames.forEach((item) => {
 
 const appViews = glob.sync(path.join(options.globalViewDir, '/**/*.twig'));
 const allViews = appViews.concat(otherViews);
+console.log(appViews);
 
 // 基础配置
 const config = {
@@ -94,7 +95,14 @@ const config = {
     new RemoveWebpackJsPlugin({
       filterPath: /^\/css\/.*\.js?$/ig
     }),
+
+    // new StyleLintPlugin({
+    //   context: config.lessPath,
+    //   files: '**/*.(less|css|sass)',
+    // }),
+
     new webpack.ProvidePlugin(options.global),
+
     new webpack.ContextReplacementPlugin(
       /moment[\\\/]locale$/,
       /^\.\/(zh-cn|en-gb)+\.js$/
