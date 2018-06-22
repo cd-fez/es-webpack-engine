@@ -3,6 +3,7 @@
     "name": "codeages"
   },
   "dependencies": {
+    "autoprefixer": "^8.6.3",
     "babel-cli": "6.26.0",
     "babel-core": "6.26.0",
     "babel-loader": "^7.1.4",
@@ -35,6 +36,7 @@
     "optimize-moduleid-and-chunkid-plugin": "^1.1.0",
     "os": "0.1.1",
     "path": "0.12.7",
+    "postcss-loader": "^2.1.5",
     "progress-bar-webpack-plugin": "1.11.0",
     "purify-css": "^1.2.5",
     "purifycss-webpack": "^0.7.0",
