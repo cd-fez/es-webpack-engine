@@ -22,8 +22,8 @@ import StyleLintPlugin from 'stylelint-webpack-plugin';
 
 
 import {
-  fsExistsSync, 
-  isEmptyObject, 
+  fsExistsSync,
+  isEmptyObject,
   filterObject,
   isArray,
   isPlugin,
