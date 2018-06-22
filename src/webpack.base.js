@@ -16,6 +16,8 @@ import options  from './config/options';
 import * as entry  from './config/entry';
 import * as loaders from './config/loader';
 import uglifyJsConfig from './config/uglify';
+import RemoveWebpackPlugin from 'jay-remove-webpack-plugin';
+
 
 import { 
   fsExistsSync, 
@@ -66,10 +68,13 @@ const config = {
       },
       allChunks: true
     }),
-    new webpack.DefinePlugin({
-      'process.env': {
-        'NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
-      }
+
+    new PurifyCSSPlugin({
+      paths: allViews,
+    }),
+
+    new RemoveWebpackPlugin({
+      filterPath: /^\/css\/.*\.js?$/ig
     }),
     new webpack.ProvidePlugin(options.global),
     new webpack.ContextReplacementPlugin(
@@ -286,6 +291,7 @@ if (options.isBuildAllModule || options.buildModule.length) {
     index ++;
   })
 }
+
 console.log('通用配置完成');
 // 总配置
 let configs = [];

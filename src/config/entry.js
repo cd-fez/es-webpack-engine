@@ -135,6 +135,7 @@ if (options.isBuildAllModule) {
   );
 }
 
+console.log(commonEntry + 'commonEntry');
 let onlyCopys = [];
 if (options.onlyCopys.length) {
   let copyitem = {};
