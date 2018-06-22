@@ -7,7 +7,7 @@ import fs from 'fs'; // 测试config配置
 
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import ChunkManifestPlugin from 'chunk-manifest-webpack-plugin';
-import OptimizeModuleIdAndChunkIdPlugin from 'optimize-moduleid-and-chunkid-plugin';
+// import OptimizeModuleIdAndChunkIdPlugin from 'optimize-moduleid-and-chunkid-plugin';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import FriendlyErrorsPlugin from 'friendly-errors-webpack-plugin';
@@ -19,7 +19,7 @@ import uglifyJsConfig from './config/uglify';
 import RemoveWebpackJsPlugin from 'jay-remove-webpack-plugin';
 
 
-import { 
+import {
   fsExistsSync, 
   isEmptyObject, 
   filterObject,
@@ -56,12 +56,12 @@ const config = {
     ]
   },
   plugins: [
-    // new HappyPack({
-    //   id: 'babelJs',
-    //   threadPool: HappyPack.ThreadPool({ size: os.cpus().length }),
-    //   verbose: false,
-    //   loaders: ['babel-loader?presets[]=env']
-    // }),
+    new HappyPack({
+      id: 'babelJs',
+      threadPool: HappyPack.ThreadPool({ size: os.cpus().length }),
+      verbose: false,
+      loaders: ['babel-loader?presets[]=env']
+    }),
     new ExtractTextPlugin({
       filename:  (getPath) => {
         return getPath('[name].css').replace('js', 'css');
@@ -102,7 +102,9 @@ if (options.__DEV__) {
 }
 
 if (!options.__DEV__ && !options.__DEBUG__) {
-  config.plugins = config.plugins.concat(new webpack.optimize.UglifyJsPlugin(uglifyJsConfig));
+  config.optimization.minimizer = config.optimization.minimizer || [];
+  config.plugins = config.optimization.minimizer.push(new webpack.optimize.UglifyJsPlugin(uglifyJsConfig));
+  // config.plugins = config.plugins.concat(new webpack.optimize.UglifyJsPlugin(uglifyJsConfig));
 } else {
   config.devtool = options.__DEVTOOL__;
 }
@@ -178,27 +180,31 @@ if (options.isBuildAllModule) {
     },
     optimization: {
       splitChunks: {
+        minChunks: options.minChunks,
         cacheGroups: {
-          [options.commonsChunkFileName]: {
-            name: `app/js/${options.commonsChunkFileName}.js`,
+          commons: {
+            name: 'app-commons',
+            filename: `app/js/${options.commonsChunkFileName}.js`,
             chunks: 'all',
+          },
+          default: {
             minChunks: options.minChunks,
           }
         }
       }
     },
-    // plugins: [
-    //   // new webpack.optimize.CommonsChunkPlugin({
-    //   //   name: 'app',
-    //   //   filename: `app/js/${options.commonsChunkFileName}.js`,
-    //   //   chunks: Object.keys(entry.appEntry['app']),
-    //   //   minChunks,
-    //   // }),
-    //   new ChunkManifestPlugin({
-    //     filename: `app/chunk-manifest.json`,
-    //     manifestVariable: "webpackManifest"
-    //   }),
-    // ]
+    plugins: [
+      // new webpack.optimize.CommonsChunkPlugin({
+      //   name: 'app',
+      //   filename: `app/js/${options.commonsChunkFileName}.js`,
+      //   chunks: Object.keys(entry.appEntry['app']),
+      //   minChunks,
+      // }),
+      new ChunkManifestPlugin({
+        filename: `app/chunk-manifest.json`,
+        manifestVariable: "webpackManifest"
+      }),
+    ]
   });
 
   if (options.__ANALYZER__) {
@@ -247,7 +253,7 @@ if (options.isBuildAllModule || options.buildModule.length) {
 
     let commonSrcEntry = entry.commonSrcEntry;
 
-    if (fsExistsSync(`${commonSrcEntry[key]}/${options.copyName}`)) {
+    if (fsExistsSync(`${commonSrcEntry[key]}/${options.copyName}`)) { // 图片直接进行copy
       commonConfig.plugins = commonConfig.plugins.concat(new CopyWebpackPlugin([{
         from: `${commonSrcEntry[key]}/${options.copyName}`,
         to: `${key}/${options.copyName}`,
@@ -259,8 +265,9 @@ if (options.isBuildAllModule || options.buildModule.length) {
       commonConfig.optimization = {
         splitChunks: {
           cacheGroups: {
-            [options.commonsChunkFileName]: {
-              name: `${key}/js/${options.commonsChunkFileName}.js`,
+            commons: {
+              name: `commons`,
+              filename: `${key}/js/${options.commonsChunkFileName}.js`,
               chunks: 'all',
               minChunks: options.minChunks,
             }

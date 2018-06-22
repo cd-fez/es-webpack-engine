@@ -27,7 +27,7 @@ const defaultOptions = Object.assign({
     jquery: 'jQuery',
   },
   regExp: 'react|webuploader|postal|lodash',
-  minChunks: 5,
+  minChunks: 10,
 
   commonsChunkFileName: 'common',
   entryMainName: 'main',
@@ -84,9 +84,9 @@ const watchModule = specialArgv.watch ? specialArgv.watch.split(',') : [];
 let ignoredDirs = [];
 
 if (!isWatchAllModule) {
-  ignoredDirs = ignoredDirs.concat(
+  ignoredDirs = ignoredDirs.concat( // 除了watchModule以外的其它目录
     [globalDir],
-    searchIgnoreDirs(pluginsDir, watchModule),
+    searchIgnoreDirs(pluginsDir, watchModule), // 过滤掉非的目录
     searchIgnoreDirs(bundlesDir, watchModule),
     searchIgnoreDirs(themesDir, watchModule)
   );
