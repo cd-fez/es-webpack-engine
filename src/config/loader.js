@@ -59,9 +59,9 @@ export const cssLoader = (options) => {
   return {
     test: /\.css$/,
     use: ExtractTextPlugin.extract({
-      fallback: 'style-loader',
+      fallback: 'style-loader?id=style',
       use: [{
-        loader: 'css-loader',
+        loader: 'css-loader?id=css',
         options
       },
       {
@@ -80,9 +80,9 @@ export const lessLoader = (options) => {
   return {
     test: /\.less$/,
     use: ExtractTextPlugin.extract({
-      fallback: 'style-loader',
+      fallback: 'style-loader?id=style',
       use: [{
-        loader: 'css-loader',
+        loader: 'css-loader?id=css',
         options
       },
       {
@@ -94,7 +94,7 @@ export const lessLoader = (options) => {
         }
       },
       {
-        loader: 'less-loader'
+        loader: 'less-loader?id=less'
       }]
     })
   }
