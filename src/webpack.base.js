@@ -5,9 +5,14 @@ import HappyPack from 'happypack';
 import merge from 'webpack-merge';
 import os from 'os';
 import fs from 'fs'; // 测试config配置
+import ProgressBarPlugin from 'progress-bar-webpack-plugin';
 
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
+import StyleLintPlugin from 'stylelint-webpack-plugin';
 import PurifyCSSPlugin from 'purifycss-webpack';
+import OptimizeCssAssetsPlugin from 'optimize-css-assets-webpack-plugin';
+import ParallelUglifyPlugin from 'webpack-parallel-uglify-plugin';
+import RemoveWebpackJsPlugin from 'jay-remove-webpack-plugin';
 import ChunkManifestPlugin from 'chunk-manifest-webpack-plugin';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
@@ -16,9 +21,8 @@ import FriendlyErrorsPlugin from 'friendly-errors-webpack-plugin';
 import options  from './config/options';
 import * as entry  from './config/entry';
 import * as loaders from './config/loader';
-import uglifyJsConfig from './config/uglify';
-import RemoveWebpackJsPlugin from 'jay-remove-webpack-plugin';
-import StyleLintPlugin from 'stylelint-webpack-plugin';
+
+
 
 
 import {
@@ -37,14 +41,29 @@ const otherViewNames = entry.commonNames.map(function(item) {
     return path.join(`${item}/views`, '/**/*.twig');
   }
 })
+
+console.log(options.globalViewDir);
+const otherViewLess = entry.commonNames.map(function(item) {
+  if (isPlugin(item) || isBundle(item)) {
+    return path.join(`${item}/Resources/static-src/less/`);
+  } else {
+    return path.join(`${item}/static-src/less/`);
+  }
+})
+
+console.log('less的路径');
+const appViewLess = path.join(`${options.globalDir}/app/less/`);
+console.log(appViewLess);
+const allLess = appViewLess.concat(otherViewLess);
+
 let otherViews = [];
 otherViewNames.forEach((item) => {
   otherViews = otherViews.concat(glob.sync(item));
 })
 
 const appViews = glob.sync(path.join(options.globalViewDir, '/**/*.twig'));
-const allViews = appViews.concat(otherViews);
-console.log(appViews);
+// const allViews = appViews.concat(otherViews);
+// console.log(appViews);
 
 // 基础配置
 const config = {
@@ -71,16 +90,41 @@ const config = {
       loaders.lessLoader({
         minimize: options.__DEV__ || options.__DEBUG__ ? false : true
       }),
-      loaders.jsonLoader(),
     ]
   },
   plugins: [
+    new ProgressBarPlugin(),
     new HappyPack({
       id: 'babelJs',
       threadPool: HappyPack.ThreadPool({ size: os.cpus().length }),
       verbose: false,
       loaders: ['babel-loader?presets[]=env']
     }),
+    // 打包样式也采用happypack
+    new HappyPack({
+      id: 'css',
+      threadPool: HappyPack.ThreadPool({ size: os.cpus().length }),
+      loaders: [{
+        loader: 'css-loader',
+      }]
+    }),
+
+    new HappyPack({
+      id: 'less',
+      threadPool: HappyPack.ThreadPool({ size: os.cpus().length }),
+      loaders: [{
+        loader: 'less-loader',
+      }]
+    }),
+
+    new HappyPack({
+      id: 'style',
+      threadPool: HappyPack.ThreadPool({ size: os.cpus().length }),
+      loaders: [{
+        loader: 'style-loader',
+      }]
+    }),
+
     new ExtractTextPlugin({
       filename:  (getPath) => {
         return getPath('[name].css').replace('js', 'css');
@@ -89,26 +133,31 @@ const config = {
     }),
 
     new PurifyCSSPlugin({
-      paths: allViews,
+      paths: appViews,
     }),
-
+    // 压缩css
+    new OptimizeCssAssetsPlugin({
+      cssProcessor: require('cssnano'),
+      cssProcessorOptions: { discardComments: { removeAll: true } },
+      canPrint: true
+    }),
     new RemoveWebpackJsPlugin({
-      filterPath: /^\/css\/.*\.js?$/ig
+      filterPath: /.*\/css\/.*\.js?$/ig
     }),
-
     // new StyleLintPlugin({
-    //   context: config.lessPath,
+    //   context: appViewLess,
     //   files: '**/*.(less|css|sass)',
     // }),
 
     new webpack.ProvidePlugin(options.global),
-
     new webpack.ContextReplacementPlugin(
       /moment[\\\/]locale$/,
       /^\.\/(zh-cn|en-gb)+\.js$/
     ),
-  ]
+  ],
 };
+
+
 
 
 // 兼容webpack 4 对于options.ignoredDirs做的类型校验
@@ -116,6 +165,7 @@ if(isArray(options.ignoredDirs) && options.ignoredDirs.length > 0) {
   config.plugins.push(new webpack.WatchIgnorePlugin(options.ignoredDirs));
 }
 console.log('基础配置完成');
+// 如果你确定一个模块中，没有其它新的依赖，就可以配置这项， Webpack 将不再扫描这个文件中的依赖，这对于比较大型类库，将能促进性能表现
 for (let key in options.noParseDeps) {
   const depPath = path.resolve(options.nodeModulesDir, options.noParseDeps[key]);
   config.resolve.alias[key] = depPath;
@@ -129,9 +179,18 @@ if (options.__DEV__) {
 }
 
 if (!options.__DEV__ && !options.__DEBUG__) {
-  config.optimization.minimizer = config.optimization.minimizer || [];
-  config.plugins = config.optimization.minimizer.push(new webpack.optimize.UglifyJsPlugin(uglifyJsConfig));
-  // config.plugins = config.plugins.concat(new webpack.optimize.UglifyJsPlugin(uglifyJsConfig));
+  // 压缩代码
+  config.plugins.push(new ParallelUglifyPlugin({
+    cacheDir: path.join(process.cwd(), 'webpack-cache'),
+    uglifyJS: {
+      output: {
+        comments: false
+      },
+      compress: {
+        warnings: false
+      }
+    }
+  }));
 } else {
   config.devtool = options.__DEVTOOL__;
 }
@@ -144,6 +203,7 @@ const minChunks = (module, count) => {
   return module.resource && !pattern.test(module.resource) && count >= options.minChunks;
 }
 console.log('不解析模块配置完成', process.env.NODE_ENV);
+
 // lib 配置
 let libConfigs = [];
 if (options.isBuildAllModule) {
@@ -181,6 +241,7 @@ if (options.isBuildAllModule) {
     entry: newLibEntry,
     module,
     plugins: [
+      // 在webpack中拷贝文件和文件夹
       new CopyWebpackPlugin(entry.onlyCopys)
     ]
   });
@@ -207,10 +268,13 @@ if (options.isBuildAllModule) {
     },
     optimization: {
       splitChunks: {
+        // 设置最小引用次数
         minChunks: options.minChunks,
+        // 缓存组
         cacheGroups: {
           commons: {
             name: 'app-commons',
+            // 最后输出 app/js/common.js
             filename: `app/js/${options.commonsChunkFileName}.js`,
             chunks: 'all',
           },
@@ -218,22 +282,35 @@ if (options.isBuildAllModule) {
             minChunks: options.minChunks,
           }
         }
-      }
+      },
+      runtimeChunk: true,
+      // minimizer: [
+      //   new ParallelUglifyPlugin({
+      //     cacheDir: path.join(process.cwd(), 'webpack-cache'),
+      //     uglifyJS: {
+      //       output: {
+      //         comments: false
+      //       },
+      //       compress: {
+      //         warnings: false
+      //       }
+      //     }
+      //   }),
+        // new OptimizeCssAssetsPlugin({
+        //   cssProcessor: require('cssnano'),
+        //   cssProcessorOptions: { discardComments: { removeAll: true } },
+        //   canPrint: true
+        // }),
+      // ]
     },
     plugins: [
-      // new webpack.optimize.CommonsChunkPlugin({
-      //   name: 'app',
-      //   filename: `app/js/${options.commonsChunkFileName}.js`,
-      //   chunks: Object.keys(entry.appEntry['app']),
-      //   minChunks,
-      // }),
       new ChunkManifestPlugin({
         filename: `app/chunk-manifest.json`,
         manifestVariable: "webpackManifest"
       }),
     ]
   });
-
+  // 分析文件
   if (options.__ANALYZER__) {
     appConfig.plugins = appConfig.plugins.concat(new BundleAnalyzerPlugin({
       analyzerPort: 3999
@@ -290,6 +367,7 @@ if (options.isBuildAllModule || options.buildModule.length) {
 
     if (fsExistsSync(`${commonSrcEntry[key]}/${options.isNeedCommonChunk}`)) {
       commonConfig.optimization = {
+        // 针对各个插件，主题的配置
         splitChunks: {
           cacheGroups: {
             commons: {
@@ -299,15 +377,29 @@ if (options.isBuildAllModule || options.buildModule.length) {
               minChunks: options.minChunks,
             }
           }
-        }
+        },
+        runtimeChunk: true,
+        // minimizer: [
+        //   new ParallelUglifyPlugin({
+        //     cacheDir: path.join(process.cwd(), 'webpack-cache'),
+        //     uglifyJS: {
+        //       output: {
+        //         comments: false
+        //       },
+        //       compress: {
+        //         warnings: false
+        //       }
+        //     }
+        //   }),
+          // new OptimizeCssAssetsPlugin({
+          //   cssProcessor: require('cssnano'),
+          //   cssProcessorOptions: { discardComments: { removeAll: true } },
+          //   canPrint: true
+          // }),
+        // ]
       };
+      // 该插件可以显示出编译之前的文件和编译之后的文件的映射 
       commonConfig.plugins = commonConfig.plugins.concat(
-        // new webpack.optimize.CommonsChunkPlugin({
-        //   name: key,
-        //   filename: `${key}/js/${options.commonsChunkFileName}.js`,
-        //   chunks: Object.keys(commonEntry[key]),
-        //   minChunks,
-        // }), 
         new ChunkManifestPlugin({
         filename: `${key}/chunk-manifest.json`,
         manifestVariable: 'webpackManifest'

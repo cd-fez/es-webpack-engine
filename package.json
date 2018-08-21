@@ -30,7 +30,6 @@
     "happypack": "^5.0.0",
     "imports-loader": "0.7.1",
     "jay-remove-webpack-plugin": "^1.0.1",
-    "json-loader": "0.5.7",
     "less": "2.7.1",
     "less-loader": "4.0.6",
     "nodemon": "1.12.1",

@@ -98,6 +98,8 @@ if (options.isBuildAllModule || options.buildModule.length) {
     commonSrcEntry[commonName] = commonDir;
   })
 }
+console.log('commonNames');
+// console.log(commonNames);
 
 let libEntry = {};
 if (options.isBuildAllModule) {
@@ -136,8 +138,7 @@ if (options.isBuildAllModule) {
     })
   );
 }
-
-console.log(commonEntry + 'commonEntry');
+console.log('appEntry');
 let onlyCopys = [];
 if (options.onlyCopys.length) {
   let copyitem = {};
