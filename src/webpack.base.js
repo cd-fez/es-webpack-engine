@@ -15,6 +15,7 @@ import options  from './config/options';
 import * as entry  from './config/entry';
 import * as loaders from './config/loader';
 import uglifyJsConfig from './config/uglify';
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
 
 import { 
   fsExistsSync, 
@@ -30,11 +31,12 @@ const config = {
   externals: options.externals,
   resolve: {
     alias: entry.configAlias,
-    extensions: ['*', '.js', '.jsx'],
+    extensions: ['*', '.js', '.jsx', '.vue'],
   },
   module: {
     noParse: [],
     rules: [
+      loaders.vueLoader(),
       loaders.jsLoader({
         id: 'babelJs',
       }, [
@@ -73,7 +75,8 @@ const config = {
       /^\.\/(zh-cn|en-gb)+\.js$/
     ),
     new OptimizeModuleIdAndChunkIdPlugin(),
-    new webpack.WatchIgnorePlugin(options.ignoredDirs)
+    new webpack.WatchIgnorePlugin(options.ignoredDirs),
+    new VueLoaderPlugin(),
   ]
 };
 
@@ -201,7 +204,6 @@ if (options.isBuildAllModule || options.buildModule.length) {
   const commonEntryKeys = Object.keys(commonEntry);
 
   let index = 0;
-
   commonEntryKeys.forEach((key) => {
     let commonConfig = {};
 
@@ -214,6 +216,7 @@ if (options.isBuildAllModule || options.buildModule.length) {
       entry: commonEntry[key],
       module: {
         rules: [
+          loaders.vueLoader(),
           loaders.imageLoader(key, options.imgName, options.imglimit),
           loaders.fontLoader(key, options.fontName, options.fontlimit),
           loaders.mediaLoader(key, options.mediaName),
@@ -249,6 +252,10 @@ if (options.isBuildAllModule || options.buildModule.length) {
         analyzerPort: `400${index}`
       }));
     };
+
+    if (key === 'custombundle') {
+      console.log(commonConfig);
+    }
 
     commonConfigs.push(commonConfig);
 

@@ -106,3 +106,10 @@ export const eslintLoader = () => {
     }
   };
 };
+
+export const vueLoader = () => {
+  return {
+    test: /\.vue$/,
+    loader: 'vue-loader'
+  }
+}
