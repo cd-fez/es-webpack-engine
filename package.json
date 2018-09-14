@@ -69,12 +69,12 @@
     "nodemon": "bin/nodemon.js"
   },
   "license": "MIT",
-  "name": "es-webpack-engine",
+  "name": "es-webpack-engine-test",
   "optionalDependencies": {},
   "readmeFilename": "README.md",
   "scripts": {
     "dev": "npm run build -- --watch",
     "build": "rm -rf dist && babel src --out-dir dist --presets=env"
   },
-  "version": "3.5.3-rc.1"
+  "version": "1.0.0"
 }
