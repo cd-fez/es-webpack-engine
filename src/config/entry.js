@@ -18,7 +18,7 @@ const configAlias = {
   app: `${options.globalDir}/app`,
   nodeModulesDir: options.nodeModulesDir, // 即将废弃
   node_modules: options.nodeModulesDir,
-  'vue$': 'vue/dist/vue.esm.js'
+  'vue$': 'vue/dist/vue.js'
 };
 
 /*

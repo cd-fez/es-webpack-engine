@@ -28,6 +28,10 @@ compiler.apply(new ProgressBarPlugin());
 
 app.use(webpackDevMiddleware(compiler, options.output.publicPath));
 
+// Step 3: Attach the hot middleware to the compiler & the server
+  app.use(require("webpack-hot-middleware")(compiler, {
+    log: console.log, path: '/__webpack_hmr', heartbeat: 10 * 1000
+  }));
 // app.use(cors());
 
 app.listen(options.__DEV_SERVER_PORT__, '0.0.0.0',(err) => {

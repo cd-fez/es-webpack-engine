@@ -15,7 +15,7 @@ import options  from './config/options';
 import * as entry  from './config/entry';
 import * as loaders from './config/loader';
 import uglifyJsConfig from './config/uglify';
-const VueLoaderPlugin = require('vue-loader/lib/plugin')
+// const VueLoaderPlugin = require('vue-loader/lib/plugin')
 
 import { 
   fsExistsSync, 
@@ -36,12 +36,12 @@ const config = {
   module: {
     noParse: [],
     rules: [
-      loaders.vueLoader(),
       loaders.jsLoader({
         id: 'babelJs',
       }, [
         options.nodeModulesDir
       ]),
+      loaders.vueLoader(),
       loaders.cssLoader({
         minimize: options.__DEV__ || options.__DEBUG__ ? false : true
       }), 
@@ -76,7 +76,7 @@ const config = {
     ),
     new OptimizeModuleIdAndChunkIdPlugin(),
     new webpack.WatchIgnorePlugin(options.ignoredDirs),
-    new VueLoaderPlugin(),
+    // new VueLoaderPlugin(),
   ]
 };
 
@@ -89,7 +89,7 @@ for (let key in options.noParseDeps) {
 
 if (options.__DEV__) {
   config.plugins = config.plugins.concat(new FriendlyErrorsPlugin());
-  options.isESlint ? config.module.rules.push(loaders.eslintLoader()) : '';
+  // options.isESlint ? config.module.rules.push(loaders.eslintLoader()) : '';
 }
 
 if (!options.__DEV__ && !options.__DEBUG__) {

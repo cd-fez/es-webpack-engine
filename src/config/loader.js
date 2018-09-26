@@ -48,8 +48,18 @@ export const mediaLoader = (path, name) => {
 export const jsLoader = (options, exclude) => {
   return {
     test: /\.js[x]?$/,
-    loader: 'happypack/loader',
-    options,
+    use: [
+      {
+        loader: 'vue-loader',
+      },
+      {
+        loader: 'babel-loader'
+      },
+      {
+        loader: 'happypack/loader',
+        options,
+      },
+    ],
     exclude,
   }
 };
