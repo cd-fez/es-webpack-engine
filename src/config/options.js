@@ -39,7 +39,7 @@ const defaultOptions = Object.assign({
   nodeModulesDir: 'node_modules',
   pluginsDir: 'plugins',
   bundlesDir: 'src',
-  activitiesDir: 'activities',
+  activitiesDir: 'web/activities',
   themesDir: 'web/themes',
 
   fontlimit: 1024,
