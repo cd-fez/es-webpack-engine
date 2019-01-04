@@ -45,7 +45,8 @@ let watchDir = [
   options.bundlesDir,
   options.activitiesDir
 ]
-
+console.log('dev模式');
+console.log(options.activitiesDir);
 let watcher = chokidar.watch(watchDir, {
   ignored: /[\/\\]\./,
   ignoreInitial: true
