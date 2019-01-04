@@ -1,6 +1,6 @@
 'use strict';Object.defineProperty(exports,"__esModule",{value:true});exports.configAlias=exports.onlyCopys=exports.commonSrcEntry=exports.commonEntry=exports.appEntry=exports.libEntry=undefined;var _path=require('path');var _path2=_interopRequireDefault(_path);var _utils=require('../utils');var _options=require('./options');var _options2=_interopRequireDefault(_options);function _interopRequireDefault(obj){return obj&&obj.__esModule?obj:{default:obj};}// 设置别名
 var configAlias={libs:_options2.default.globalDir+'/libs',common:_options2.default.globalDir+'/common',app:_options2.default.globalDir+'/app',nodeModulesDir:_options2.default.nodeModulesDir,// 即将废弃
-node_modules:_options2.default.nodeModulesDir};/*
+node_modules:_options2.default.nodeModulesDir};console.log('wins configAlias entry');console.log(configAlias);/*
   * 输出格式
   * let commonEntry = {
   *   'crmplugin': {
