@@ -23,6 +23,8 @@ import {
 } from './utils';
 
 // 基础配置
+console.log('wins configAlias webapck.base');
+console.log(options.configAlias);
 const config = {
   output: Object.assign(options.output, {
     filename: '[name].js',

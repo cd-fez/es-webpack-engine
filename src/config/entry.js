@@ -18,6 +18,9 @@ const configAlias = {
   node_modules: options.nodeModulesDir
 };
 
+console.log('wins configAlias entry');
+console.log(configAlias);
+
 /*
   * 输出格式
   * let commonEntry = {
