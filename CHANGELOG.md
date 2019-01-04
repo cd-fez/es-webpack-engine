@@ -1,3 +1,7 @@
+# es-webpack-engine 3.5.3-rc.1(2018.03.26)
+
+* 支持教学活动资源的编译
+
 # es-webpack-engine 3.5.2(2018.03.06)
 
 * 添加ESlint
@@ -211,4 +215,3 @@
 # es-webpack-engine 2.0.0 (2016.12.02)
 
 * 针对 Biz-Symfony-Starter 的目录结构以及需求，进行了重构
-
