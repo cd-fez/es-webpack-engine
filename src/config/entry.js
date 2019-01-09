@@ -66,6 +66,9 @@ if (options.isBuildAllModule || options.buildModule.length) {
     let commonDir;
     let commonName;
 
+    console.log('判断是否是主题');
+    console.log(isTheme(item));
+
     if (isPlugin(item) || isBundle(item)) {
       commonDir = `${item}/Resources/static-src`;
       commonName = item.split(path.sep).pop().toLowerCase();
