@@ -46,6 +46,9 @@ let watchDir = [
   options.activitiesDir
 ]
 
+console.log('打印出options.activitiesDir');
+console.log(options.activitiesDir);
+
 let watcher = chokidar.watch(watchDir, {
   ignored: /[\/\\]\./,
   ignoreInitial: true
