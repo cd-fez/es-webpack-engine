@@ -125,4 +125,7 @@ const options = Object.assign({}, defaultOptions, {
   ignoredDirs
 });
 
+console.log('options.activitiesDir');
+console.log(options.activitiesDir);
+
 export default options;
