@@ -61,6 +61,8 @@ if (options.isBuildAllModule || options.buildModule.length) {
 
 
   commonNames.forEach((item) => {
+    console.log('item传入的值');
+    console.log(item);
     let commonDir;
     let commonName;
 
@@ -75,6 +77,9 @@ if (options.isBuildAllModule || options.buildModule.length) {
       commonDir = `${item}/static-src`;
       commonName = item.split(path.sep).pop().replace('-','').toLowerCase() + 'activity';
     }
+
+    console.log('for循环遍历出的 commonDir');
+    console.log(commonDir);
 
     commonEntry[commonName] = {};
     
