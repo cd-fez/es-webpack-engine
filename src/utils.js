@@ -130,7 +130,8 @@ const isBundle = (path) => {
 };
 
 const isTheme = (path) => {
-  return path.indexOf('web/themes') !== -1;
+  console.log(path);
+  return path.indexOf('themes') !== -1;
 }
 
 const isActivity = (path) => {
