@@ -1,3 +1,16 @@
+# es-webpack-engine 3.5.3-rc.2(2019.1.10)
+* 解决window下主题匹配路径报错问题, window 下文件目录会出现'\'的情况
+
+```
+    // utils.js
+    const sep = path.sep;
+    const isTheme = (path) => {
+      const finalPath = path.split(sep).join('/');
+      return finalPath.indexOf('web/themes') !== -1;
+    }
+
+```
+
 # es-webpack-engine 3.5.3-rc.1(2018.03.26)
 
 * 支持教学活动资源的编译

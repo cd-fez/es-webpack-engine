@@ -2,6 +2,7 @@ import glob from 'glob';
 import fs from 'fs';
 import path from 'path';
 
+const sep = path.sep;
 const searchEntries = (options) => {
 
   let files = {};
@@ -130,7 +131,8 @@ const isBundle = (path) => {
 };
 
 const isTheme = (path) => {
-  return path.indexOf('web/themes') !== -1;
+  const finalPath = path.split(sep).join('/');
+  return finalPath.indexOf('web/themes') !== -1;
 }
 
 const isActivity = (path) => {
