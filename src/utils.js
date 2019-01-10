@@ -8,7 +8,7 @@ let a = 'web/themes';
 let b = 'web\themes';
 console.log(a.split(path.sep));
 console.log(b.split(path.sep));
-
+const sep = path.sep;
 const searchEntries = (options) => {
 
   let files = {};
@@ -137,7 +137,8 @@ const isBundle = (path) => {
 };
 
 const isTheme = (path) => {
-  console.log(path);
+  console.log('windows下的路径转换');
+  console.log(path.split(sep));
   return path.indexOf('themes') !== -1;
 }
 
