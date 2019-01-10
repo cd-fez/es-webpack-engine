@@ -61,8 +61,6 @@ if (options.isBuildAllModule || options.buildModule.length) {
 
 
   commonNames.forEach((item) => {
-    console.log('item传入的值');
-    console.log(item);
     let commonDir;
     let commonName;
 

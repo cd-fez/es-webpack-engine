@@ -2,13 +2,6 @@ import glob from 'glob';
 import fs from 'fs';
 import path from 'path';
 
-console.log(path.sep);
-console.log('path.sep的使用');
-let a = 'web/themes';
-let b = 'web\themes';
-console.log(a.split(path.sep));
-console.log(b.split(path.sep));
-const sep = path.sep;
 const searchEntries = (options) => {
 
   let files = {};
@@ -137,9 +130,8 @@ const isBundle = (path) => {
 };
 
 const isTheme = (path) => {
-  console.log('windows下的路径转换分解成数组然后在统一拼接');
-  console.log(path.split(sep).join('/'));
-  return path.indexOf('themes') !== -1;
+  const finalPath = path.split(sep).join('/');
+  return finalPath.indexOf('web/themes') !== -1;
 }
 
 const isActivity = (path) => {
