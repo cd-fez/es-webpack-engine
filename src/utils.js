@@ -137,8 +137,8 @@ const isBundle = (path) => {
 };
 
 const isTheme = (path) => {
-  console.log('windows下的路径转换');
-  console.log(path.split(sep));
+  console.log('windows下的路径转换分解成数组然后在统一拼接');
+  console.log(path.split(sep).join('/'));
   return path.indexOf('themes') !== -1;
 }
 
