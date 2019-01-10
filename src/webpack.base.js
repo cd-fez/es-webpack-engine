@@ -22,9 +22,6 @@ import {
   filterObject
 } from './utils';
 
-console.log('估计报错了 entry.configAlias');
-console.log(entry.configAlias);
-
 // 基础配置
 const config = {
   output: Object.assign(options.output, {

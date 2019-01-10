@@ -64,9 +64,6 @@ if (options.isBuildAllModule || options.buildModule.length) {
     let commonDir;
     let commonName;
 
-    console.log('判断是否是主题');
-    console.log(isTheme(item));
-
     if (isPlugin(item) || isBundle(item)) {
       commonDir = `${item}/Resources/static-src`;
       commonName = item.split(path.sep).pop().toLowerCase();
@@ -78,9 +75,6 @@ if (options.isBuildAllModule || options.buildModule.length) {
       commonDir = `${item}/static-src`;
       commonName = item.split(path.sep).pop().replace('-','').toLowerCase() + 'activity';
     }
-
-    console.log('for循环遍历出的 commonDir');
-    console.log(commonDir);
 
     commonEntry[commonName] = {};
     
