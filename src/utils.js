@@ -2,6 +2,13 @@ import glob from 'glob';
 import fs from 'fs';
 import path from 'path';
 
+console.log(path.sep);
+console.log('path.sep的使用');
+let a = 'web/themes';
+let b = 'web\themes';
+console.log(a.split(path.sep));
+console.log(b.split(path.sep));
+
 const searchEntries = (options) => {
 
   let files = {};
