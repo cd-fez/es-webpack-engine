@@ -2,6 +2,7 @@ import glob from 'glob';
 import fs from 'fs';
 import path from 'path';
 
+const sep = path.sep;
 const searchEntries = (options) => {
 
   let files = {};
