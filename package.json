@@ -53,13 +53,7 @@
   ],
   "babel": {
     "presets": [
-      [
-        "env",
-        {
-          "modules": false
-        }
-      ],
-      "stage-0"
+      "es2015"
     ],
     "compact": true
   },
