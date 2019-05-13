@@ -1,3 +1,18 @@
+# es-webpack-engine 3.5.2-custom-swiper(2019.05.13)
+
+* 暂时兼容swiper 4.5 版本的打包方案
+
+```
+export const domLoader = () => {
+  return {
+    exclude: [/node_modules\/(?!(swiper|dom7)\/).*/, /\.test\.jsx?$/],
+    test: /\.jsx?$/,
+    use: [{ loader: 'babel-loader' }],
+  }
+}
+
+```
+
 # es-webpack-engine 3.5.2(2018.03.06)
 
 * 添加ESlint
