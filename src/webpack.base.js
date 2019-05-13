@@ -47,6 +47,7 @@ const config = {
         minimize: options.__DEV__ || options.__DEBUG__ ? false : true
       }),
       loaders.jsonLoader(),
+      loaders.domLoader()
     ]
   },
   plugins: [

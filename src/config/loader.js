@@ -15,6 +15,15 @@ export const imageLoader = (path, imgName, limit) => {
   }
 };
 
+export const domLoader = () => {
+  return {
+    exclude: [/node_modules\/(?!(swiper|dom7)\/).*/, /\.test\.jsx?$/],
+    test: /\.jsx?$/,
+    use: [{ loader: 'babel-loader' }],
+  }
+}
+
+
 export const fontLoader = (path, fontName, limit) => {
   return {
     test: /\.(woff|woff2|eot|ttf|svg)(\?(.*))?$/,
@@ -30,6 +39,8 @@ export const fontLoader = (path, fontName, limit) => {
     
   }
 };
+
+
 
 export const mediaLoader = (path, name) => {
   return {
