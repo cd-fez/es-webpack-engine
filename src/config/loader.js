@@ -1,4 +1,5 @@
-import ExtractTextPlugin from 'extract-text-webpack-plugin';
+// import ExtractTextPlugin from 'extract-text-webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 
 export const imageLoader = (path, imgName, limit) => {
   return {
@@ -57,28 +58,27 @@ export const jsLoader = (options, exclude) => {
 export const cssLoader = (options) => {
   return {
     test: /\.css$/,
-    use: ExtractTextPlugin.extract({
-      fallback: 'style-loader',
-      use: [{
-        loader: 'css-loader',
-        options
-      }]
-    })
+    use: [
+      {
+         loader: MiniCssExtractPlugin.loader,
+       },
+       'style-loader',
+       'css-loader',
+    ],
   }
 };
 
 export const lessLoader = (options) => {
   return {
     test: /\.less$/,
-    use: ExtractTextPlugin.extract({
-      fallback: 'style-loader',
-      use: [{
-        loader: 'css-loader',
-        options
-      }, {
-        loader: 'less-loader'
-      }]
-    })
+    use: [
+      {
+        loader: MiniCssExtractPlugin.loader,
+      },
+      'style-loader',
+      'css-loader',
+      'less-loader',
+    ]
   }
 };
 
