@@ -78,7 +78,7 @@ const config = {
         minimize: options.__DEV__ || options.__DEBUG__ ? false : true,
         hmr: options.__DEV__,
       }),
-      loaders.jsonLoader(),
+      // loaders.jsonLoader(),
     ]
   },
   plugins: [

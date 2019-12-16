@@ -100,12 +100,12 @@ export const importsLoader = (regExp) => {
   }
 };
 
-export const jsonLoader = () => {
-  return {
-    test: /\.json$/,
-    loader: 'json-loader'
-  }
-};
+// export const jsonLoader = () => {
+//   return {
+//     test: /\.json$/,
+//     loader: 'json-loader'
+//   }
+// };
 
 export const eslintLoader = () => {
   return {
