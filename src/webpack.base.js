@@ -1,6 +1,6 @@
 import path from 'path';
 import webpack from 'webpack';
-import HappyPack from 'happypack';
+// import HappyPack from 'happypack';
 import merge from 'webpack-merge';
 import os from 'os';
 
