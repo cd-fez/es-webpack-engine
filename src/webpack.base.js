@@ -88,6 +88,7 @@ const config = {
     // }),
     new MiniCssExtractPlugin({
       filename: "[name].css",
+      chunkFilename: "[id].css",
       allChunks: true
     }),
     new webpack.DefinePlugin({
