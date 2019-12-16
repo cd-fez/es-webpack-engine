@@ -39,9 +39,9 @@
     "file-loader": "4.3.0",
     "friendly-errors-webpack-plugin": "^1.7.0",
     "glob": "7.1.2",
-    "imports-loader": "0.7.1",
-    "json-loader": "0.5.7",
-    "less": "2.7.1",
+    "imports-loader": "^0.8.0",
+    "json-loader": "^0.5.7",
+    "less": "^3.10.3",
     "less-loader": "^5.0.0",
     "mini-css-extract-plugin": "^0.8.0",
     "nodemon": "1.12.1",
@@ -111,5 +111,5 @@
     "dev": "npm run build -- --watch",
     "build": "rm -rf dist && babel src --out-dir dist"
   },
-  "version": "0.0.5"
+  "version": "0.0.4-beta6"
 }
