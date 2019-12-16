@@ -71,10 +71,12 @@ const config = {
         options.nodeModulesDir
       ]),
       loaders.cssLoader({
-        minimize: options.__DEV__ || options.__DEBUG__ ? false : true
+        minimize: options.__DEV__ || options.__DEBUG__ ? false : true,
+        hmr: options.__DEV__,
       }),
       loaders.lessLoader({
-        minimize: options.__DEV__ || options.__DEBUG__ ? false : true
+        minimize: options.__DEV__ || options.__DEBUG__ ? false : true,
+        hmr: options.__DEV__,
       }),
       loaders.jsonLoader(),
     ]
@@ -89,10 +91,10 @@ const config = {
     new MiniCssExtractPlugin({
       filename: "[name].css",
       chunkFilename: "[id].css",
-      allChunks: true
+      // allChunks: true
     }),
     new webpack.DefinePlugin({
-      __webpack_public_path__: `window.__publicPath`,
+      // __webpack_public_path__: `window.__publicPath`,
       'process.env': {
         'NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
       }

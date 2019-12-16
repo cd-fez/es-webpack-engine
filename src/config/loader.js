@@ -70,7 +70,10 @@ export const cssLoader = (options) => {
   return {
     test: /\.css$/,
     use: [
-       MiniCssExtractPlugin.loader,
+      {
+        loader: MiniCssExtractPlugin.loader,
+        options
+      },
        'css-loader',
     ],
   }
@@ -80,7 +83,10 @@ export const lessLoader = (options) => {
   return {
     test: /\.less$/,
     use: [
-      MiniCssExtractPlugin.loader,
+      {
+        loader: MiniCssExtractPlugin.loader,
+        options,
+      },
       'css-loader',
       'less-loader',
     ]
