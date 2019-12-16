@@ -19,9 +19,9 @@ import * as entry  from './config/entry';
 import * as loaders from './config/loader';
 import uglifyJsConfig from './config/uglify';
 
-import { 
-  fsExistsSync, 
-  isEmptyObject, 
+import {
+  fsExistsSync,
+  isEmptyObject,
   filterObject
 } from './utils';
 
@@ -67,14 +67,12 @@ const config = {
   module: {
     noParse: [],
     rules: [
-      loaders.jsLoader({
-        id: 'babelJs',
-      }, [
+      loaders.jsLoader({}, [
         options.nodeModulesDir
       ]),
       loaders.cssLoader({
         minimize: options.__DEV__ || options.__DEBUG__ ? false : true
-      }), 
+      }),
       loaders.lessLoader({
         minimize: options.__DEV__ || options.__DEBUG__ ? false : true
       }),
@@ -82,12 +80,12 @@ const config = {
     ]
   },
   plugins: [
-    new HappyPack({
-      id: 'babelJs',
-      threadPool: HappyPack.ThreadPool({ size: os.cpus().length }),
-      verbose: false,
-      loaders: ['babel-loader']
-    }),
+    // new HappyPack({
+    //   id: 'babelJs',
+    //   threadPool: HappyPack.ThreadPool({ size: os.cpus().length }),
+    //   verbose: false,
+    //   loaders: ['babel-loader']
+    // }),
     new MiniCssExtractPlugin({
       filename: "[name].css",
       allChunks: true
@@ -102,7 +100,7 @@ const config = {
       /moment[\\\/]locale$/,
       /^\.\/(zh-cn|en-gb)+\.js$/
     ),
-    new OptimizeModuleIdAndChunkIdPlugin(),
+    // new OptimizeModuleIdAndChunkIdPlugin(),
   ]
 };
 
@@ -230,7 +228,7 @@ if (options.isBuildAllModule) {
 let commonConfigs = [];
 if (options.isBuildAllModule || options.buildModule.length) {
   const commonEntry = entry.commonEntry;
-  
+
   const commonEntryKeys = Object.keys(commonEntry);
 
   let index = 0;
@@ -281,7 +279,7 @@ if (options.isBuildAllModule || options.buildModule.length) {
         manifestVariable: 'webpackManifest'
       }));
     }
-    
+
     if (options.__ANALYZER__) {
       commonConfig.plugins = commonConfig.plugins.concat(new BundleAnalyzerPlugin({
         analyzerPort: `400${index}`

@@ -1,5 +1,6 @@
 // import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import os from "os";
 
 export const imageLoader = (path, imgName, limit) => {
   return {
@@ -28,7 +29,7 @@ export const fontLoader = (path, fontName, limit) => {
         }
       }
     ]
-    
+
   }
 };
 
@@ -49,8 +50,18 @@ export const mediaLoader = (path, name) => {
 export const jsLoader = (options, exclude) => {
   return {
     test: /\.js[x]?$/,
-    loader: 'happypack/loader',
-    options,
+    use: [
+      {
+        loader: 'thread-loader',
+        options: {
+          workers: os.cpus().length
+        }
+      },
+      {
+        loader: 'babel-loader',
+      }
+    ],
+    // loader: `happypack/loader?id=${options.id}`,
     exclude,
   }
 };
