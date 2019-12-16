@@ -71,7 +71,10 @@ export const cssLoader = (options) => {
     test: /\.css$/,
     use: [
       {
-         loader: MiniCssExtractPlugin.loader,
+        loader: MiniCssExtractPlugin.loader,
+        options: {
+          hmr: process.env.NODE_ENV === 'development',
+        },
        },
        'style-loader',
        'css-loader',
@@ -85,6 +88,9 @@ export const lessLoader = (options) => {
     use: [
       {
         loader: MiniCssExtractPlugin.loader,
+        options: {
+          hmr: process.env.NODE_ENV === 'development',
+        },
       },
       'style-loader',
       'css-loader',

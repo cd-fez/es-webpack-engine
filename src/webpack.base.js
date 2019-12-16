@@ -91,6 +91,7 @@ const config = {
       allChunks: true
     }),
     new webpack.DefinePlugin({
+      __webpack_public_path__: `window.__publicPath`,
       'process.env': {
         'NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
       }
