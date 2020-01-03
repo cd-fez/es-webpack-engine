@@ -87,7 +87,7 @@ export const lessLoader = (options) => {
     test: /\.less$/,
     use: [
       {
-        loader: MiniCssExtractPlugin.loader,
+        loader: testLoader,
         options,
       },
       'css-loader',
