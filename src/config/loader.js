@@ -66,15 +66,12 @@ export const jsLoader = (options, exclude) => {
   }
 };
 
-const NODE_ENV = process.env.NODE_ENV !== 'production';
-
-const testLoader = NODE_ENV ? 'style-loader': MiniCssExtractPlugin.loader;
 export const cssLoader = (options) => {
   return {
     test: /\.css$/,
     use: [
       {
-        testLoader,
+        loader: MiniCssExtractPlugin.loader,
         options
       },
        'css-loader',
@@ -87,7 +84,7 @@ export const lessLoader = (options) => {
     test: /\.less$/,
     use: [
       {
-        loader: testLoader,
+        loader: MiniCssExtractPlugin.loader,
         options,
       },
       'css-loader',
