@@ -1,12 +1,8 @@
 import path from 'path';
 import webpack from 'webpack';
-// import HappyPack from 'happypack';
 import merge from 'webpack-merge';
-import os from 'os';
 
-// import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import ChunkManifestPlugin from 'chunk-manifest-webpack-plugin';
-import OptimizeModuleIdAndChunkIdPlugin from 'optimize-moduleid-and-chunkid-plugin';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import FriendlyErrorsPlugin from 'friendly-errors-webpack-plugin';
@@ -17,8 +13,11 @@ import UglifyJsPlugin from 'uglifyjs-webpack-plugin';
 import options  from './config/options';
 import * as entry  from './config/entry';
 import * as loaders from './config/loader';
-import uglifyJsConfig from './config/uglify';
 
+console.log('读取信息');
+console.log(options);
+console.log('读取设置信息');
+console.log(options.cupNumber);
 import {
   fsExistsSync,
   isEmptyObject,
@@ -67,7 +66,9 @@ const config = {
   module: {
     noParse: [],
     rules: [
-      loaders.jsLoader({}, [
+      loaders.jsLoader({
+        cupNumber: options.cupNumber
+      }, [
         options.nodeModulesDir
       ]),
       loaders.cssLoader({

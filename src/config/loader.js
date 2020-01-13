@@ -1,6 +1,7 @@
-// import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import os from "os";
+console.log('os');
+console.log(os.cpus().length);
 
 export const imageLoader = (path, imgName, limit) => {
   return {
@@ -54,14 +55,13 @@ export const jsLoader = (options, exclude) => {
       {
         loader: 'thread-loader',
         options: {
-          workers: os.cpus().length
+          workers: options.cupNumber
         }
       },
       {
         loader: 'babel-loader',
       }
     ],
-    // loader: `happypack/loader?id=${options.id}`,
     exclude,
   }
 };
@@ -99,13 +99,6 @@ export const importsLoader = (regExp) => {
     loader: 'imports-loader?define=>false&module=>false&exports=>false&this=>window',
   }
 };
-
-// export const jsonLoader = () => {
-//   return {
-//     test: /\.json$/,
-//     loader: 'json-loader'
-//   }
-// };
 
 export const eslintLoader = () => {
   return {
