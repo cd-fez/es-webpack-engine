@@ -98,7 +98,8 @@ export const lessLoader = (options) => {
 export const vueLoader = (options) => {
   return {
     test: /\.vue$/,
-    loader: 'vue-loader'
+    loader: 'vue-loader',
+    options
   }
 }
 

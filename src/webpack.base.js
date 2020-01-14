@@ -81,7 +81,9 @@ const config = {
         minimize: options.__DEV__ || options.__DEBUG__ ? false : true,
         hmr: options.__DEV__,
       }),
-      // loaders.jsonLoader(),
+      loaders.vueLoader({
+        hotReload: options.__DEV__ || options.__DEBUG__ ? true : false // 编译时关闭热重载
+      })
     ]
   },
   plugins: [
