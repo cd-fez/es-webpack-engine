@@ -8,6 +8,7 @@ import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import FriendlyErrorsPlugin from 'friendly-errors-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import UglifyJsPlugin from 'uglifyjs-webpack-plugin';
+import VueLoaderPlugin from 'vue-loader/lib/plugin';
 
 
 import options  from './config/options';
@@ -105,6 +106,7 @@ const config = {
       /moment[\\\/]locale$/,
       /^\.\/(zh-cn|en-gb)+\.js$/
     ),
+    new VueLoaderPlugin()
     // new OptimizeModuleIdAndChunkIdPlugin(),
   ]
 };

@@ -74,7 +74,8 @@ export const cssLoader = (options) => {
         loader: MiniCssExtractPlugin.loader,
         options
       },
-       'css-loader',
+      'vue-style-loader',
+      'css-loader',
     ],
   }
 };
@@ -87,11 +88,19 @@ export const lessLoader = (options) => {
         loader: MiniCssExtractPlugin.loader,
         options,
       },
+      'vue-style-loader',
       'css-loader',
       'less-loader',
     ]
   }
 };
+
+export const vueLoader = (options) => {
+  return {
+    test: /\.vue$/,
+    loader: 'vue-loader'
+  }
+}
 
 export const importsLoader = (regExp) => {
   return {
