@@ -25,7 +25,6 @@
     "@babel/preset-react": "^7.0.0",
     "babel-loader": "^8.0.6",
     "chokidar": "1.7.0",
-    "chunk-manifest-webpack-plugin": "^1.1.2",
     "copy-webpack-plugin": "^5.1.1",
     "cors": "2.8.1",
     "cross-env": "5.0.5",
