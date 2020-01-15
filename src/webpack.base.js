@@ -89,11 +89,11 @@ const config = {
     //   verbose: false,
     //   loaders: ['babel-loader']
     // }),
-    new MiniCssExtractPlugin({
-      filename: "[name].css",
-      chunkFilename: "[id].css",
-      // allChunks: true
-    }),
+    // new MiniCssExtractPlugin({
+    //   filename: "[name].css",
+    //   chunkFilename: "[id].css",
+    //   // allChunks: true
+    // }),
     new webpack.DefinePlugin({
       // __webpack_public_path__: `window.__publicPath`,
       'process.env': {
