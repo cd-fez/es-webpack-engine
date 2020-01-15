@@ -16,10 +16,6 @@ import options  from './config/options';
 import * as entry  from './config/entry';
 import * as loaders from './config/loader';
 
-console.log('读取信息');
-console.log(options);
-console.log('读取设置信息');
-console.log(options.cupNumber);
 import {
   fsExistsSync,
   isEmptyObject,
@@ -39,7 +35,7 @@ const config = {
   externals: options.externals,
   resolve: {
     alias: entry.configAlias,
-    extensions: ['*', '.js', '.jsx'],
+    extensions: ['*', '.js', '.jsx', '.vue'],
   },
   optimization: {
     minimizer: [new UglifyJsPlugin()],
@@ -68,6 +64,9 @@ const config = {
   module: {
     noParse: [],
     rules: [
+      loaders.vueLoader({
+        hotReload: options.__DEV__ || options.__DEBUG__ ? true : false // 编译时关闭热重载
+      }),
       loaders.jsLoader({
         cupNumber: options.cupNumber
       }, [
@@ -80,9 +79,6 @@ const config = {
       loaders.lessLoader({
         minimize: options.__DEV__ || options.__DEBUG__ ? false : true,
         hmr: options.__DEV__,
-      }),
-      loaders.vueLoader({
-        hotReload: options.__DEV__ || options.__DEBUG__ ? true : false // 编译时关闭热重载
       })
     ]
   },
@@ -136,13 +132,13 @@ if (!options.__DEV__ && !options.__DEBUG__) {
   config.devtool = options.__DEVTOOL__;
 }
 
-const minChunks = (module, count) => {
-  if(module.resource && (/^.*\.(css|less)$/).test(module.resource)) {
-    return false;
-  }
-  let pattern = new RegExp(options.regExp);
-  return module.resource && !pattern.test(module.resource) && count >= options.minChunks;
-}
+// const minChunks = (module, count) => {
+//   if(module.resource && (/^.*\.(css|less)$/).test(module.resource)) {
+//     return false;
+//   }
+//   let pattern = new RegExp(options.regExp);
+//   return module.resource && !pattern.test(module.resource) && count >= options.minChunks;
+// }
 
 // lib 配置
 let libConfigs = [];

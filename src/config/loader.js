@@ -88,7 +88,6 @@ export const lessLoader = (options) => {
         loader: MiniCssExtractPlugin.loader,
         options,
       },
-      'vue-style-loader',
       'css-loader',
       'less-loader',
     ]
