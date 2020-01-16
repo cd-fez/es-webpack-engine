@@ -1,7 +1,4 @@
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import os from "os";
-console.log('os');
-console.log(os.cpus().length);
 
 export const imageLoader = (path, imgName, limit) => {
   return {
@@ -70,11 +67,10 @@ export const cssLoader = (options) => {
   return {
     test: /\.css$/,
     use: [
+      options.mode ? 'vue-style-loader' : MiniCssExtractPlugin.loader,
       {
-        loader: MiniCssExtractPlugin.loader,
         options
       },
-      'vue-style-loader',
       'css-loader',
     ],
   }
@@ -84,10 +80,7 @@ export const lessLoader = (options) => {
   return {
     test: /\.less$/,
     use: [
-      {
-        loader: MiniCssExtractPlugin.loader,
-        options,
-      },
+      options.mode ? 'vue-style-loader' : MiniCssExtractPlugin.loader,
       'css-loader',
       'less-loader',
     ]
