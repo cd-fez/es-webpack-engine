@@ -90,11 +90,11 @@ const config = {
     //   verbose: false,
     //   loaders: ['babel-loader']
     // }),
-    // new MiniCssExtractPlugin({
-    //   filename: "[name].css",
-    //   chunkFilename: "[id].css",
-    //   // allChunks: true
-    // }),
+    new MiniCssExtractPlugin({
+      filename: "[name].css",
+      chunkFilename: "[id].css",
+      // allChunks: true
+    }),
     new webpack.DefinePlugin({
       // __webpack_public_path__: `window.__publicPath`,
       'process.env': {
@@ -107,13 +107,6 @@ const config = {
       /^\.\/(zh-cn|en-gb)+\.js$/
     ),
     new VueLoaderPlugin(),
-    new OptimizeCssAssetsPlugin({
-      cssProcessor: require('cssnano'),
-      cssProcessorPluginOptions: {
-        preset: ['default', { discardComments: { removeAll: true } }],
-      },
-      canPrint: true
-    })
     // new OptimizeModuleIdAndChunkIdPlugin(),
   ]
 };
@@ -135,6 +128,7 @@ if (options.__DEV__) {
 }
 
 if (!options.__DEV__ && !options.__DEBUG__) {
+    config.plugins = config.plugins.concat(new OptimizeCssAssetsPlugin());
   // config.plugins = config.plugins.concat(new webpack.optimize.UglifyJsPlugin(uglifyJsConfig));
 } else {
   config.devtool = options.__DEVTOOL__;
