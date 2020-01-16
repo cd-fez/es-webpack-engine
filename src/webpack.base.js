@@ -214,6 +214,7 @@ if (options.isBuildAllModule) {
       // }),
       new ManifestPlugin({
         filename: `chunk-manifest.json`,
+        publicPath: '/static-dist/app/'
       }),
       // new ChunkManifestPlugin({
       //   filename: `app/chunk-manifest.json`,
@@ -289,7 +290,8 @@ if (options.isBuildAllModule || options.buildModule.length) {
 
       commonConfig.plugins = commonConfig.plugins.concat(
         new ManifestPlugin({
-          filename: `${key}/chunk-manifest.json`,
+          filename: `chunk-manifest.json`,
+          publicPath: `/static-dist/${key}/`
         })
       );
     }

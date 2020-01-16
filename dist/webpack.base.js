@@ -25,7 +25,7 @@ var appConfig={};if(_options["default"].isBuildAllModule){appConfig=(0,_webpackM
 //   chunks: Object.keys(entry.appEntry['app']),
 //   minChunks,
 // }),
-new _webpackManifestPlugin["default"]({filename:"chunk-manifest.json"})// new ChunkManifestPlugin({
+new _webpackManifestPlugin["default"]({filename:"chunk-manifest.json",publicPath:'/static-dist/app/'})// new ChunkManifestPlugin({
 //   filename: `app/chunk-manifest.json`,
 //   manifestVariable: "webpackManifest"
 // }),
@@ -39,5 +39,5 @@ var commonConfigs=[];if(_options["default"].isBuildAllModule||_options["default"
 //   filename: `${key}/chunk-manifest.json`,
 //   manifestVariable: 'webpackManifest'
 // }));
-commonConfig.plugins=commonConfig.plugins.concat(new _webpackManifestPlugin["default"]({filename:"".concat(key,"/chunk-manifest.json")}));}if(_options["default"].__ANALYZER__){commonConfig.plugins=commonConfig.plugins.concat(new _webpackBundleAnalyzer.BundleAnalyzerPlugin({analyzerPort:"400".concat(index)}));};commonConfigs.push(commonConfig);index++;});}// 总配置
+commonConfig.plugins=commonConfig.plugins.concat(new _webpackManifestPlugin["default"]({filename:"chunk-manifest.json",publicPath:"/static-dist/".concat(key,"/")}));}if(_options["default"].__ANALYZER__){commonConfig.plugins=commonConfig.plugins.concat(new _webpackBundleAnalyzer.BundleAnalyzerPlugin({analyzerPort:"400".concat(index)}));};commonConfigs.push(commonConfig);index++;});}// 总配置
 var configs=[];[libConfigs,appConfig,commonConfigs].forEach(function(item){if(item.constructor===Object&&!(0,_utils.isEmptyObject)(item)){configs.push(item);}else if(item.constructor===Array&&item.length){configs=configs.concat(item);}});var _default=configs;exports["default"]=_default;
