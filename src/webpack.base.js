@@ -131,7 +131,6 @@ if (options.__DEV__) {
 }
 
 if (!options.__DEV__ && !options.__DEBUG__) {
-  console.log('编译压缩');
   config.plugins = config.plugins.concat(new OptimizeCssAssetsPlugin());
 } else {
   config.devtool = options.__DEVTOOL__;
@@ -214,7 +213,7 @@ if (options.isBuildAllModule) {
       //   minChunks,
       // }),
       new ManifestPlugin({
-        filename: `app/chunk-manifest.json`,
+        filename: `chunk-manifest.json`,
       }),
       // new ChunkManifestPlugin({
       //   filename: `app/chunk-manifest.json`,

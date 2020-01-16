@@ -10,7 +10,7 @@ var config={watch:_options["default"].__DEV__,watchOptions:{ignored:/node_module
 new _miniCssExtractPlugin["default"]({filename:"[name].css",chunkFilename:"[id].css"// allChunks: true
 }),new _webpack["default"].DefinePlugin({// __webpack_public_path__: `window.__publicPath`,
 'process.env':{'NODE_ENV':JSON.stringify(process.env.NODE_ENV||'development')}}),new _webpack["default"].ProvidePlugin(_options["default"].global),new _webpack["default"].ContextReplacementPlugin(/moment[\\\/]locale$/,/^\.\/(zh-cn|en-gb)+\.js$/),new _plugin["default"]()// new OptimizeModuleIdAndChunkIdPlugin(),
-]};if(!_options["default"].isWatchAllModule){concat.plugins.push(new _webpack["default"].WatchIgnorePlugin(_options["default"].ignoredDirs));}for(var key in _options["default"].noParseDeps){var depPath=_path["default"].resolve(_options["default"].nodeModulesDir,_options["default"].noParseDeps[key]);config.resolve.alias[key]=depPath;config.module.noParse.push(depPath);config.module.rules.push(loaders.importsLoader(config.module.noParse));}if(_options["default"].__DEV__){config.plugins=config.plugins.concat(new _friendlyErrorsWebpackPlugin["default"]());_options["default"].isESlint?config.module.rules.push(loaders.eslintLoader()):'';}if(!_options["default"].__DEV__&&!_options["default"].__DEBUG__){console.log('编译压缩');config.plugins=config.plugins.concat(new _optimizeCssAssetsWebpackPlugin["default"]());}else{config.devtool=_options["default"].__DEVTOOL__;}// const minChunks = (module, count) => {
+]};if(!_options["default"].isWatchAllModule){concat.plugins.push(new _webpack["default"].WatchIgnorePlugin(_options["default"].ignoredDirs));}for(var key in _options["default"].noParseDeps){var depPath=_path["default"].resolve(_options["default"].nodeModulesDir,_options["default"].noParseDeps[key]);config.resolve.alias[key]=depPath;config.module.noParse.push(depPath);config.module.rules.push(loaders.importsLoader(config.module.noParse));}if(_options["default"].__DEV__){config.plugins=config.plugins.concat(new _friendlyErrorsWebpackPlugin["default"]());_options["default"].isESlint?config.module.rules.push(loaders.eslintLoader()):'';}if(!_options["default"].__DEV__&&!_options["default"].__DEBUG__){config.plugins=config.plugins.concat(new _optimizeCssAssetsWebpackPlugin["default"]());}else{config.devtool=_options["default"].__DEVTOOL__;}// const minChunks = (module, count) => {
 //   if(module.resource && (/^.*\.(css|less)$/).test(module.resource)) {
 //     return false;
 //   }
@@ -25,7 +25,7 @@ var appConfig={};if(_options["default"].isBuildAllModule){appConfig=(0,_webpackM
 //   chunks: Object.keys(entry.appEntry['app']),
 //   minChunks,
 // }),
-new _webpackManifestPlugin["default"]({filename:"app/chunk-manifest.json"})// new ChunkManifestPlugin({
+new _webpackManifestPlugin["default"]({filename:"chunk-manifest.json"})// new ChunkManifestPlugin({
 //   filename: `app/chunk-manifest.json`,
 //   manifestVariable: "webpackManifest"
 // }),
