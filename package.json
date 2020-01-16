@@ -43,6 +43,7 @@
     "less-loader": "4.1.0",
     "mini-css-extract-plugin": "^0.8.0",
     "nodemon": "1.12.1",
+    "optimize-css-assets-webpack-plugin": "^5.0.3",
     "optimize-moduleid-and-chunkid-plugin": "^1.1.0",
     "os": "0.1.1",
     "path": "0.12.7",
@@ -115,7 +116,6 @@
   },
   "version": "0.0.4-beta10",
   "devDependencies": {
-    "optimize-css-assets-webpack-plugin": "^5.0.3",
     "style-loader": "^1.1.2"
   }
 }
