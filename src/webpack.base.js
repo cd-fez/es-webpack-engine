@@ -4,6 +4,7 @@ import merge from 'webpack-merge';
 
 // import ChunkManifestPlugin from 'chunk-manifest-webpack-plugin';
 import ManifestPlugin from 'webpack-manifest-plugin';
+import WebpackAssetsManifest from 'webpack-assets-manifest';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import FriendlyErrorsPlugin from 'friendly-errors-webpack-plugin';
@@ -214,7 +215,8 @@ if (options.isBuildAllModule) {
       //   chunks: Object.keys(entry.appEntry['app']),
       //   minChunks,
       // }),
-      new ManifestPlugin(),
+      // new ManifestPlugin(),
+      new WebpackAssetsManifest(),
       // new ChunkManifestPlugin({
       //   filename: `app/chunk-manifest.json`,
       //   manifestVariable: "webpackManifest"
@@ -288,7 +290,8 @@ if (options.isBuildAllModule || options.buildModule.length) {
       // }));
 
       commonConfig.plugins = commonConfig.plugins.concat(
-        new ManifestPlugin()
+        new WebpackAssetsManifest(),
+        // new ManifestPlugin()
         // new ManifestPlugin({
         //   filename: `chunk-manifest.json`,
         //   publicPath: `/static-dist/${key}/`
