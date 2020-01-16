@@ -70,10 +70,10 @@ export const cssLoader = (options) => {
   return {
     test: /\.css$/,
     use: [
-      // {
-      //   loader: MiniCssExtractPlugin.loader,
-      //   options
-      // },
+      {
+        loader: MiniCssExtractPlugin.loader,
+        options
+      },
       'vue-style-loader',
       'css-loader',
     ],
