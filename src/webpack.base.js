@@ -75,13 +75,14 @@ const config = {
         options.nodeModulesDir
       ]),
       loaders.cssLoader({
-        mode: options.__DEV__ || options.__DEBUG__,
         minimize: options.__DEV__ || options.__DEBUG__ ? false : true,
         hmr: options.__DEV__,
+        reloadAll: true,
       }),
       loaders.lessLoader({
         minimize: options.__DEV__ || options.__DEBUG__ ? false : true,
         hmr: options.__DEV__,
+        reloadAll: true,
       })
     ]
   },
