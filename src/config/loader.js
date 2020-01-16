@@ -1,7 +1,4 @@
-// import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import os from "os";
-console.log('os');
-console.log(os.cpus().length);
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 
 export const imageLoader = (path, imgName, limit) => {
   return {
