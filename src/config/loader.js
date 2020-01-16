@@ -1,4 +1,4 @@
-import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+// import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import os from "os";
 console.log('os');
 console.log(os.cpus().length);
@@ -70,10 +70,10 @@ export const cssLoader = (options) => {
   return {
     test: /\.css$/,
     use: [
-      {
-        loader: MiniCssExtractPlugin.loader,
-        options
-      },
+      // {
+      //   loader: MiniCssExtractPlugin.loader,
+      //   options
+      // },
       'vue-style-loader',
       'css-loader',
     ],
