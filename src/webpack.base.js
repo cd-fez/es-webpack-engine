@@ -10,6 +10,7 @@ import FriendlyErrorsPlugin from 'friendly-errors-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import UglifyJsPlugin from 'uglifyjs-webpack-plugin';
 import VueLoaderPlugin from 'vue-loader/lib/plugin';
+import OptimizeCssAssetsPlugin from 'optimize-css-assets-webpack-plugin';
 
 
 import options  from './config/options';
@@ -105,7 +106,14 @@ const config = {
       /moment[\\\/]locale$/,
       /^\.\/(zh-cn|en-gb)+\.js$/
     ),
-    new VueLoaderPlugin()
+    new VueLoaderPlugin(),
+    new OptimizeCssAssetsPlugin({
+      cssProcessor: require('cssnano'),
+      cssProcessorPluginOptions: {
+        preset: ['default', { discardComments: { removeAll: true } }],
+      },
+      canPrint: true
+    })
     // new OptimizeModuleIdAndChunkIdPlugin(),
   ]
 };
