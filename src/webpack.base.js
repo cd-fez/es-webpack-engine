@@ -2,7 +2,7 @@ import path from 'path';
 import webpack from 'webpack';
 import merge from 'webpack-merge';
 
-// import ChunkManifestPlugin from 'chunk-manifest-webpack-plugin';
+import ChunkManifestPlugin from 'chunk-manifest-webpack-plugin';
 import ManifestPlugin from 'webpack-manifest-plugin';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
@@ -212,14 +212,14 @@ if (options.isBuildAllModule) {
       //   chunks: Object.keys(entry.appEntry['app']),
       //   minChunks,
       // }),
-      new ManifestPlugin({
-        filename: `chunk-manifest.json`,
-        publicPath: '/static-dist/app/'
-      }),
-      // new ChunkManifestPlugin({
-      //   filename: `app/chunk-manifest.json`,
-      //   manifestVariable: "webpackManifest"
+      // new ManifestPlugin({
+      //   filename: `chunk-manifest.json`,
+      //   publicPath: '/static-dist/app/'
       // }),
+      new ChunkManifestPlugin({
+        filename: `app/chunk-manifest.json`,
+        manifestVariable: "webpackManifest"
+      }),
     ]
   });
 
@@ -289,9 +289,13 @@ if (options.isBuildAllModule || options.buildModule.length) {
       // }));
 
       commonConfig.plugins = commonConfig.plugins.concat(
-        new ManifestPlugin({
-          filename: `chunk-manifest.json`,
-          publicPath: `/static-dist/${key}/`
+        // new ManifestPlugin({
+        //   filename: `chunk-manifest.json`,
+        //   publicPath: `/static-dist/${key}/`
+        // })
+        new ChunkManifestPlugin({
+          filename: `${key}/chunk-manifest.json`,
+          manifestVariable: 'webpackManifest'
         })
       );
     }
