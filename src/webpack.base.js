@@ -7,9 +7,11 @@ import ManifestPlugin from 'webpack-manifest-plugin';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import FriendlyErrorsPlugin from 'friendly-errors-webpack-plugin';
+import OptimizeCssAssetsPlugin from 'optimize-css-assets-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import UglifyJsPlugin from 'uglifyjs-webpack-plugin';
 import VueLoaderPlugin from 'vue-loader/lib/plugin';
+
 
 
 import options  from './config/options';
@@ -127,7 +129,8 @@ if (options.__DEV__) {
 }
 
 if (!options.__DEV__ && !options.__DEBUG__) {
-  // config.plugins = config.plugins.concat(new webpack.optimize.UglifyJsPlugin(uglifyJsConfig));
+  console.log('编译压缩');
+  config.plugins = config.plugins.concat(new OptimizeCssAssetsPlugin());
 } else {
   config.devtool = options.__DEVTOOL__;
 }
