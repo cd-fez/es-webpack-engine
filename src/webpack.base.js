@@ -202,7 +202,7 @@ if (options.isBuildAllModule) {
     },
     plugins: [
       new WebpackAssetsManifest({
-        output: 'chunk-manifest.json',
+        output: 'app/chunk-manifest.json',
       }),
     ]
   });
