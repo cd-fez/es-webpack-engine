@@ -2,8 +2,6 @@ import path from 'path';
 import webpack from 'webpack';
 import merge from 'webpack-merge';
 
-// import ChunkManifestPlugin from 'chunk-manifest-webpack-plugin';
-import ManifestPlugin from 'webpack-manifest-plugin';
 import WebpackAssetsManifest from 'webpack-assets-manifest';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
