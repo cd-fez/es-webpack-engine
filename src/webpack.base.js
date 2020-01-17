@@ -221,6 +221,10 @@ if (options.isBuildAllModule) {
         filename: `app/chunk-manifest.json`,
         manifestVariable: "webpackManifest"
       }),
+      new ManifestPlugin({
+        filename: `chunk-manifest.json`,
+        publicPath: `/static-dist/app/`
+      })
     ]
   });
 
