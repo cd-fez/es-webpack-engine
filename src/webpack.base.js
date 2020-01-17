@@ -25,7 +25,6 @@ import {
 
 // 基础配置
 
-console.log(options.output)
 const config = {
   watch: options.__DEV__,
   watchOptions: {
@@ -88,16 +87,9 @@ const config = {
     ]
   },
   plugins: [
-    // new HappyPack({
-    //   id: 'babelJs',
-    //   threadPool: HappyPack.ThreadPool({ size: os.cpus().length }),
-    //   verbose: false,
-    //   loaders: ['babel-loader']
-    // }),
     new MiniCssExtractPlugin({
       filename: "[name].css",
       chunkFilename: "[id].css",
-      // allChunks: true
     }),
     new webpack.DefinePlugin({
       // __webpack_public_path__: `window.__publicPath`,
@@ -111,7 +103,6 @@ const config = {
       /^\.\/(zh-cn|en-gb)+\.js$/
     ),
     new VueLoaderPlugin()
-    // new OptimizeModuleIdAndChunkIdPlugin(),
   ]
 };
 
@@ -260,17 +251,6 @@ if (options.isBuildAllModule || options.buildModule.length) {
     }
 
     if (fsExistsSync(`${commonSrcEntry[key]}/${options.isNeedCommonChunk}`)) {
-      // commonConfig.plugins = commonConfig.plugins.concat(new webpack.optimize.CommonsChunkPlugin({
-      //   name: key,
-      //   filename: `${key}/js/${options.commonsChunkFileName}.js`,
-      //   chunks: Object.keys(commonEntry[key]),
-      //   minChunks,
-      // }), new ChunkManifestPlugin({
-      //   filename: `${key}/chunk-manifest.json`,
-      //   manifestVariable: 'webpackManifest'
-      // }));
-      console.log('打印');
-      console.log(key);
       commonConfig.plugins = commonConfig.plugins.concat(
         new WebpackAssetsManifest({
           output: `${key}/chunk-manifest.json`
