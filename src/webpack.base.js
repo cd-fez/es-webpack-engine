@@ -139,14 +139,6 @@ if (!options.__DEV__ && !options.__DEBUG__) {
   config.devtool = options.__DEVTOOL__;
 }
 
-// const minChunks = (module, count) => {
-//   if(module.resource && (/^.*\.(css|less)$/).test(module.resource)) {
-//     return false;
-//   }
-//   let pattern = new RegExp(options.regExp);
-//   return module.resource && !pattern.test(module.resource) && count >= options.minChunks;
-// }
-
 // lib 配置
 let libConfigs = [];
 if (options.isBuildAllModule) {
@@ -209,17 +201,9 @@ if (options.isBuildAllModule) {
       ]
     },
     plugins: [
-      // new webpack.optimize.CommonsChunkPlugin({
-      //   name: 'app',
-      //   filename: `app/js/${options.commonsChunkFileName}.js`,
-      //   chunks: Object.keys(entry.appEntry['app']),
-      //   minChunks,
+      // new WebpackAssetsManifest({
+      //   output: 'chunk-manifest.json',
       // }),
-      // new ManifestPlugin(),
-      new WebpackAssetsManifest({
-        output: 'chunk-manifest.json',
-        publicPath: '/static-dist/app/'
-      }),
     ]
   });
 
@@ -291,7 +275,6 @@ if (options.isBuildAllModule || options.buildModule.length) {
       commonConfig.plugins = commonConfig.plugins.concat(
         new WebpackAssetsManifest({
           output: 'chunk-manifest.json',
-          publicPath: `/static-dist/${key}/`
         }),
       );
     }
