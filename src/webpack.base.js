@@ -217,7 +217,7 @@ if (options.isBuildAllModule) {
       // }),
       // new ManifestPlugin(),
       new WebpackAssetsManifest({
-        output: 'chunk-manifest.josn',
+        output: 'chunk-manifest.json',
         publicPath: '/static-dist/app/'
       }),
     ]
@@ -290,7 +290,7 @@ if (options.isBuildAllModule || options.buildModule.length) {
 
       commonConfig.plugins = commonConfig.plugins.concat(
         new WebpackAssetsManifest({
-          output: 'chunk-manifest.josn',
+          output: 'chunk-manifest.json',
           publicPath: `/static-dist/${key}/`
         }),
       );
