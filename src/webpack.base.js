@@ -217,10 +217,10 @@ if (options.isBuildAllModule) {
       // }),
       // new ManifestPlugin(),
       // new WebpackAssetsManifest(),
-      new ChunkManifestPlugin({
-        filename: `app/chunk-manifest.json`,
-        manifestVariable: "webpackManifest"
-      }),
+      // new ChunkManifestPlugin({
+      //   filename: `app/chunk-manifest.json`,
+      //   manifestVariable: "webpackManifest"
+      // }),
       new ManifestPlugin({
         filename: `chunk-manifest.json`,
         publicPath: `/static-dist/app/`
