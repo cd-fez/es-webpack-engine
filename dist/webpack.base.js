@@ -26,11 +26,8 @@ var appConfig={};if(_options["default"].isBuildAllModule){appConfig=(0,_webpackM
 //   minChunks,
 // }),
 // new ManifestPlugin(),
-new _webpackAssetsManifest["default"]()// new ChunkManifestPlugin({
-//   filename: `app/chunk-manifest.json`,
-//   manifestVariable: "webpackManifest"
-// }),
-]});if(_options["default"].__ANALYZER__){appConfig.plugins=appConfig.plugins.concat(new _webpackBundleAnalyzer.BundleAnalyzerPlugin({analyzerPort:3999}));};if((0,_utils.fsExistsSync)("".concat(_options["default"].globalDir,"/app/").concat(_options["default"].copyName))){appConfig.plugins=appConfig.plugins.concat(new _copyWebpackPlugin["default"]([{from:"".concat(_options["default"].globalDir,"/app/").concat(_options["default"].copyName),to:"app/".concat(_options["default"].copyName),toType:'dir'}]));}}// 通用配置 - 包括插件、bundle、主题、教学活动
+// new WebpackAssetsManifest(),
+new ChunkManifestPlugin({filename:"app/chunk-manifest.json",manifestVariable:"webpackManifest"})]});if(_options["default"].__ANALYZER__){appConfig.plugins=appConfig.plugins.concat(new _webpackBundleAnalyzer.BundleAnalyzerPlugin({analyzerPort:3999}));};if((0,_utils.fsExistsSync)("".concat(_options["default"].globalDir,"/app/").concat(_options["default"].copyName))){appConfig.plugins=appConfig.plugins.concat(new _copyWebpackPlugin["default"]([{from:"".concat(_options["default"].globalDir,"/app/").concat(_options["default"].copyName),to:"app/".concat(_options["default"].copyName),toType:'dir'}]));}}// 通用配置 - 包括插件、bundle、主题、教学活动
 var commonConfigs=[];if(_options["default"].isBuildAllModule||_options["default"].buildModule.length){var commonEntry=entry.commonEntry;var commonEntryKeys=Object.keys(commonEntry);var index=0;commonEntryKeys.forEach(function(key){var commonConfig={};if((0,_utils.isEmptyObject)(commonEntry[key])){return;};commonConfig=(0,_webpackMerge["default"])(config,{name:"".concat(key),entry:commonEntry[key],module:{rules:[loaders.imageLoader(key,_options["default"].imgName,_options["default"].imglimit),loaders.fontLoader(key,_options["default"].fontName,_options["default"].fontlimit),loaders.mediaLoader(key,_options["default"].mediaName)]},plugins:[]});var commonSrcEntry=entry.commonSrcEntry;if((0,_utils.fsExistsSync)("".concat(commonSrcEntry[key],"/").concat(_options["default"].copyName))){commonConfig.plugins=commonConfig.plugins.concat(new _copyWebpackPlugin["default"]([{from:"".concat(commonSrcEntry[key],"/").concat(_options["default"].copyName),to:"".concat(key,"/").concat(_options["default"].copyName),toType:'dir'}]));}if((0,_utils.fsExistsSync)("".concat(commonSrcEntry[key],"/").concat(_options["default"].isNeedCommonChunk))){// commonConfig.plugins = commonConfig.plugins.concat(new webpack.optimize.CommonsChunkPlugin({
 //   name: key,
 //   filename: `${key}/js/${options.commonsChunkFileName}.js`,
@@ -40,10 +37,7 @@ var commonConfigs=[];if(_options["default"].isBuildAllModule||_options["default"
 //   filename: `${key}/chunk-manifest.json`,
 //   manifestVariable: 'webpackManifest'
 // }));
-commonConfig.plugins=commonConfig.plugins.concat(new _webpackAssetsManifest["default"]()// new ManifestPlugin()
-// new ManifestPlugin({
-//   filename: `chunk-manifest.json`,
-//   publicPath: `/static-dist/${key}/`
-// })
-);}if(_options["default"].__ANALYZER__){commonConfig.plugins=commonConfig.plugins.concat(new _webpackBundleAnalyzer.BundleAnalyzerPlugin({analyzerPort:"400".concat(index)}));};commonConfigs.push(commonConfig);index++;});}// 总配置
+commonConfig.plugins=commonConfig.plugins.concat(// new WebpackAssetsManifest(),
+// new ManifestPlugin()
+new _webpackManifestPlugin["default"]({filename:"chunk-manifest.json",publicPath:"/static-dist/".concat(key,"/")}));}if(_options["default"].__ANALYZER__){commonConfig.plugins=commonConfig.plugins.concat(new _webpackBundleAnalyzer.BundleAnalyzerPlugin({analyzerPort:"400".concat(index)}));};commonConfigs.push(commonConfig);index++;});}// 总配置
 var configs=[];[libConfigs,appConfig,commonConfigs].forEach(function(item){if(item.constructor===Object&&!(0,_utils.isEmptyObject)(item)){configs.push(item);}else if(item.constructor===Array&&item.length){configs=configs.concat(item);}});var _default=configs;exports["default"]=_default;

@@ -216,11 +216,11 @@ if (options.isBuildAllModule) {
       //   minChunks,
       // }),
       // new ManifestPlugin(),
-      new WebpackAssetsManifest(),
-      // new ChunkManifestPlugin({
-      //   filename: `app/chunk-manifest.json`,
-      //   manifestVariable: "webpackManifest"
-      // }),
+      // new WebpackAssetsManifest(),
+      new ChunkManifestPlugin({
+        filename: `app/chunk-manifest.json`,
+        manifestVariable: "webpackManifest"
+      }),
     ]
   });
 
@@ -290,12 +290,12 @@ if (options.isBuildAllModule || options.buildModule.length) {
       // }));
 
       commonConfig.plugins = commonConfig.plugins.concat(
-        new WebpackAssetsManifest(),
+        // new WebpackAssetsManifest(),
         // new ManifestPlugin()
-        // new ManifestPlugin({
-        //   filename: `chunk-manifest.json`,
-        //   publicPath: `/static-dist/${key}/`
-        // })
+        new ManifestPlugin({
+          filename: `chunk-manifest.json`,
+          publicPath: `/static-dist/${key}/`
+        })
       );
     }
 
