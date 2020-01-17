@@ -269,7 +269,8 @@ if (options.isBuildAllModule || options.buildModule.length) {
       //   filename: `${key}/chunk-manifest.json`,
       //   manifestVariable: 'webpackManifest'
       // }));
-
+      console.log('打印');
+      console.log(key);
       commonConfig.plugins = commonConfig.plugins.concat(
         new WebpackAssetsManifest({
           output: `${key}/chunk-manifest.json`
