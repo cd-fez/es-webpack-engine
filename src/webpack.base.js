@@ -216,15 +216,10 @@ if (options.isBuildAllModule) {
       //   minChunks,
       // }),
       // new ManifestPlugin(),
-      // new WebpackAssetsManifest(),
-      // new ChunkManifestPlugin({
-      //   filename: `app/chunk-manifest.json`,
-      //   manifestVariable: "webpackManifest"
-      // }),
-      new ManifestPlugin({
-        filename: `chunk-manifest.json`,
-        publicPath: `/static-dist/app/`
-      })
+      new WebpackAssetsManifest({
+        output: 'chunk-manifest.josn',
+        publicPath: '/static-dist/app/'
+      }),
     ]
   });
 
@@ -294,12 +289,10 @@ if (options.isBuildAllModule || options.buildModule.length) {
       // }));
 
       commonConfig.plugins = commonConfig.plugins.concat(
-        // new WebpackAssetsManifest(),
-        // new ManifestPlugin()
-        new ManifestPlugin({
-          filename: `chunk-manifest.json`,
+        new WebpackAssetsManifest({
+          output: 'chunk-manifest.josn',
           publicPath: `/static-dist/${key}/`
-        })
+        }),
       );
     }
 
