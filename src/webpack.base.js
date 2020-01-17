@@ -273,9 +273,9 @@ if (options.isBuildAllModule || options.buildModule.length) {
       // }));
 
       commonConfig.plugins = commonConfig.plugins.concat(
-        // new WebpackAssetsManifest({
-        //   output: 'chunk-manifest.json',
-        // }),
+        new WebpackAssetsManifest({
+          output: `${key}/chunk-manifest.json`
+        }),
       );
     }
 
