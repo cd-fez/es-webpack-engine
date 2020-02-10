@@ -42,7 +42,7 @@ const config = {
   optimization: {
     minimizer: [new UglifyJsPlugin()],
     splitChunks: {
-      chunks: 'async',
+      chunks: 'initial',
       minSize: 30000,
       maxSize: 0,
       minChunks: 1,
