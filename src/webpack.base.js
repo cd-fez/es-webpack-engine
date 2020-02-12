@@ -39,25 +39,6 @@ const config = {
     alias: entry.configAlias,
     extensions: ['*', '.js', '.jsx', '.vue'],
   },
-  optimization: {
-    minimizer: [new UglifyJsPlugin()],
-    splitChunks: {
-      chunks: 'initial',
-      minSize: 30000,
-      maxSize: 0,
-      minChunks: 1,
-      maxAsyncRequests: 4,
-      maxInitialRequests: 3,
-      automaticNameDelimiter: '~',
-      name: true,
-      cacheGroups: {
-        vendors: {
-          // test: /[\\/]node_modules[\\/]/,
-          test: /[\\/]node_modules[\\/](react|react-dom|lodash)[\\/]/,
-        }
-      }
-    }
-  },
   module: {
     noParse: [],
     rules: [
@@ -130,6 +111,8 @@ if (options.isBuildAllModule) {
   let baseEntry = libEntry.filterObj;
   let newLibEntry = libEntry.newObj;
 
+
+  // base
   let baseConfig = {};
   let newConfig = {};
 
@@ -145,7 +128,10 @@ if (options.isBuildAllModule) {
     name: 'base',
     entry: baseEntry,
     module,
-    plugins: []
+    plugins: [],
+    optimization: {
+      minimizer: [new UglifyJsPlugin()]
+    }
   });
   baseConfig.externals = {};
   if (options.__ANALYZER__) {
@@ -155,13 +141,17 @@ if (options.isBuildAllModule) {
   };
   libConfigs.push(baseConfig);
 
+  // lib
   newConfig = merge(config, {
     name: 'libs',
     entry: newLibEntry,
     module,
     plugins: [
       new CopyWebpackPlugin(entry.onlyCopys)
-    ]
+    ],
+    optimization: {
+      minimizer: [new UglifyJsPlugin()]
+    }
   });
   if (options.__ANALYZER__) {
     newConfig.plugins = newConfig.plugins.concat(new BundleAnalyzerPlugin({
@@ -188,7 +178,36 @@ if (options.isBuildAllModule) {
       new WebpackAssetsManifest({
         output: 'app/chunk-manifest.json',
       }),
-    ]
+    ],
+    optimization: {
+      minimizer: [new UglifyJsPlugin()],
+      splitChunks: {
+        // chunks: 'initial',
+        // minSize: 30000,
+        // maxSize: 0,
+        // minChunks: 1,
+        // maxAsyncRequests: 4,
+        // maxInitialRequests: 3,
+        // automaticNameDelimiter: '~',
+        // name: true,
+        cacheGroups: {
+          common: {
+            name: "commons",
+            chunks: "initial",  //入口处开始提取代码
+            minSize:0,      //代码最小多大，进行抽离
+            minChunks:2,  
+          },
+          vendors: {
+            name: 'vendors',
+            minChunks: 1, 
+            chunks: 'initial',
+            priority: 1,
+            // test: /[\\/]node_modules[\\/]/,
+            test: /[\\/]node_modules[\\/](react|react-dom|loadsh)[\\/]/,
+          }
+        }
+      }
+    },
   });
 
   if (options.__ANALYZER__) {
@@ -232,7 +251,10 @@ if (options.isBuildAllModule || options.buildModule.length) {
           loaders.mediaLoader(key, options.mediaName),
         ]
       },
-      plugins: []
+      plugins: [],
+      optimization: {
+        minimizer: [new UglifyJsPlugin()]
+      }
     })
 
     let commonSrcEntry = entry.commonSrcEntry;
