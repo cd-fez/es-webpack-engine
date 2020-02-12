@@ -42,7 +42,7 @@ const config = {
   optimization: {
     minimizer: [new UglifyJsPlugin()],
     splitChunks: {
-      chunks: 'all',
+      chunks: 'initial',
       minSize: 30000,
       maxSize: 0,
       minChunks: 1,
@@ -52,7 +52,8 @@ const config = {
       name: true,
       cacheGroups: {
         vendors: {
-          test: /[\\/]node_modules[\\/]/,
+          // test: /[\\/]node_modules[\\/]/,
+          test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
           priority: -10
         },
         default: {
