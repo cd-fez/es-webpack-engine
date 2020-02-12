@@ -192,13 +192,13 @@ if (options.isBuildAllModule) {
         // name: true,
         cacheGroups: {
           common: {
-            name: "commons",
+            name: "app/js/commons",
             chunks: "initial",  //入口处开始提取代码
             minSize:0,      //代码最小多大，进行抽离
             minChunks:2,  
           },
           vendors: {
-            name: 'vendors',
+            name: 'app/js/vendors',
             minChunks: 1, 
             chunks: 'initial',
             priority: 1,
