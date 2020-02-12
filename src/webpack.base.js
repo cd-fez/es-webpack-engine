@@ -55,11 +55,6 @@ const config = {
           // test: /[\\/]node_modules[\\/]/,
           test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
           priority: -10
-        },
-        default: {
-          minChunks: 2,
-          priority: -20,
-          reuseExistingChunk: true
         }
       }
     }
