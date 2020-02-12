@@ -51,10 +51,9 @@ const config = {
       automaticNameDelimiter: '~',
       name: true,
       cacheGroups: {
-        vendor: {
-          test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
-          name: 'vendor',
-          chunks: 'initial',
+        vendors: {
+          // test: /[\\/]node_modules[\\/]/,
+          test: /[\\/]node_modules[\\/](react|react-dom|lodash)[\\/]/,
         }
       }
     }
