@@ -13,7 +13,8 @@ var appConfig={};if(_options["default"].isBuildAllModule){appConfig=(0,_webpackM
 // maxInitialRequests: 3,
 // automaticNameDelimiter: '~',
 // name: true,
-cacheGroups:{common:{name:"app/js/commons",chunks:"initial",//入口处开始提取代码
+// 默认抽离样式文件 3次引用在抽离
+minChunks:3,cacheGroups:{common:{name:"app/js/commons",chunks:"initial",//入口处开始提取代码
 minSize:0,//代码最小多大，进行抽离
 minChunks:2},vendors:{name:'app/js/vendors',minChunks:1,chunks:'initial',priority:1,// test: /[\\/]node_modules[\\/]/,
 test:/[\\/]node_modules[\\/](react|react-dom|loadsh)[\\/]/}}}}});if(_options["default"].__ANALYZER__){appConfig.plugins=appConfig.plugins.concat(new _webpackBundleAnalyzer.BundleAnalyzerPlugin({analyzerPort:3999}));};if((0,_utils.fsExistsSync)("".concat(_options["default"].globalDir,"/app/").concat(_options["default"].copyName))){appConfig.plugins=appConfig.plugins.concat(new _copyWebpackPlugin["default"]([{from:"".concat(_options["default"].globalDir,"/app/").concat(_options["default"].copyName),to:"app/".concat(_options["default"].copyName),toType:'dir'}]));}}// 通用配置 - 包括插件、bundle、主题、教学活动

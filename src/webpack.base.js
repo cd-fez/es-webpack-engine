@@ -190,12 +190,14 @@ if (options.isBuildAllModule) {
         // maxInitialRequests: 3,
         // automaticNameDelimiter: '~',
         // name: true,
+        // 默认抽离样式文件 3次引用在抽离
+        minChunks: 3,
         cacheGroups: {
           common: {
             name: "app/js/commons",
             chunks: "initial",  //入口处开始提取代码
-            minSize:0,      //代码最小多大，进行抽离
-            minChunks:2,  
+            minSize: 0,      //代码最小多大，进行抽离
+            minChunks: 2,  
           },
           vendors: {
             name: 'app/js/vendors',
