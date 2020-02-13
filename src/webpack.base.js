@@ -191,17 +191,16 @@ if (options.isBuildAllModule) {
         // automaticNameDelimiter: '~',
         // name: true,
         // 默认抽离样式文件 3次引用在抽离
-        minChunks: 3,
         cacheGroups: {
           common: {
             name: "app/js/commons",
             chunks: "initial",  //入口处开始提取代码
             minSize: 0,      //代码最小多大，进行抽离
-            minChunks: 2,  
+            minChunks: 3,  
           },
           vendors: {
             name: 'app/js/vendors',
-            minChunks: 1, 
+            minChunks: 3, 
             chunks: 'initial',
             priority: 1,
             // test: /[\\/]node_modules[\\/]/,
