@@ -46,7 +46,7 @@ const config = {
         hotReload: options.__DEV__ || options.__DEBUG__ ? true : false // 编译时关闭热重载
       }),
       loaders.jsLoader({
-        cupNumber: options.cupNumber
+        cpuNumber: options.cpuNumber
       }, [
         options.nodeModulesDir
       ]),

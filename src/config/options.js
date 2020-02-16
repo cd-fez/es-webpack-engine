@@ -49,7 +49,7 @@ const defaultOptions = Object.assign({
   mediaName: 'media',
   copyName: 'img',
   isESlint: true,
-  cupNumber: 2,
+  cpuNumber: 2,
   isNeedCommonChunk: '.is-need-common-chunk'
   
 }, parameters);
