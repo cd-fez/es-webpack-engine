@@ -196,15 +196,7 @@ if (options.isBuildAllModule) {
             name: "app/js/commons",
             chunks: "initial",  //入口处开始提取代码
             minSize: 0,      //代码最小多大，进行抽离
-            minChunks: 3,  
-          },
-          vendors: {
-            name: 'app/js/vendors',
-            minChunks: 3, 
-            chunks: 'initial',
-            priority: 1,
-            // test: /[\\/]node_modules[\\/]/,
-            test: /[\\/]node_modules[\\/](react|react-dom|loadsh)[\\/]/,
+            minChunks: 5,  
           }
         }
       }
