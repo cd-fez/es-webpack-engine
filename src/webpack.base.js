@@ -195,8 +195,9 @@ if (options.isBuildAllModule) {
           common: {
             name: "app/js/commons",
             chunks: "initial",  //入口处开始提取代码
+            maxSize: 300000,
             minSize: 0,      //代码最小多大，进行抽离
-            minChunks: 6,
+            minChunks: 5,
           }
         }
       }
