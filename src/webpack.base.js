@@ -233,7 +233,7 @@ if (options.isBuildAllModule || options.buildModule.length) {
     if (isEmptyObject(commonEntry[key])) {
       return;
     };
-    const testChunk = key == 'reservationplugin' ? 10: 5;
+    const otherBundleChunks = key == 'reservationplugin' ? 10: 5;
     commonConfig = merge(config, {
       name: `${key}`,
       entry: commonEntry[key],
@@ -252,7 +252,7 @@ if (options.isBuildAllModule || options.buildModule.length) {
             common: {
               name: `${key}/js/${options.commonsChunkFileName}`,
               chunks: 'initial',  //入口处开始提取代码
-              minChunks: testChunk,
+              minChunks: otherBundleChunks,
             }
           }
         }
