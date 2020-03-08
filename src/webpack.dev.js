@@ -5,7 +5,7 @@ import cors from 'cors';
 import fs from 'fs';
 import chokidar from 'chokidar';
 // import WebpackNotifierPlugin from 'es-webpack-notifier';
-// import ProgressBarPlugin from 'progress-bar-webpack-plugin';
+import ProgressBarPlugin from 'progress-bar-webpack-plugin';
 
 import logger from './config/logger';
 import webpackDevMiddleware from './config/middleware';
@@ -24,7 +24,7 @@ const app = express();
 const compiler = webpack(baseConfig);
 
 // compiler.apply(new WebpackNotifierPlugin());
-// compiler.apply(new ProgressBarPlugin());
+compiler.apply(new ProgressBarPlugin());
 
 app.use(webpackDevMiddleware(compiler, options.output.publicPath));
 
