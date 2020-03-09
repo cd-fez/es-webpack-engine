@@ -10,7 +10,7 @@ import OptimizeCssAssetsPlugin from 'optimize-css-assets-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import UglifyJsPlugin from 'uglifyjs-webpack-plugin';
 import VueLoaderPlugin from 'vue-loader/lib/plugin';
-
+import WebpackNotifierPlugin from 'webpack-notifier';
 
 
 import options  from './config/options';
@@ -94,7 +94,7 @@ for (let key in options.noParseDeps) {
 }
 
 if (options.__DEV__) {
-  config.plugins = config.plugins.concat(new FriendlyErrorsPlugin());
+  config.plugins = config.plugins.concat(new FriendlyErrorsPlugin(), new WebpackNotifierPlugin());
   options.isESlint ? config.module.rules.push(loaders.eslintLoader()) : '';
 }
 
