@@ -23,7 +23,8 @@ const app = express();
 
 const compiler = webpack(baseConfig);
 
-new WebpackNotifierPlugin().apply(compiler);
+compiler.apply(new WebpackNotifierPlugin());
+// new WebpackNotifierPlugin().apply(compiler);
 new ProgressBarPlugin().apply(compiler);
 
 app.use(webpackDevMiddleware(compiler, options.output.publicPath));
