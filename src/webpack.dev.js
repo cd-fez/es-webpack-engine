@@ -23,7 +23,7 @@ const app = express();
 
 const compiler = webpack(baseConfig);
 
-
+console.log('xx');
 new WebpackNotifierPlugin().apply(compiler);
 new ProgressBarPlugin().apply(compiler);
 
