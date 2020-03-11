@@ -2840,9 +2840,10 @@ es-to-primitive@^1.2.1:
     is-date-object "^1.0.1"
     is-symbol "^1.0.2"
 
-"es-webpack-notifier@git+https://github.com/cd-fez/es-webpack-notifier.git#f4c6a8a88276603a88a941672eed9cd8e50c08b4":
+es-webpack-notifier@1.7.0:
   version "1.7.0"
-  resolved "git+https://github.com/cd-fez/es-webpack-notifier.git#f4c6a8a88276603a88a941672eed9cd8e50c08b4"
+  resolved "https://registry.yarnpkg.com/es-webpack-notifier/-/es-webpack-notifier-1.7.0.tgz#525a4cc0dbc7205ee835b62ee7d91bc702867e91"
+  integrity sha512-QpTLuMPEUL5sczx03TnGAp3jj3pgRECnFovvujLN1Fnqm2bDb72fzwQ/X1b6Uu1j9rtKk6Ux3iKq7csBxela5Q==
   dependencies:
     node-notifier "^4.1.0"
     object-assign "^4.1.0"
