@@ -4,7 +4,7 @@ import path from 'path';
 import cors from 'cors';
 import fs from 'fs';
 import chokidar from 'chokidar';
-import WebpackNotifierPlugin from 'webpack-notifier';
+import WebpackNotifierPlugin from 'es-webpack-notifier';
 import ProgressBarPlugin from 'progress-bar-webpack-plugin';
 
 import logger from './config/logger';
