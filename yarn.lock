@@ -7688,10 +7688,9 @@ webpack-merge@^4.2.2:
   dependencies:
     lodash "^4.17.15"
 
-webpack-notifier@1.8.0:
+"webpack-notifier@git+https://github.com/LianJion/test-webpack-notify.git#2c1e71c763b4e98025b9174974eb9f4697449b88":
   version "1.8.0"
-  resolved "https://registry.yarnpkg.com/webpack-notifier/-/webpack-notifier-1.8.0.tgz#994bdde0fcefc5f1a92b6d91353c8152ddd9c583"
-  integrity sha512-I6t76NoPe5DZCCm5geELmDV2wlJ89LbU425uN6T2FG8Ywrrt1ZcUMz6g8yWGNg4pttqTPFQJYUPjWAlzUEQ+cQ==
+  resolved "git+https://github.com/LianJion/test-webpack-notify.git#2c1e71c763b4e98025b9174974eb9f4697449b88"
   dependencies:
     node-notifier "^5.1.2"
     object-assign "^4.1.0"
