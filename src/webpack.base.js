@@ -130,7 +130,10 @@ if (options.isBuildAllModule) {
     module,
     plugins: [],
     optimization: {
-      minimizer: [new UglifyJsPlugin()]
+      minimizer: [new UglifyJsPlugin({
+        cache: true,
+        extractComments: false,
+      })]
     }
   });
   baseConfig.externals = {};
@@ -150,7 +153,10 @@ if (options.isBuildAllModule) {
       new CopyWebpackPlugin(entry.onlyCopys)
     ],
     optimization: {
-      minimizer: [new UglifyJsPlugin()]
+      minimizer: [new UglifyJsPlugin({
+        cache: true,
+        extractComments: false,
+      })]
     }
   });
   if (options.__ANALYZER__) {
@@ -180,7 +186,10 @@ if (options.isBuildAllModule) {
       }),
     ],
     optimization: {
-      minimizer: [new UglifyJsPlugin()],
+      minimizer: [new UglifyJsPlugin({
+        cache: true,
+        extractComments: false,
+      })],
       splitChunks: {
         // chunks: 'initial',
         // minSize: 30000,
@@ -246,7 +255,10 @@ if (options.isBuildAllModule || options.buildModule.length) {
       },
       plugins: [],
       optimization: {
-        minimizer: [new UglifyJsPlugin()],
+        minimizer: [new UglifyJsPlugin({
+          cache: true,
+          extractComments: false,
+        })],
         splitChunks: {
           cacheGroups: {
             common: {
