@@ -1,6 +1,7 @@
 import path from 'path';
 import webpack from 'webpack';
 import merge from 'webpack-merge';
+import ErrorPlugin from "webpack-notifier";
 
 import WebpackAssetsManifest from 'webpack-assets-manifest';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
@@ -76,7 +77,8 @@ const config = {
       /moment[\\\/]locale$/,
       /^\.\/(zh-cn|en-gb)+\.js$/
     ),
-    new VueLoaderPlugin()
+    new VueLoaderPlugin(),
+    new ErrorPlugin(),
   ]
 };
 

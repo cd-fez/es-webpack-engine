@@ -12,6 +12,5 @@ const compiler = webpack(config, (err, stats) => {
   if (err) throw err;
 });
 
-new ErrorPlugin().apply(compiler);
 
 new ProgressBarPlugin().apply(compiler);
