@@ -1,3 +1,7 @@
+# es-webpack-engin  3.6 (2020.3.29)
+
+* 升级webpack4， 支持.vue文件的打包
+
 # es-webpack-engine 3.5.3-rc.2(2019.1.10)
 * 解决window下主题匹配路径报错问题, window 下文件目录会出现'\'的情况
 

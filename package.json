@@ -107,14 +107,14 @@
     "nodemon": "bin/nodemon.js"
   },
   "license": "MIT",
-  "name": "es-webpack-engine-local",
+  "name": "es-webpack-engine",
   "optionalDependencies": {},
   "readmeFilename": "README.md",
   "scripts": {
     "dev": "npm run build -- --watch",
     "build": "rm -rf dist && babel src --out-dir dist"
   },
-  "version": "0.0.4-beta10",
+  "version": "3.6.0",
   "devDependencies": {
     "style-loader": "^1.1.2"
   }
