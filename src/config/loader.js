@@ -53,7 +53,7 @@ export const jsLoader = (options, exclude) => {
       {
         loader: 'thread-loader',
         options: {
-          workers: options.cupNumber
+          workers: options.cpuNumber
         }
       },
       {
