@@ -78,6 +78,8 @@ export const cssLoader = (options) => {
 };
 
 export const lessLoader = (options) => {
+  console.log('less');
+  console.log(options);
   return {
     test: /\.less$/,
     use: [
