@@ -57,6 +57,8 @@ const config = {
         minimize: options.__DEV__ || options.__DEBUG__ ? false : true,
         hmr: options.__DEV__,
         reloadAll: true
+      }, {
+        javascriptEnabled: true
       })
     ]
   },

@@ -77,7 +77,7 @@ export const cssLoader = (options) => {
   }
 };
 
-export const lessLoader = (options) => {
+export const lessLoader = (options, options2) => {
   console.log('less');
   console.log(options);
   return {
@@ -90,8 +90,8 @@ export const lessLoader = (options) => {
       'css-loader',
       {
         loader: 'less-loader',
-        javascriptEnabled: true
-      }
+        options2
+      },
     ]
   }
 };
