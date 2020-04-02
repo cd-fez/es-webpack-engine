@@ -114,7 +114,7 @@
     "dev": "npm run build -- --watch",
     "build": "rm -rf dist && babel src --out-dir dist"
   },
-  "version": "3.6.0",
+  "version": "4.0.0",
   "devDependencies": {
     "style-loader": "^1.1.2"
   }

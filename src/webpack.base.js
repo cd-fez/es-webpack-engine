@@ -180,19 +180,10 @@ if (options.isBuildAllModule) {
     optimization: {
       minimizer: [new UglifyJsPlugin()],
       splitChunks: {
-        // chunks: 'initial',
-        // minSize: 30000,
-        // maxSize: 0,
-        // minChunks: 1,
-        // maxAsyncRequests: 4,
-        // maxInitialRequests: 3,
-        // automaticNameDelimiter: '~',
-        // name: true,
-        // 默认抽离样式文件 3次引用在抽离
         cacheGroups: {
           common: {
             name: `app/js/${options.commonsChunkFileName}`,
-            chunks: "initial",  //入口处开始提取代码
+            chunks: "initial",    //入口处开始提取代码
             minSize: 300000,      //代码最小多大，进行抽离
             minChunks: 6,
           }
