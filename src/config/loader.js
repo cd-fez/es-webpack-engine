@@ -88,7 +88,10 @@ export const lessLoader = (options) => {
         options
       },
       'css-loader',
-      'less-loader',
+      {
+        loader: 'less-loader',
+        javascriptEnabled: true
+      }
     ]
   }
 };
