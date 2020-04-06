@@ -1,5 +1,5 @@
 import express from 'express';
-import webpack from 'es-webpack';
+import webpack from 'webpack';
 import path from 'path';
 import cors from 'cors';
 import fs from 'fs';
@@ -23,8 +23,8 @@ const app = express();
 
 const compiler = webpack(baseConfig);
 
-compiler.apply(new WebpackNotifierPlugin());
-compiler.apply(new ProgressBarPlugin());
+new WebpackNotifierPlugin().apply(compiler);
+new ProgressBarPlugin().apply(compiler);
 
 app.use(webpackDevMiddleware(compiler, options.output.publicPath));
 

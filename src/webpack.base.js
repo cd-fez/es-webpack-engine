@@ -1,68 +1,72 @@
 import path from 'path';
-import webpack from 'es-webpack';
-import HappyPack from 'happypack';
+import webpack from 'webpack';
 import merge from 'webpack-merge';
-import os from 'os';
 
-import ExtractTextPlugin from 'extract-text-webpack-plugin';
-import ChunkManifestPlugin from 'chunk-manifest-webpack-plugin';
-import OptimizeModuleIdAndChunkIdPlugin from 'optimize-moduleid-and-chunkid-plugin';
+import WebpackAssetsManifest from 'webpack-assets-manifest';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import FriendlyErrorsPlugin from 'friendly-errors-webpack-plugin';
+import OptimizeCssAssetsPlugin from 'optimize-css-assets-webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import UglifyJsPlugin from 'uglifyjs-webpack-plugin';
+import VueLoaderPlugin from 'vue-loader/lib/plugin';
 
 import options  from './config/options';
 import * as entry  from './config/entry';
 import * as loaders from './config/loader';
-import uglifyJsConfig from './config/uglify';
 
-import { 
-  fsExistsSync, 
-  isEmptyObject, 
+import {
+  fsExistsSync,
+  isEmptyObject,
   filterObject
 } from './utils';
 
 // 基础配置
+
 const config = {
+  watch: options.__DEV__,
+  watchOptions: {
+    ignored: /node_modules/
+  },
+  mode: process.env.NODE_ENV,
   output: Object.assign(options.output, {
     filename: '[name].js',
   }),
   externals: options.externals,
   resolve: {
     alias: entry.configAlias,
-    extensions: ['*', '.js', '.jsx'],
+    extensions: ['*', '.js', '.jsx', '.vue'],
   },
   module: {
     noParse: [],
     rules: [
+      loaders.vueLoader({
+        hotReload: options.__DEV__ || options.__DEBUG__ ? true : false // 编译时关闭热重载
+      }),
       loaders.jsLoader({
-        id: 'babelJs',
+        cpuNumber: options.cpuNumber
       }, [
         options.nodeModulesDir
       ]),
       loaders.cssLoader({
-        minimize: options.__DEV__ || options.__DEBUG__ ? false : true
-      }), 
-      loaders.lessLoader({
-        minimize: options.__DEV__ || options.__DEBUG__ ? false : true
+        minimize: options.__DEV__ || options.__DEBUG__ ? false : true,
+        hmr: options.__DEV__,
+        reloadAll: true,
       }),
-      loaders.jsonLoader(),
+      loaders.lessLoader({
+        minimize: options.__DEV__ || options.__DEBUG__ ? false : true,
+        hmr: options.__DEV__,
+        reloadAll: true,
+      })
     ]
   },
   plugins: [
-    new HappyPack({
-      id: 'babelJs',
-      threadPool: HappyPack.ThreadPool({ size: os.cpus().length }),
-      verbose: false,
-      loaders: ['babel-loader']
-    }),
-    new ExtractTextPlugin({
-      filename:  (getPath) => {
-        return getPath('[name].css').replace('js', 'css');
-      },
-      allChunks: true
+    new MiniCssExtractPlugin({
+      filename: "[name].css",
+      chunkFilename: "[id].css",
     }),
     new webpack.DefinePlugin({
+      // __webpack_public_path__: `window.__publicPath`,
       'process.env': {
         'NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development')
       }
@@ -72,10 +76,13 @@ const config = {
       /moment[\\\/]locale$/,
       /^\.\/(zh-cn|en-gb)+\.js$/
     ),
-    new OptimizeModuleIdAndChunkIdPlugin(),
-    new webpack.WatchIgnorePlugin(options.ignoredDirs)
+    new VueLoaderPlugin()
   ]
 };
+
+if (!options.isWatchAllModule) {
+  concat.plugins.push(new webpack.WatchIgnorePlugin(options.ignoredDirs))
+}
 
 for (let key in options.noParseDeps) {
   const depPath = path.resolve(options.nodeModulesDir, options.noParseDeps[key]);
@@ -90,17 +97,9 @@ if (options.__DEV__) {
 }
 
 if (!options.__DEV__ && !options.__DEBUG__) {
-  config.plugins = config.plugins.concat(new webpack.optimize.UglifyJsPlugin(uglifyJsConfig));
+  config.plugins = config.plugins.concat(new OptimizeCssAssetsPlugin());
 } else {
   config.devtool = options.__DEVTOOL__;
-}
-
-const minChunks = (module, count) => {
-  if(module.resource && (/^.*\.(css|less)$/).test(module.resource)) {
-    return false;
-  }
-  let pattern = new RegExp(options.regExp);
-  return module.resource && !pattern.test(module.resource) && count >= options.minChunks;
 }
 
 // lib 配置
@@ -110,6 +109,8 @@ if (options.isBuildAllModule) {
   let baseEntry = libEntry.filterObj;
   let newLibEntry = libEntry.newObj;
 
+
+  // base
   let baseConfig = {};
   let newConfig = {};
 
@@ -125,7 +126,10 @@ if (options.isBuildAllModule) {
     name: 'base',
     entry: baseEntry,
     module,
-    plugins: []
+    plugins: [],
+    optimization: {
+      minimizer: [new UglifyJsPlugin()]
+    }
   });
   baseConfig.externals = {};
   if (options.__ANALYZER__) {
@@ -135,13 +139,17 @@ if (options.isBuildAllModule) {
   };
   libConfigs.push(baseConfig);
 
+  // lib
   newConfig = merge(config, {
     name: 'libs',
     entry: newLibEntry,
     module,
     plugins: [
       new CopyWebpackPlugin(entry.onlyCopys)
-    ]
+    ],
+    optimization: {
+      minimizer: [new UglifyJsPlugin()]
+    }
   });
   if (options.__ANALYZER__) {
     newConfig.plugins = newConfig.plugins.concat(new BundleAnalyzerPlugin({
@@ -165,17 +173,23 @@ if (options.isBuildAllModule) {
       ]
     },
     plugins: [
-      new webpack.optimize.CommonsChunkPlugin({
-        name: 'app',
-        filename: `app/js/${options.commonsChunkFileName}.js`,
-        chunks: Object.keys(entry.appEntry['app']),
-        minChunks,
+      new WebpackAssetsManifest({
+        output: 'app/chunk-manifest.json',
       }),
-      new ChunkManifestPlugin({
-        filename: `app/chunk-manifest.json`,
-        manifestVariable: "webpackManifest"
-      }),
-    ]
+    ],
+    optimization: {
+      minimizer: [new UglifyJsPlugin()],
+      splitChunks: {
+        cacheGroups: {
+          common: {
+            name: `app/js/${options.commonsChunkFileName}`,
+            chunks: "initial",    //入口处开始提取代码
+            minSize: 300000,      //代码最小多大，进行抽离
+            minChunks: 6,
+          }
+        }
+      }
+    },
   });
 
   if (options.__ANALYZER__) {
@@ -197,7 +211,7 @@ if (options.isBuildAllModule) {
 let commonConfigs = [];
 if (options.isBuildAllModule || options.buildModule.length) {
   const commonEntry = entry.commonEntry;
-  
+
   const commonEntryKeys = Object.keys(commonEntry);
 
   let index = 0;
@@ -208,7 +222,7 @@ if (options.isBuildAllModule || options.buildModule.length) {
     if (isEmptyObject(commonEntry[key])) {
       return;
     };
-
+    const otherBundleChunks = key == 'reservationplugin' ? 10: 5;
     commonConfig = merge(config, {
       name: `${key}`,
       entry: commonEntry[key],
@@ -219,7 +233,19 @@ if (options.isBuildAllModule || options.buildModule.length) {
           loaders.mediaLoader(key, options.mediaName),
         ]
       },
-      plugins: []
+      plugins: [],
+      optimization: {
+        minimizer: [new UglifyJsPlugin()],
+        splitChunks: {
+          cacheGroups: {
+            common: {
+              name: `${key}/js/${options.commonsChunkFileName}`,
+              chunks: 'initial',  //入口处开始提取代码
+              minChunks: otherBundleChunks,
+            }
+          }
+        }
+      },
     })
 
     let commonSrcEntry = entry.commonSrcEntry;
@@ -233,17 +259,13 @@ if (options.isBuildAllModule || options.buildModule.length) {
     }
 
     if (fsExistsSync(`${commonSrcEntry[key]}/${options.isNeedCommonChunk}`)) {
-      commonConfig.plugins = commonConfig.plugins.concat(new webpack.optimize.CommonsChunkPlugin({
-        name: key,
-        filename: `${key}/js/${options.commonsChunkFileName}.js`,
-        chunks: Object.keys(commonEntry[key]),
-        minChunks,
-      }), new ChunkManifestPlugin({
-        filename: `${key}/chunk-manifest.json`,
-        manifestVariable: 'webpackManifest'
-      }));
+      commonConfig.plugins = commonConfig.plugins.concat(
+        new WebpackAssetsManifest({
+          output: `${key}/chunk-manifest.json`
+        }),
+      );
     }
-    
+
     if (options.__ANALYZER__) {
       commonConfig.plugins = commonConfig.plugins.concat(new BundleAnalyzerPlugin({
         analyzerPort: `400${index}`

@@ -1,4 +1,5 @@
-import ExtractTextPlugin from 'extract-text-webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import options from './options';
 
 export const imageLoader = (path, imgName, limit) => {
   return {
@@ -27,7 +28,7 @@ export const fontLoader = (path, fontName, limit) => {
         }
       }
     ]
-    
+
   }
 };
 
@@ -48,8 +49,17 @@ export const mediaLoader = (path, name) => {
 export const jsLoader = (options, exclude) => {
   return {
     test: /\.js[x]?$/,
-    loader: 'happypack/loader',
-    options,
+    use: [
+      {
+        loader: 'thread-loader',
+        options: {
+          workers: options.cpuNumber
+        }
+      },
+      {
+        loader: 'babel-loader',
+      }
+    ],
     exclude,
   }
 };
@@ -57,42 +67,42 @@ export const jsLoader = (options, exclude) => {
 export const cssLoader = (options) => {
   return {
     test: /\.css$/,
-    use: ExtractTextPlugin.extract({
-      fallback: 'style-loader',
-      use: [{
-        loader: 'css-loader',
+    use: [
+      {
+        loader:  options.__DEV__ || options.__DEBUG__  ?  'vue-style-loader' : MiniCssExtractPlugin.loader,
         options
-      }]
-    })
+      },
+      'css-loader',
+    ],
   }
 };
 
 export const lessLoader = (options) => {
   return {
     test: /\.less$/,
-    use: ExtractTextPlugin.extract({
-      fallback: 'style-loader',
-      use: [{
-        loader: 'css-loader',
+    use: [
+      {
+        loader:  options.__DEV__ || options.__DEBUG__  ?  'vue-style-loader' : MiniCssExtractPlugin.loader,
         options
-      }, {
-        loader: 'less-loader'
-      }]
-    })
+      },
+      'css-loader',
+      'less-loader',
+    ]
   }
 };
+
+export const vueLoader = (options) => {
+  return {
+    test: /\.vue$/,
+    loader: 'vue-loader',
+    options
+  }
+}
 
 export const importsLoader = (regExp) => {
   return {
     test: new RegExp(`(${regExp.join('|')})$`),
     loader: 'imports-loader?define=>false&module=>false&exports=>false&this=>window',
-  }
-};
-
-export const jsonLoader = () => {
-  return {
-    test: /\.json$/,
-    loader: 'json-loader'
   }
 };
 
