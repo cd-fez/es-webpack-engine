@@ -1,4 +1,4 @@
-# es-webpack-engin  4.0.0 (2020.4.3)
+# es-webpack-engin  4.4.1 (2020.4.6)
 
 * 升级webpack4相关配置项以及依赖包版本
 * 支持.vue文件的打包
