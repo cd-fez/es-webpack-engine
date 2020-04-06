@@ -1,3 +1,34 @@
+# es-webpack-engin  4.0.0 (2020.4.3)
+
+* 升级webpack4相关配置项以及依赖包版本
+* 支持.vue文件的打包
+* 设置 cpuNumber 配置项，调整打包时cpu核数量, 在webpack.config.js中设置, 默认值为2
+
+```js
+  //
+  module.exports = {
+    cpuNumber: 2
+  }
+```
+
+# es-webpack-engine 3.5.3-rc.2(2019.1.10)
+
+* 解决window下主题匹配路径报错问题, window 下文件目录会出现'\'的情况
+
+```js
+    // utils.js
+    const sep = path.sep;
+    const isTheme = (path) => {
+      const finalPath = path.split(sep).join('/');
+      return finalPath.indexOf('web/themes') !== -1;
+    }
+
+```
+
+# es-webpack-engine 3.5.3-rc.1(2018.03.26)
+
+* 支持教学活动资源的编译
+
 # es-webpack-engine 3.5.2(2018.03.06)
 
 * 添加ESlint
@@ -211,4 +242,3 @@
 # es-webpack-engine 2.0.0 (2016.12.02)
 
 * 针对 Biz-Symfony-Starter 的目录结构以及需求，进行了重构
-

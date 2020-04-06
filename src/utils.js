@@ -2,6 +2,7 @@ import glob from 'glob';
 import fs from 'fs';
 import path from 'path';
 
+const sep = path.sep;
 const searchEntries = (options) => {
 
   let files = {};
@@ -108,7 +109,6 @@ const filterObject = (obj, filterName) => {
   let filterArr = filterName.split(',');
   
   for (let item in obj) {
-    
     if (filterArr.indexOf(item) === -1) {
       newObj[item] = obj[item];
     } else {
@@ -130,6 +130,15 @@ const isBundle = (path) => {
   return path.indexOf('Bundle') !== -1;
 };
 
+const isTheme = (path) => {
+  const finalPath = path.split(sep).join('/');
+  return finalPath.indexOf('web/themes') !== -1;
+}
+
+const isActivity = (path) => {
+  return path.indexOf('activities') !== -1;
+}
+
 export { 
   searchEntries,
   searchDirs,
@@ -140,5 +149,7 @@ export {
   firstUpperCase,
   filterObject,
   isPlugin,
-  isBundle
+  isBundle,
+  isTheme,
+  isActivity
 };
