@@ -202,6 +202,7 @@ if (options.isBuildAllModule) {
         cacheGroups: {
           common: {
             name: `app/js/${options.commonsChunkFileName}`,
+            test: /^[\/]item-bank-test[\/]/,
             chunks: "initial",  //入口处开始提取代码
             minSize: 300000,      //代码最小多大，进行抽离
             minChunks: 6,
